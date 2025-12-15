@@ -30,6 +30,7 @@ class Detection(BaseModel):
     class_name: str
     confidence: float
     bbox: BoundingBox
+    text: Optional[str] = None
 
 class DetectionResponse(BaseModel):
     filename: str

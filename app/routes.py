@@ -1,7 +1,9 @@
 from fastapi import APIRouter, File, UploadFile, HTTPException
 from fastapi.responses import Response
 from app.schemas import DetectionResponse
-from app.service import detector
+
+from app.advanced_service import detector
+#from app.service import detector
 import traceback
 import logging
 
