@@ -56,43 +56,46 @@ class AdvancedYOLOService:
 
     def ensemble_ocr(self, plate_crop):
         """
-        Runs OCR on 3 variations of the image and votes on the best result.
+        Runs OCR on 3 variations of the image, joins the text parts, and votes.
         """
         candidates = []
 
-        # 1. Original
-        res1 = self.reader.readtext(np.array(plate_crop), detail=0)
-        candidates.extend(res1)
+        # Helper function to run OCR and stitch words together
+        def get_full_plate_text(image_input):
+            # detail=0 returns a list like ['IND', '22', 'BH']
+            text_parts = self.reader.readtext(np.array(image_input), detail=0)
+            
+            # Join them into one solid string: "IND22BH..."
+            # We use no space "" because clean_text removes spaces anyway
+            full_text = "".join(text_parts)
+            return full_text
 
-        # 2. High Contrast Grayscale
+        # 1. Variation A: Original Image
+        candidates.append(get_full_plate_text(plate_crop))
+
+        # 2. Variation B: High Contrast
         gray = ImageOps.grayscale(plate_crop)
         enhancer = ImageEnhance.Contrast(gray)
         high_contrast = enhancer.enhance(2.0)
-        res2 = self.reader.readtext(np.array(high_contrast), detail=0)
-        candidates.extend(res2)
+        candidates.append(get_full_plate_text(high_contrast))
 
-        # 3. Binarized (Black and White only)
-        # Threshold: Pixels brighter than 128 become white, others black
+        # 3. Variation C: Binarized (Black & White)
         arr = np.array(gray)
         binary = np.where(arr > 128, 255, 0).astype(np.uint8)
-        res3 = self.reader.readtext(binary, detail=0)
-        candidates.extend(res3)
+        candidates.append(get_full_plate_text(binary))
 
         # --- VOTING LOGIC ---
-        if not candidates:
-            return "Unknown"
-
-        # Clean all results (remove garbage chars)
+        # Clean all candidates (remove special chars)
         cleaned_candidates = [self.clean_text(c) for c in candidates]
-        # Remove empty strings
-        cleaned_candidates = [c for c in cleaned_candidates if len(c) > 1]
+        
+        # Filter out empty results or very short noise (less than 3 chars)
+        cleaned_candidates = [c for c in cleaned_candidates if len(c) > 3]
 
         if not cleaned_candidates:
             return "Unknown"
 
-        # Count the votes
+        # Count the votes and pick the winner
         vote_counts = Counter(cleaned_candidates)
-        # Get the winner (most common result)
         most_common_text, count = vote_counts.most_common(1)[0]
         
         return most_common_text
