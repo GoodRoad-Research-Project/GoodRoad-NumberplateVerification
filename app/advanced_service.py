@@ -6,6 +6,7 @@ import easyocr
 from collections import Counter
 import re
 from app.config import MODEL_PATH, CONFIDENCE_THRESHOLD
+from ultralytics import YOLO
 
 class AdvancedYOLOService:
     def __init__(self):
@@ -56,49 +57,127 @@ class AdvancedYOLOService:
 
     def ensemble_ocr(self, plate_crop):
         """
-        Runs OCR on 3 variations of the image, joins the text parts, and votes.
+        Context-Aware Logic for Sri Lankan Plates:
+        1. Zoom & Enhance.
+        2. Detect Layout (Wide vs Square).
+        3. Sort text based on layout (Vertical priority for Square).
+        4. Apply "Cheat Codes" (Valid Prefixes & Number formats).
         """
         candidates = []
+        
+        # The 9 Valid Provinces
+        VALID_PROVINCES = ["WP", "EP", "NP", "SP", "SG", "NC", "CP", "UP", "NW"]
 
-        # Helper function to run OCR and stitch words together
-        def get_full_plate_text(image_input):
-            # detail=0 returns a list like ['IND', '22', 'BH']
-            text_parts = self.reader.readtext(np.array(image_input), detail=0)
+        def fix_province_code(text):
+            """Fixes common OCR errors in province codes (e.g., '5P' -> 'SP')"""
+            text = text.upper().replace(" ", "")
+            # Direct matches
+            for prov in VALID_PROVINCES:
+                if prov in text:
+                    return text # It's already correct
             
-            # Join them into one solid string: "IND22BH..."
-            # We use no space "" because clean_text removes spaces anyway
-            full_text = "".join(text_parts)
-            return full_text
+            # Fuzzy fixes
+            fixes = {
+                "5P": "SP", "8P": "SP", "S9": "SP",
+                "W9": "WP", "VP": "WP", "VV": "WP",
+                "NWC": "NW", "HCP": "CP", "C9": "CP"
+            }
+            for wrong, right in fixes.items():
+                if wrong in text:
+                    return text.replace(wrong, right)
+            return text
 
-        # 1. Variation A: Original Image
-        candidates.append(get_full_plate_text(plate_crop))
+        def get_structured_text(image_input):
+            # 1. ZOOM IN
+            w, h = image_input.size
+            image_input = image_input.resize((w * 2, h * 2), Image.LANCZOS)
+            img_array = np.array(image_input)
 
-        # 2. Variation B: High Contrast
+            # 2. READ EVERYTHING WITH COORDINATES
+            results = self.reader.readtext(img_array, detail=1)
+            if not results: return ""
+            
+            # Filter low confidence
+            results = [r for r in results if r[2] > 0.35]
+            if not results: return ""
+
+            # 3. DETECT LAYOUT
+            # Get Y-centers of all text blocks
+            y_centers = [(r[0][0][1] + r[0][2][1]) / 2 for r in results]
+            height_span = max(y_centers) - min(y_centers)
+            img_h = img_array.shape[0]
+            
+            # If text is spread out vertically (>30% of image height), it's STACKED
+            is_stacked = height_span > (img_h * 0.3)
+
+            final_text_parts = []
+
+            if is_stacked:
+                # --- SQUARE PLATE LOGIC (Your "Top-to-Bottom" Idea) ---
+                # Sort primarily by Y (Vertical), secondary by X (Horizontal)
+                # This ensures "SP QL" (Top) comes before "9904" (Bottom)
+                results.sort(key=lambda r: (r[0][0][1], r[0][0][0]))
+                
+                # Split into Top and Bottom rows for strict cleaning
+                mid_y = img_h / 2
+                top_text = []
+                bottom_text = []
+                
+                for r in results:
+                    y_c = (r[0][0][1] + r[0][2][1]) / 2
+                    text_val = r[1].upper().replace(".", "").replace("-", "")
+                    
+                    if y_c < mid_y:
+                        # TOP ROW: Should contain Province (SP) and Class (QL)
+                        # Fix numbers that look like letters here if needed
+                        top_text.append(text_val)
+                    else:
+                        # BOTTOM ROW: Should be Numbers (9904)
+                        # Force 'O'->'0', 'I'->'1', 'B'->'8'
+                        text_val = text_val.replace("O", "0").replace("I", "1").replace("B", "8")
+                        bottom_text.append(text_val)
+                
+                # Join them
+                full_top = "".join(top_text)
+                full_bottom = "".join(bottom_text)
+                
+                # Apply Prefix Correction (e.g., fix "5P" -> "SP")
+                full_top = fix_province_code(full_top)
+                
+                final_text = full_top + full_bottom
+
+            else:
+                # --- WIDE PLATE LOGIC (Left-to-Right) ---
+                results.sort(key=lambda r: r[0][0][0])
+                raw_text = "".join([r[1] for r in results]).upper()
+                
+                # Clean up common separators
+                final_text = raw_text.replace("-", "").replace(" ", "").replace(".", "")
+                
+                # Apply Prefix Correction
+                final_text = fix_province_code(final_text)
+
+            return final_text
+
+        # --- RUN VARIATIONS ---
+        candidates.append(get_structured_text(plate_crop))
+        
         gray = ImageOps.grayscale(plate_crop)
         enhancer = ImageEnhance.Contrast(gray)
         high_contrast = enhancer.enhance(2.0)
-        candidates.append(get_full_plate_text(high_contrast))
+        candidates.append(get_structured_text(high_contrast))
 
-        # 3. Variation C: Binarized (Black & White)
-        arr = np.array(gray)
-        binary = np.where(arr > 128, 255, 0).astype(np.uint8)
-        candidates.append(get_full_plate_text(binary))
+        # --- VOTING ---
+        cleaned = [self.clean_text(c) for c in candidates]
+        cleaned = [c for c in cleaned if len(c) > 3]
 
-        # --- VOTING LOGIC ---
-        # Clean all candidates (remove special chars)
-        cleaned_candidates = [self.clean_text(c) for c in candidates]
-        
-        # Filter out empty results or very short noise (less than 3 chars)
-        cleaned_candidates = [c for c in cleaned_candidates if len(c) > 3]
+        if not cleaned: return "Unknown"
+        return Counter(cleaned).most_common(1)[0][0]
 
-        if not cleaned_candidates:
-            return "Unknown"
 
-        # Count the votes and pick the winner
-        vote_counts = Counter(cleaned_candidates)
-        most_common_text, count = vote_counts.most_common(1)[0]
-        
-        return most_common_text
+
+
+        #end of easyocr
 
     def predict(self, image_bytes: bytes) -> list:
         if not self.session: raise RuntimeError("Model not loaded")
@@ -129,13 +208,15 @@ class AdvancedYOLOService:
             x2 = int((cx + w/2) * x_scale)
             y2 = int((cy + h/2) * y_scale)
             
-            # Clamp coordinates
-            x1, y1 = max(0, x1), max(0, y1)
-            x2, y2 = min(orig_w, x2), min(orig_h, y2)
+            # --- ADD PADDING (Crucial for edge text like 'WP') ---
+            pad = 10  # Add 10 pixels of breathing room
+            crop_x1 = max(0, x1 - pad)
+            crop_y1 = max(0, y1 - pad)
+            crop_x2 = min(orig_w, x2 + pad)
+            crop_y2 = min(orig_h, y2 + pad)
 
-            # --- OCR EXECUTION ---
-            # Crop the plate
-            plate_crop = self.original_image.crop((x1, y1, x2, y2))
+            # Crop the plate with padding
+            plate_crop = self.original_image.crop((crop_x1, crop_y1, crop_x2, crop_y2))
             # Run the ensemble
             plate_text = self.ensemble_ocr(plate_crop)
 
