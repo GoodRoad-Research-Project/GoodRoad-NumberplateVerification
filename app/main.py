@@ -1,5 +1,4 @@
 from fastapi import FastAPI, Response
-from fastapi.responses import FileResponse
 from fastapi.staticfiles import StaticFiles
 from pathlib import Path
 from contextlib import asynccontextmanager
@@ -10,7 +9,8 @@ import os
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
-    detector.load_model()
+    # REMOVED: detector.load_model() 
+    # The models are already loaded automatically when 'detector' is imported.
     yield
 
 app = FastAPI(
@@ -35,8 +35,6 @@ async def favicon():
 app.include_router(router)
 
 # Serve Static Files (Frontend)
-# Navigate up from: app/main.py -> app/ -> license_plate_detection_service/ -> IT22174444/ -> frontend
-# Path(__file__).resolve().parent is 'app'
 base_path = Path(__file__).resolve().parent.parent.parent
 frontend_path = base_path / "frontend"
 
@@ -49,4 +47,5 @@ else:
 
 if __name__ == "__main__":
     import uvicorn
+    # Use standard string format for reload to work properly
     uvicorn.run("app.main:app", host="0.0.0.0", port=8000, reload=True)
