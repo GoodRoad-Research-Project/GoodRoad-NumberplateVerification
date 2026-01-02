@@ -10,5 +10,9 @@ MODEL_PATH_V9 = os.path.normpath(os.path.join(BASE_DIR, "..", "model", "yolov9.o
 # --- YOLOv8 (New Model - SWITCH TO .PT) ---
 # We are changing this from .onnx to .pt to fix the version error
 MODEL_PATH_V8 = os.path.normpath(os.path.join(BASE_DIR, "..", "model", "yolov8n.pt"))
+
+# SRGAN (ONNX) - NEW!
+MODEL_PATH_SRGAN = os.path.normpath(os.path.join(BASE_DIR, "..", "model", "srgan_lpblur.onnx"))
+
 # 3. Thresholds
 CONFIDENCE_THRESHOLD = 0.35

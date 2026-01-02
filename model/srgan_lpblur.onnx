@@ -1,0 +1,2932 @@
+
+pytorch2.9.0+cu126:ﬂÂ	
+Ÿ
+input
+conv1.0.weight
+conv1.0.biasconv2dnode_conv2d"Conv*
+group†*
+pads@@@@†*
+auto_pad"NOTSET†*
+strides@@†*
+	dilations@@†Jë
+	namespaceÉ: __main__.Generator/conv1: torch.nn.modules.container.Sequential/conv1.0: torch.nn.modules.conv.Conv2d/conv2d: aten.conv2d.defaultJò
+pkg.torch.onnx.class_hierarchyv['__main__.Generator', 'torch.nn.modules.container.Sequential', 'torch.nn.modules.conv.Conv2d', 'aten.conv2d.default']J∂
+pkg.torch.onnx.fx_nodeõ%conv2d : [num_users=1] = call_function[target=torch.ops.aten.conv2d.default](args = (%x, %p_conv1_0_weight, %p_conv1_0_bias, [1, 1], [4, 4]), kwargs = {})J@
+pkg.torch.onnx.name_scopes"['', 'conv1', 'conv1.0', 'conv2d']Jé
+pkg.torch.onnx.stack_traceÔFile "/tmp/ipython-input-1227226292.py", line 42, in forward
+    x1 = self.conv1(x)
+  File "/usr/local/lib/python3.12/dist-packages/torch/nn/modules/container.py", line 250, in forward
+    input = module(input)
+  File "/usr/local/lib/python3.12/dist-packages/torch/nn/modules/conv.py", line 548, in forward
+    return self._conv_forward(input, self.weight, self.bias)
+º
+conv2d
+val_1prelu
+node_prelu"PReluJî
+	namespaceÜ: __main__.Generator/conv1: torch.nn.modules.container.Sequential/conv1.1: torch.nn.modules.activation.PReLU/prelu: aten.prelu.defaultJú
+pkg.torch.onnx.class_hierarchyz['__main__.Generator', 'torch.nn.modules.container.Sequential', 'torch.nn.modules.activation.PReLU', 'aten.prelu.default']Jó
+pkg.torch.onnx.fx_node}%prelu : [num_users=3] = call_function[target=torch.ops.aten.prelu.default](args = (%conv2d, %p_conv1_1_weight), kwargs = {})J?
+pkg.torch.onnx.name_scopes!['', 'conv1', 'conv1.1', 'prelu']Jˇ
+pkg.torch.onnx.stack_trace‡File "/tmp/ipython-input-1227226292.py", line 42, in forward
+    x1 = self.conv1(x)
+  File "/usr/local/lib/python3.12/dist-packages/torch/nn/modules/container.py", line 250, in forward
+    input = module(input)
+  File "/usr/local/lib/python3.12/dist-packages/torch/nn/modules/activation.py", line 1638, in forward
+    return F.prelu(input, self.weight)
+ú
+prelu
+res_blocks.0.conv.0.weight
+res_blocks.0.conv.0.biasgetitemnode_Conv_154"Conv*
+group†*
+pads@@@@†*
+auto_pad"NOTSET†*
+strides@@†*
+	dilations@@†J∆
+	namespace∏: __main__.Generator/res_blocks: torch.nn.modules.container.Sequential/res_blocks.0: __main__.ResidualBlock/res_blocks.0.conv: torch.nn.modules.container.Sequential/res_blocks.0.conv.1: torch.nn.modules.batchnorm.BatchNorm2d/_native_batch_norm_legit_no_training: aten._native_batch_norm_legit_no_training.defaultJ:
+!pkg.onnxscript.rewriter.rule_nameFuseBatchNormIntoConvJÑ
+pkg.torch.onnx.class_hierarchy·['__main__.Generator', 'torch.nn.modules.container.Sequential', '__main__.ResidualBlock', 'torch.nn.modules.container.Sequential', 'torch.nn.modules.batchnorm.BatchNorm2d', 'aten._native_batch_norm_legit_no_training.default']J÷
+pkg.torch.onnx.fx_nodeª%_native_batch_norm_legit_no_training : [num_users=1] = call_function[target=torch.ops.aten._native_batch_norm_legit_no_training.default](args = (%conv2d_1, %p_res_blocks_0_conv_1_weight, %p_res_blocks_0_conv_1_bias, %b_res_blocks_0_conv_1_running_mean, %b_res_blocks_0_conv_1_running_var, 0.1, 1e-05), kwargs = {})Jî
+pkg.torch.onnx.name_scopesv['', 'res_blocks', 'res_blocks.0', 'res_blocks.0.conv', 'res_blocks.0.conv.1', '_native_batch_norm_legit_no_training']J‰
+pkg.torch.onnx.stack_trace≈File "/tmp/ipython-input-1227226292.py", line 43, in forward
+    x = self.res_blocks(x1)
+  File "/usr/local/lib/python3.12/dist-packages/torch/nn/modules/container.py", line 250, in forward
+    input = module(input)
+  File "/tmp/ipython-input-1227226292.py", line 21, in forward
+    def forward(self, x): return x + self.conv(x)
+  File "/usr/local/lib/python3.12/dist-packages/torch/nn/modules/container.py", line 250, in forward
+    input = module(input)
+  File "/usr/local/lib/python3.12/dist-packages/torch/nn/modules/batchnorm.py", line 193, in forward
+    return F.batch_norm(
+≥
+getitem
+val_8prelu_1node_prelu_1"PReluJÖ
+	namespace˜: __main__.Generator/res_blocks: torch.nn.modules.container.Sequential/res_blocks.0: __main__.ResidualBlock/res_blocks.0.conv: torch.nn.modules.container.Sequential/res_blocks.0.conv.2: torch.nn.modules.activation.PReLU/prelu_1: aten.prelu.defaultJ‡
+pkg.torch.onnx.class_hierarchyΩ['__main__.Generator', 'torch.nn.modules.container.Sequential', '__main__.ResidualBlock', 'torch.nn.modules.container.Sequential', 'torch.nn.modules.activation.PReLU', 'aten.prelu.default']Jß
+pkg.torch.onnx.fx_nodeå%prelu_1 : [num_users=1] = call_function[target=torch.ops.aten.prelu.default](args = (%getitem, %p_res_blocks_0_conv_2_weight), kwargs = {})Jw
+pkg.torch.onnx.name_scopesY['', 'res_blocks', 'res_blocks.0', 'res_blocks.0.conv', 'res_blocks.0.conv.2', 'prelu_1']JÙ
+pkg.torch.onnx.stack_trace’File "/tmp/ipython-input-1227226292.py", line 43, in forward
+    x = self.res_blocks(x1)
+  File "/usr/local/lib/python3.12/dist-packages/torch/nn/modules/container.py", line 250, in forward
+    input = module(input)
+  File "/tmp/ipython-input-1227226292.py", line 21, in forward
+    def forward(self, x): return x + self.conv(x)
+  File "/usr/local/lib/python3.12/dist-packages/torch/nn/modules/container.py", line 250, in forward
+    input = module(input)
+  File "/usr/local/lib/python3.12/dist-packages/torch/nn/modules/activation.py", line 1638, in forward
+    return F.prelu(input, self.weight)
+¶
+prelu_1
+res_blocks.0.conv.3.weight
+res_blocks.0.conv.3.bias	getitem_3node_Conv_155"Conv*
+group†*
+pads@@@@†*
+auto_pad"NOTSET†*
+strides@@†*
+	dilations@@†J»
+	namespace∫: __main__.Generator/res_blocks: torch.nn.modules.container.Sequential/res_blocks.0: __main__.ResidualBlock/res_blocks.0.conv: torch.nn.modules.container.Sequential/res_blocks.0.conv.4: torch.nn.modules.batchnorm.BatchNorm2d/_native_batch_norm_legit_no_training_1: aten._native_batch_norm_legit_no_training.defaultJ:
+!pkg.onnxscript.rewriter.rule_nameFuseBatchNormIntoConvJÑ
+pkg.torch.onnx.class_hierarchy·['__main__.Generator', 'torch.nn.modules.container.Sequential', '__main__.ResidualBlock', 'torch.nn.modules.container.Sequential', 'torch.nn.modules.batchnorm.BatchNorm2d', 'aten._native_batch_norm_legit_no_training.default']Jÿ
+pkg.torch.onnx.fx_nodeΩ%_native_batch_norm_legit_no_training_1 : [num_users=1] = call_function[target=torch.ops.aten._native_batch_norm_legit_no_training.default](args = (%conv2d_2, %p_res_blocks_0_conv_4_weight, %p_res_blocks_0_conv_4_bias, %b_res_blocks_0_conv_4_running_mean, %b_res_blocks_0_conv_4_running_var, 0.1, 1e-05), kwargs = {})Jñ
+pkg.torch.onnx.name_scopesx['', 'res_blocks', 'res_blocks.0', 'res_blocks.0.conv', 'res_blocks.0.conv.4', '_native_batch_norm_legit_no_training_1']J‰
+pkg.torch.onnx.stack_trace≈File "/tmp/ipython-input-1227226292.py", line 43, in forward
+    x = self.res_blocks(x1)
+  File "/usr/local/lib/python3.12/dist-packages/torch/nn/modules/container.py", line 250, in forward
+    input = module(input)
+  File "/tmp/ipython-input-1227226292.py", line 21, in forward
+    def forward(self, x): return x + self.conv(x)
+  File "/usr/local/lib/python3.12/dist-packages/torch/nn/modules/container.py", line 250, in forward
+    input = module(input)
+  File "/usr/local/lib/python3.12/dist-packages/torch/nn/modules/batchnorm.py", line 193, in forward
+    return F.batch_norm(
+ó
+prelu
+	getitem_3add_15node_add_15"AddJë
+	namespaceÉ: __main__.Generator/res_blocks: torch.nn.modules.container.Sequential/res_blocks.0: __main__.ResidualBlock/add_15: aten.add.TensorJé
+pkg.torch.onnx.class_hierarchyl['__main__.Generator', 'torch.nn.modules.container.Sequential', '__main__.ResidualBlock', 'aten.add.Tensor']Jç
+pkg.torch.onnx.fx_nodes%add_15 : [num_users=2] = call_function[target=torch.ops.aten.add.Tensor](args = (%prelu, %getitem_3), kwargs = {})JJ
+pkg.torch.onnx.name_scopes,['', 'res_blocks', 'res_blocks.0', 'add_15']JÁ
+pkg.torch.onnx.stack_trace»File "/tmp/ipython-input-1227226292.py", line 43, in forward
+    x = self.res_blocks(x1)
+  File "/usr/local/lib/python3.12/dist-packages/torch/nn/modules/container.py", line 250, in forward
+    input = module(input)
+  File "/tmp/ipython-input-1227226292.py", line 21, in forward
+    def forward(self, x): return x + self.conv(x)
+•
+add_15
+res_blocks.1.conv.0.weight
+res_blocks.1.conv.0.bias	getitem_6node_Conv_156"Conv*
+group†*
+pads@@@@†*
+auto_pad"NOTSET†*
+strides@@†*
+	dilations@@†J»
+	namespace∫: __main__.Generator/res_blocks: torch.nn.modules.container.Sequential/res_blocks.1: __main__.ResidualBlock/res_blocks.1.conv: torch.nn.modules.container.Sequential/res_blocks.1.conv.1: torch.nn.modules.batchnorm.BatchNorm2d/_native_batch_norm_legit_no_training_2: aten._native_batch_norm_legit_no_training.defaultJ:
+!pkg.onnxscript.rewriter.rule_nameFuseBatchNormIntoConvJÑ
+pkg.torch.onnx.class_hierarchy·['__main__.Generator', 'torch.nn.modules.container.Sequential', '__main__.ResidualBlock', 'torch.nn.modules.container.Sequential', 'torch.nn.modules.batchnorm.BatchNorm2d', 'aten._native_batch_norm_legit_no_training.default']Jÿ
+pkg.torch.onnx.fx_nodeΩ%_native_batch_norm_legit_no_training_2 : [num_users=1] = call_function[target=torch.ops.aten._native_batch_norm_legit_no_training.default](args = (%conv2d_3, %p_res_blocks_1_conv_1_weight, %p_res_blocks_1_conv_1_bias, %b_res_blocks_1_conv_1_running_mean, %b_res_blocks_1_conv_1_running_var, 0.1, 1e-05), kwargs = {})Jñ
+pkg.torch.onnx.name_scopesx['', 'res_blocks', 'res_blocks.1', 'res_blocks.1.conv', 'res_blocks.1.conv.1', '_native_batch_norm_legit_no_training_2']J‰
+pkg.torch.onnx.stack_trace≈File "/tmp/ipython-input-1227226292.py", line 43, in forward
+    x = self.res_blocks(x1)
+  File "/usr/local/lib/python3.12/dist-packages/torch/nn/modules/container.py", line 250, in forward
+    input = module(input)
+  File "/tmp/ipython-input-1227226292.py", line 21, in forward
+    def forward(self, x): return x + self.conv(x)
+  File "/usr/local/lib/python3.12/dist-packages/torch/nn/modules/container.py", line 250, in forward
+    input = module(input)
+  File "/usr/local/lib/python3.12/dist-packages/torch/nn/modules/batchnorm.py", line 193, in forward
+    return F.batch_norm(
+∏
+	getitem_6
+val_17prelu_2node_prelu_2"PReluJÖ
+	namespace˜: __main__.Generator/res_blocks: torch.nn.modules.container.Sequential/res_blocks.1: __main__.ResidualBlock/res_blocks.1.conv: torch.nn.modules.container.Sequential/res_blocks.1.conv.2: torch.nn.modules.activation.PReLU/prelu_2: aten.prelu.defaultJ‡
+pkg.torch.onnx.class_hierarchyΩ['__main__.Generator', 'torch.nn.modules.container.Sequential', '__main__.ResidualBlock', 'torch.nn.modules.container.Sequential', 'torch.nn.modules.activation.PReLU', 'aten.prelu.default']J©
+pkg.torch.onnx.fx_nodeé%prelu_2 : [num_users=1] = call_function[target=torch.ops.aten.prelu.default](args = (%getitem_6, %p_res_blocks_1_conv_2_weight), kwargs = {})Jw
+pkg.torch.onnx.name_scopesY['', 'res_blocks', 'res_blocks.1', 'res_blocks.1.conv', 'res_blocks.1.conv.2', 'prelu_2']JÙ
+pkg.torch.onnx.stack_trace’File "/tmp/ipython-input-1227226292.py", line 43, in forward
+    x = self.res_blocks(x1)
+  File "/usr/local/lib/python3.12/dist-packages/torch/nn/modules/container.py", line 250, in forward
+    input = module(input)
+  File "/tmp/ipython-input-1227226292.py", line 21, in forward
+    def forward(self, x): return x + self.conv(x)
+  File "/usr/local/lib/python3.12/dist-packages/torch/nn/modules/container.py", line 250, in forward
+    input = module(input)
+  File "/usr/local/lib/python3.12/dist-packages/torch/nn/modules/activation.py", line 1638, in forward
+    return F.prelu(input, self.weight)
+¶
+prelu_2
+res_blocks.1.conv.3.weight
+res_blocks.1.conv.3.bias	getitem_9node_Conv_157"Conv*
+group†*
+pads@@@@†*
+auto_pad"NOTSET†*
+strides@@†*
+	dilations@@†J»
+	namespace∫: __main__.Generator/res_blocks: torch.nn.modules.container.Sequential/res_blocks.1: __main__.ResidualBlock/res_blocks.1.conv: torch.nn.modules.container.Sequential/res_blocks.1.conv.4: torch.nn.modules.batchnorm.BatchNorm2d/_native_batch_norm_legit_no_training_3: aten._native_batch_norm_legit_no_training.defaultJ:
+!pkg.onnxscript.rewriter.rule_nameFuseBatchNormIntoConvJÑ
+pkg.torch.onnx.class_hierarchy·['__main__.Generator', 'torch.nn.modules.container.Sequential', '__main__.ResidualBlock', 'torch.nn.modules.container.Sequential', 'torch.nn.modules.batchnorm.BatchNorm2d', 'aten._native_batch_norm_legit_no_training.default']Jÿ
+pkg.torch.onnx.fx_nodeΩ%_native_batch_norm_legit_no_training_3 : [num_users=1] = call_function[target=torch.ops.aten._native_batch_norm_legit_no_training.default](args = (%conv2d_4, %p_res_blocks_1_conv_4_weight, %p_res_blocks_1_conv_4_bias, %b_res_blocks_1_conv_4_running_mean, %b_res_blocks_1_conv_4_running_var, 0.1, 1e-05), kwargs = {})Jñ
+pkg.torch.onnx.name_scopesx['', 'res_blocks', 'res_blocks.1', 'res_blocks.1.conv', 'res_blocks.1.conv.4', '_native_batch_norm_legit_no_training_3']J‰
+pkg.torch.onnx.stack_trace≈File "/tmp/ipython-input-1227226292.py", line 43, in forward
+    x = self.res_blocks(x1)
+  File "/usr/local/lib/python3.12/dist-packages/torch/nn/modules/container.py", line 250, in forward
+    input = module(input)
+  File "/tmp/ipython-input-1227226292.py", line 21, in forward
+    def forward(self, x): return x + self.conv(x)
+  File "/usr/local/lib/python3.12/dist-packages/torch/nn/modules/container.py", line 250, in forward
+    input = module(input)
+  File "/usr/local/lib/python3.12/dist-packages/torch/nn/modules/batchnorm.py", line 193, in forward
+    return F.batch_norm(
+ô
+add_15
+	getitem_9add_16node_add_16"AddJë
+	namespaceÉ: __main__.Generator/res_blocks: torch.nn.modules.container.Sequential/res_blocks.1: __main__.ResidualBlock/add_16: aten.add.TensorJé
+pkg.torch.onnx.class_hierarchyl['__main__.Generator', 'torch.nn.modules.container.Sequential', '__main__.ResidualBlock', 'aten.add.Tensor']Jé
+pkg.torch.onnx.fx_nodet%add_16 : [num_users=2] = call_function[target=torch.ops.aten.add.Tensor](args = (%add_15, %getitem_9), kwargs = {})JJ
+pkg.torch.onnx.name_scopes,['', 'res_blocks', 'res_blocks.1', 'add_16']JÁ
+pkg.torch.onnx.stack_trace»File "/tmp/ipython-input-1227226292.py", line 43, in forward
+    x = self.res_blocks(x1)
+  File "/usr/local/lib/python3.12/dist-packages/torch/nn/modules/container.py", line 250, in forward
+    input = module(input)
+  File "/tmp/ipython-input-1227226292.py", line 21, in forward
+    def forward(self, x): return x + self.conv(x)
+¶
+add_16
+res_blocks.2.conv.0.weight
+res_blocks.2.conv.0.bias
+getitem_12node_Conv_158"Conv*
+group†*
+pads@@@@†*
+auto_pad"NOTSET†*
+strides@@†*
+	dilations@@†J»
+	namespace∫: __main__.Generator/res_blocks: torch.nn.modules.container.Sequential/res_blocks.2: __main__.ResidualBlock/res_blocks.2.conv: torch.nn.modules.container.Sequential/res_blocks.2.conv.1: torch.nn.modules.batchnorm.BatchNorm2d/_native_batch_norm_legit_no_training_4: aten._native_batch_norm_legit_no_training.defaultJ:
+!pkg.onnxscript.rewriter.rule_nameFuseBatchNormIntoConvJÑ
+pkg.torch.onnx.class_hierarchy·['__main__.Generator', 'torch.nn.modules.container.Sequential', '__main__.ResidualBlock', 'torch.nn.modules.container.Sequential', 'torch.nn.modules.batchnorm.BatchNorm2d', 'aten._native_batch_norm_legit_no_training.default']Jÿ
+pkg.torch.onnx.fx_nodeΩ%_native_batch_norm_legit_no_training_4 : [num_users=1] = call_function[target=torch.ops.aten._native_batch_norm_legit_no_training.default](args = (%conv2d_5, %p_res_blocks_2_conv_1_weight, %p_res_blocks_2_conv_1_bias, %b_res_blocks_2_conv_1_running_mean, %b_res_blocks_2_conv_1_running_var, 0.1, 1e-05), kwargs = {})Jñ
+pkg.torch.onnx.name_scopesx['', 'res_blocks', 'res_blocks.2', 'res_blocks.2.conv', 'res_blocks.2.conv.1', '_native_batch_norm_legit_no_training_4']J‰
+pkg.torch.onnx.stack_trace≈File "/tmp/ipython-input-1227226292.py", line 43, in forward
+    x = self.res_blocks(x1)
+  File "/usr/local/lib/python3.12/dist-packages/torch/nn/modules/container.py", line 250, in forward
+    input = module(input)
+  File "/tmp/ipython-input-1227226292.py", line 21, in forward
+    def forward(self, x): return x + self.conv(x)
+  File "/usr/local/lib/python3.12/dist-packages/torch/nn/modules/container.py", line 250, in forward
+    input = module(input)
+  File "/usr/local/lib/python3.12/dist-packages/torch/nn/modules/batchnorm.py", line 193, in forward
+    return F.batch_norm(
+∫
+
+getitem_12
+val_26prelu_3node_prelu_3"PReluJÖ
+	namespace˜: __main__.Generator/res_blocks: torch.nn.modules.container.Sequential/res_blocks.2: __main__.ResidualBlock/res_blocks.2.conv: torch.nn.modules.container.Sequential/res_blocks.2.conv.2: torch.nn.modules.activation.PReLU/prelu_3: aten.prelu.defaultJ‡
+pkg.torch.onnx.class_hierarchyΩ['__main__.Generator', 'torch.nn.modules.container.Sequential', '__main__.ResidualBlock', 'torch.nn.modules.container.Sequential', 'torch.nn.modules.activation.PReLU', 'aten.prelu.default']J™
+pkg.torch.onnx.fx_nodeè%prelu_3 : [num_users=1] = call_function[target=torch.ops.aten.prelu.default](args = (%getitem_12, %p_res_blocks_2_conv_2_weight), kwargs = {})Jw
+pkg.torch.onnx.name_scopesY['', 'res_blocks', 'res_blocks.2', 'res_blocks.2.conv', 'res_blocks.2.conv.2', 'prelu_3']JÙ
+pkg.torch.onnx.stack_trace’File "/tmp/ipython-input-1227226292.py", line 43, in forward
+    x = self.res_blocks(x1)
+  File "/usr/local/lib/python3.12/dist-packages/torch/nn/modules/container.py", line 250, in forward
+    input = module(input)
+  File "/tmp/ipython-input-1227226292.py", line 21, in forward
+    def forward(self, x): return x + self.conv(x)
+  File "/usr/local/lib/python3.12/dist-packages/torch/nn/modules/container.py", line 250, in forward
+    input = module(input)
+  File "/usr/local/lib/python3.12/dist-packages/torch/nn/modules/activation.py", line 1638, in forward
+    return F.prelu(input, self.weight)
+ß
+prelu_3
+res_blocks.2.conv.3.weight
+res_blocks.2.conv.3.bias
+getitem_15node_Conv_159"Conv*
+group†*
+pads@@@@†*
+auto_pad"NOTSET†*
+strides@@†*
+	dilations@@†J»
+	namespace∫: __main__.Generator/res_blocks: torch.nn.modules.container.Sequential/res_blocks.2: __main__.ResidualBlock/res_blocks.2.conv: torch.nn.modules.container.Sequential/res_blocks.2.conv.4: torch.nn.modules.batchnorm.BatchNorm2d/_native_batch_norm_legit_no_training_5: aten._native_batch_norm_legit_no_training.defaultJ:
+!pkg.onnxscript.rewriter.rule_nameFuseBatchNormIntoConvJÑ
+pkg.torch.onnx.class_hierarchy·['__main__.Generator', 'torch.nn.modules.container.Sequential', '__main__.ResidualBlock', 'torch.nn.modules.container.Sequential', 'torch.nn.modules.batchnorm.BatchNorm2d', 'aten._native_batch_norm_legit_no_training.default']Jÿ
+pkg.torch.onnx.fx_nodeΩ%_native_batch_norm_legit_no_training_5 : [num_users=1] = call_function[target=torch.ops.aten._native_batch_norm_legit_no_training.default](args = (%conv2d_6, %p_res_blocks_2_conv_4_weight, %p_res_blocks_2_conv_4_bias, %b_res_blocks_2_conv_4_running_mean, %b_res_blocks_2_conv_4_running_var, 0.1, 1e-05), kwargs = {})Jñ
+pkg.torch.onnx.name_scopesx['', 'res_blocks', 'res_blocks.2', 'res_blocks.2.conv', 'res_blocks.2.conv.4', '_native_batch_norm_legit_no_training_5']J‰
+pkg.torch.onnx.stack_trace≈File "/tmp/ipython-input-1227226292.py", line 43, in forward
+    x = self.res_blocks(x1)
+  File "/usr/local/lib/python3.12/dist-packages/torch/nn/modules/container.py", line 250, in forward
+    input = module(input)
+  File "/tmp/ipython-input-1227226292.py", line 21, in forward
+    def forward(self, x): return x + self.conv(x)
+  File "/usr/local/lib/python3.12/dist-packages/torch/nn/modules/container.py", line 250, in forward
+    input = module(input)
+  File "/usr/local/lib/python3.12/dist-packages/torch/nn/modules/batchnorm.py", line 193, in forward
+    return F.batch_norm(
+õ
+add_16
+
+getitem_15add_17node_add_17"AddJë
+	namespaceÉ: __main__.Generator/res_blocks: torch.nn.modules.container.Sequential/res_blocks.2: __main__.ResidualBlock/add_17: aten.add.TensorJé
+pkg.torch.onnx.class_hierarchyl['__main__.Generator', 'torch.nn.modules.container.Sequential', '__main__.ResidualBlock', 'aten.add.Tensor']Jè
+pkg.torch.onnx.fx_nodeu%add_17 : [num_users=2] = call_function[target=torch.ops.aten.add.Tensor](args = (%add_16, %getitem_15), kwargs = {})JJ
+pkg.torch.onnx.name_scopes,['', 'res_blocks', 'res_blocks.2', 'add_17']JÁ
+pkg.torch.onnx.stack_trace»File "/tmp/ipython-input-1227226292.py", line 43, in forward
+    x = self.res_blocks(x1)
+  File "/usr/local/lib/python3.12/dist-packages/torch/nn/modules/container.py", line 250, in forward
+    input = module(input)
+  File "/tmp/ipython-input-1227226292.py", line 21, in forward
+    def forward(self, x): return x + self.conv(x)
+¶
+add_17
+res_blocks.3.conv.0.weight
+res_blocks.3.conv.0.bias
+getitem_18node_Conv_160"Conv*
+group†*
+pads@@@@†*
+auto_pad"NOTSET†*
+strides@@†*
+	dilations@@†J»
+	namespace∫: __main__.Generator/res_blocks: torch.nn.modules.container.Sequential/res_blocks.3: __main__.ResidualBlock/res_blocks.3.conv: torch.nn.modules.container.Sequential/res_blocks.3.conv.1: torch.nn.modules.batchnorm.BatchNorm2d/_native_batch_norm_legit_no_training_6: aten._native_batch_norm_legit_no_training.defaultJ:
+!pkg.onnxscript.rewriter.rule_nameFuseBatchNormIntoConvJÑ
+pkg.torch.onnx.class_hierarchy·['__main__.Generator', 'torch.nn.modules.container.Sequential', '__main__.ResidualBlock', 'torch.nn.modules.container.Sequential', 'torch.nn.modules.batchnorm.BatchNorm2d', 'aten._native_batch_norm_legit_no_training.default']Jÿ
+pkg.torch.onnx.fx_nodeΩ%_native_batch_norm_legit_no_training_6 : [num_users=1] = call_function[target=torch.ops.aten._native_batch_norm_legit_no_training.default](args = (%conv2d_7, %p_res_blocks_3_conv_1_weight, %p_res_blocks_3_conv_1_bias, %b_res_blocks_3_conv_1_running_mean, %b_res_blocks_3_conv_1_running_var, 0.1, 1e-05), kwargs = {})Jñ
+pkg.torch.onnx.name_scopesx['', 'res_blocks', 'res_blocks.3', 'res_blocks.3.conv', 'res_blocks.3.conv.1', '_native_batch_norm_legit_no_training_6']J‰
+pkg.torch.onnx.stack_trace≈File "/tmp/ipython-input-1227226292.py", line 43, in forward
+    x = self.res_blocks(x1)
+  File "/usr/local/lib/python3.12/dist-packages/torch/nn/modules/container.py", line 250, in forward
+    input = module(input)
+  File "/tmp/ipython-input-1227226292.py", line 21, in forward
+    def forward(self, x): return x + self.conv(x)
+  File "/usr/local/lib/python3.12/dist-packages/torch/nn/modules/container.py", line 250, in forward
+    input = module(input)
+  File "/usr/local/lib/python3.12/dist-packages/torch/nn/modules/batchnorm.py", line 193, in forward
+    return F.batch_norm(
+∫
+
+getitem_18
+val_35prelu_4node_prelu_4"PReluJÖ
+	namespace˜: __main__.Generator/res_blocks: torch.nn.modules.container.Sequential/res_blocks.3: __main__.ResidualBlock/res_blocks.3.conv: torch.nn.modules.container.Sequential/res_blocks.3.conv.2: torch.nn.modules.activation.PReLU/prelu_4: aten.prelu.defaultJ‡
+pkg.torch.onnx.class_hierarchyΩ['__main__.Generator', 'torch.nn.modules.container.Sequential', '__main__.ResidualBlock', 'torch.nn.modules.container.Sequential', 'torch.nn.modules.activation.PReLU', 'aten.prelu.default']J™
+pkg.torch.onnx.fx_nodeè%prelu_4 : [num_users=1] = call_function[target=torch.ops.aten.prelu.default](args = (%getitem_18, %p_res_blocks_3_conv_2_weight), kwargs = {})Jw
+pkg.torch.onnx.name_scopesY['', 'res_blocks', 'res_blocks.3', 'res_blocks.3.conv', 'res_blocks.3.conv.2', 'prelu_4']JÙ
+pkg.torch.onnx.stack_trace’File "/tmp/ipython-input-1227226292.py", line 43, in forward
+    x = self.res_blocks(x1)
+  File "/usr/local/lib/python3.12/dist-packages/torch/nn/modules/container.py", line 250, in forward
+    input = module(input)
+  File "/tmp/ipython-input-1227226292.py", line 21, in forward
+    def forward(self, x): return x + self.conv(x)
+  File "/usr/local/lib/python3.12/dist-packages/torch/nn/modules/container.py", line 250, in forward
+    input = module(input)
+  File "/usr/local/lib/python3.12/dist-packages/torch/nn/modules/activation.py", line 1638, in forward
+    return F.prelu(input, self.weight)
+ß
+prelu_4
+res_blocks.3.conv.3.weight
+res_blocks.3.conv.3.bias
+getitem_21node_Conv_161"Conv*
+group†*
+pads@@@@†*
+auto_pad"NOTSET†*
+strides@@†*
+	dilations@@†J»
+	namespace∫: __main__.Generator/res_blocks: torch.nn.modules.container.Sequential/res_blocks.3: __main__.ResidualBlock/res_blocks.3.conv: torch.nn.modules.container.Sequential/res_blocks.3.conv.4: torch.nn.modules.batchnorm.BatchNorm2d/_native_batch_norm_legit_no_training_7: aten._native_batch_norm_legit_no_training.defaultJ:
+!pkg.onnxscript.rewriter.rule_nameFuseBatchNormIntoConvJÑ
+pkg.torch.onnx.class_hierarchy·['__main__.Generator', 'torch.nn.modules.container.Sequential', '__main__.ResidualBlock', 'torch.nn.modules.container.Sequential', 'torch.nn.modules.batchnorm.BatchNorm2d', 'aten._native_batch_norm_legit_no_training.default']Jÿ
+pkg.torch.onnx.fx_nodeΩ%_native_batch_norm_legit_no_training_7 : [num_users=1] = call_function[target=torch.ops.aten._native_batch_norm_legit_no_training.default](args = (%conv2d_8, %p_res_blocks_3_conv_4_weight, %p_res_blocks_3_conv_4_bias, %b_res_blocks_3_conv_4_running_mean, %b_res_blocks_3_conv_4_running_var, 0.1, 1e-05), kwargs = {})Jñ
+pkg.torch.onnx.name_scopesx['', 'res_blocks', 'res_blocks.3', 'res_blocks.3.conv', 'res_blocks.3.conv.4', '_native_batch_norm_legit_no_training_7']J‰
+pkg.torch.onnx.stack_trace≈File "/tmp/ipython-input-1227226292.py", line 43, in forward
+    x = self.res_blocks(x1)
+  File "/usr/local/lib/python3.12/dist-packages/torch/nn/modules/container.py", line 250, in forward
+    input = module(input)
+  File "/tmp/ipython-input-1227226292.py", line 21, in forward
+    def forward(self, x): return x + self.conv(x)
+  File "/usr/local/lib/python3.12/dist-packages/torch/nn/modules/container.py", line 250, in forward
+    input = module(input)
+  File "/usr/local/lib/python3.12/dist-packages/torch/nn/modules/batchnorm.py", line 193, in forward
+    return F.batch_norm(
+õ
+add_17
+
+getitem_21add_18node_add_18"AddJë
+	namespaceÉ: __main__.Generator/res_blocks: torch.nn.modules.container.Sequential/res_blocks.3: __main__.ResidualBlock/add_18: aten.add.TensorJé
+pkg.torch.onnx.class_hierarchyl['__main__.Generator', 'torch.nn.modules.container.Sequential', '__main__.ResidualBlock', 'aten.add.Tensor']Jè
+pkg.torch.onnx.fx_nodeu%add_18 : [num_users=2] = call_function[target=torch.ops.aten.add.Tensor](args = (%add_17, %getitem_21), kwargs = {})JJ
+pkg.torch.onnx.name_scopes,['', 'res_blocks', 'res_blocks.3', 'add_18']JÁ
+pkg.torch.onnx.stack_trace»File "/tmp/ipython-input-1227226292.py", line 43, in forward
+    x = self.res_blocks(x1)
+  File "/usr/local/lib/python3.12/dist-packages/torch/nn/modules/container.py", line 250, in forward
+    input = module(input)
+  File "/tmp/ipython-input-1227226292.py", line 21, in forward
+    def forward(self, x): return x + self.conv(x)
+¶
+add_18
+res_blocks.4.conv.0.weight
+res_blocks.4.conv.0.bias
+getitem_24node_Conv_162"Conv*
+group†*
+pads@@@@†*
+auto_pad"NOTSET†*
+strides@@†*
+	dilations@@†J»
+	namespace∫: __main__.Generator/res_blocks: torch.nn.modules.container.Sequential/res_blocks.4: __main__.ResidualBlock/res_blocks.4.conv: torch.nn.modules.container.Sequential/res_blocks.4.conv.1: torch.nn.modules.batchnorm.BatchNorm2d/_native_batch_norm_legit_no_training_8: aten._native_batch_norm_legit_no_training.defaultJ:
+!pkg.onnxscript.rewriter.rule_nameFuseBatchNormIntoConvJÑ
+pkg.torch.onnx.class_hierarchy·['__main__.Generator', 'torch.nn.modules.container.Sequential', '__main__.ResidualBlock', 'torch.nn.modules.container.Sequential', 'torch.nn.modules.batchnorm.BatchNorm2d', 'aten._native_batch_norm_legit_no_training.default']Jÿ
+pkg.torch.onnx.fx_nodeΩ%_native_batch_norm_legit_no_training_8 : [num_users=1] = call_function[target=torch.ops.aten._native_batch_norm_legit_no_training.default](args = (%conv2d_9, %p_res_blocks_4_conv_1_weight, %p_res_blocks_4_conv_1_bias, %b_res_blocks_4_conv_1_running_mean, %b_res_blocks_4_conv_1_running_var, 0.1, 1e-05), kwargs = {})Jñ
+pkg.torch.onnx.name_scopesx['', 'res_blocks', 'res_blocks.4', 'res_blocks.4.conv', 'res_blocks.4.conv.1', '_native_batch_norm_legit_no_training_8']J‰
+pkg.torch.onnx.stack_trace≈File "/tmp/ipython-input-1227226292.py", line 43, in forward
+    x = self.res_blocks(x1)
+  File "/usr/local/lib/python3.12/dist-packages/torch/nn/modules/container.py", line 250, in forward
+    input = module(input)
+  File "/tmp/ipython-input-1227226292.py", line 21, in forward
+    def forward(self, x): return x + self.conv(x)
+  File "/usr/local/lib/python3.12/dist-packages/torch/nn/modules/container.py", line 250, in forward
+    input = module(input)
+  File "/usr/local/lib/python3.12/dist-packages/torch/nn/modules/batchnorm.py", line 193, in forward
+    return F.batch_norm(
+∫
+
+getitem_24
+val_44prelu_5node_prelu_5"PReluJÖ
+	namespace˜: __main__.Generator/res_blocks: torch.nn.modules.container.Sequential/res_blocks.4: __main__.ResidualBlock/res_blocks.4.conv: torch.nn.modules.container.Sequential/res_blocks.4.conv.2: torch.nn.modules.activation.PReLU/prelu_5: aten.prelu.defaultJ‡
+pkg.torch.onnx.class_hierarchyΩ['__main__.Generator', 'torch.nn.modules.container.Sequential', '__main__.ResidualBlock', 'torch.nn.modules.container.Sequential', 'torch.nn.modules.activation.PReLU', 'aten.prelu.default']J™
+pkg.torch.onnx.fx_nodeè%prelu_5 : [num_users=1] = call_function[target=torch.ops.aten.prelu.default](args = (%getitem_24, %p_res_blocks_4_conv_2_weight), kwargs = {})Jw
+pkg.torch.onnx.name_scopesY['', 'res_blocks', 'res_blocks.4', 'res_blocks.4.conv', 'res_blocks.4.conv.2', 'prelu_5']JÙ
+pkg.torch.onnx.stack_trace’File "/tmp/ipython-input-1227226292.py", line 43, in forward
+    x = self.res_blocks(x1)
+  File "/usr/local/lib/python3.12/dist-packages/torch/nn/modules/container.py", line 250, in forward
+    input = module(input)
+  File "/tmp/ipython-input-1227226292.py", line 21, in forward
+    def forward(self, x): return x + self.conv(x)
+  File "/usr/local/lib/python3.12/dist-packages/torch/nn/modules/container.py", line 250, in forward
+    input = module(input)
+  File "/usr/local/lib/python3.12/dist-packages/torch/nn/modules/activation.py", line 1638, in forward
+    return F.prelu(input, self.weight)
+®
+prelu_5
+res_blocks.4.conv.3.weight
+res_blocks.4.conv.3.bias
+getitem_27node_Conv_163"Conv*
+group†*
+pads@@@@†*
+auto_pad"NOTSET†*
+strides@@†*
+	dilations@@†J»
+	namespace∫: __main__.Generator/res_blocks: torch.nn.modules.container.Sequential/res_blocks.4: __main__.ResidualBlock/res_blocks.4.conv: torch.nn.modules.container.Sequential/res_blocks.4.conv.4: torch.nn.modules.batchnorm.BatchNorm2d/_native_batch_norm_legit_no_training_9: aten._native_batch_norm_legit_no_training.defaultJ:
+!pkg.onnxscript.rewriter.rule_nameFuseBatchNormIntoConvJÑ
+pkg.torch.onnx.class_hierarchy·['__main__.Generator', 'torch.nn.modules.container.Sequential', '__main__.ResidualBlock', 'torch.nn.modules.container.Sequential', 'torch.nn.modules.batchnorm.BatchNorm2d', 'aten._native_batch_norm_legit_no_training.default']JŸ
+pkg.torch.onnx.fx_nodeæ%_native_batch_norm_legit_no_training_9 : [num_users=1] = call_function[target=torch.ops.aten._native_batch_norm_legit_no_training.default](args = (%conv2d_10, %p_res_blocks_4_conv_4_weight, %p_res_blocks_4_conv_4_bias, %b_res_blocks_4_conv_4_running_mean, %b_res_blocks_4_conv_4_running_var, 0.1, 1e-05), kwargs = {})Jñ
+pkg.torch.onnx.name_scopesx['', 'res_blocks', 'res_blocks.4', 'res_blocks.4.conv', 'res_blocks.4.conv.4', '_native_batch_norm_legit_no_training_9']J‰
+pkg.torch.onnx.stack_trace≈File "/tmp/ipython-input-1227226292.py", line 43, in forward
+    x = self.res_blocks(x1)
+  File "/usr/local/lib/python3.12/dist-packages/torch/nn/modules/container.py", line 250, in forward
+    input = module(input)
+  File "/tmp/ipython-input-1227226292.py", line 21, in forward
+    def forward(self, x): return x + self.conv(x)
+  File "/usr/local/lib/python3.12/dist-packages/torch/nn/modules/container.py", line 250, in forward
+    input = module(input)
+  File "/usr/local/lib/python3.12/dist-packages/torch/nn/modules/batchnorm.py", line 193, in forward
+    return F.batch_norm(
+õ
+add_18
+
+getitem_27add_19node_add_19"AddJë
+	namespaceÉ: __main__.Generator/res_blocks: torch.nn.modules.container.Sequential/res_blocks.4: __main__.ResidualBlock/add_19: aten.add.TensorJé
+pkg.torch.onnx.class_hierarchyl['__main__.Generator', 'torch.nn.modules.container.Sequential', '__main__.ResidualBlock', 'aten.add.Tensor']Jè
+pkg.torch.onnx.fx_nodeu%add_19 : [num_users=2] = call_function[target=torch.ops.aten.add.Tensor](args = (%add_18, %getitem_27), kwargs = {})JJ
+pkg.torch.onnx.name_scopes,['', 'res_blocks', 'res_blocks.4', 'add_19']JÁ
+pkg.torch.onnx.stack_trace»File "/tmp/ipython-input-1227226292.py", line 43, in forward
+    x = self.res_blocks(x1)
+  File "/usr/local/lib/python3.12/dist-packages/torch/nn/modules/container.py", line 250, in forward
+    input = module(input)
+  File "/tmp/ipython-input-1227226292.py", line 21, in forward
+    def forward(self, x): return x + self.conv(x)
+™
+add_19
+res_blocks.5.conv.0.weight
+res_blocks.5.conv.0.bias
+getitem_30node_Conv_164"Conv*
+group†*
+pads@@@@†*
+auto_pad"NOTSET†*
+strides@@†*
+	dilations@@†J…
+	namespaceª: __main__.Generator/res_blocks: torch.nn.modules.container.Sequential/res_blocks.5: __main__.ResidualBlock/res_blocks.5.conv: torch.nn.modules.container.Sequential/res_blocks.5.conv.1: torch.nn.modules.batchnorm.BatchNorm2d/_native_batch_norm_legit_no_training_10: aten._native_batch_norm_legit_no_training.defaultJ:
+!pkg.onnxscript.rewriter.rule_nameFuseBatchNormIntoConvJÑ
+pkg.torch.onnx.class_hierarchy·['__main__.Generator', 'torch.nn.modules.container.Sequential', '__main__.ResidualBlock', 'torch.nn.modules.container.Sequential', 'torch.nn.modules.batchnorm.BatchNorm2d', 'aten._native_batch_norm_legit_no_training.default']J⁄
+pkg.torch.onnx.fx_nodeø%_native_batch_norm_legit_no_training_10 : [num_users=1] = call_function[target=torch.ops.aten._native_batch_norm_legit_no_training.default](args = (%conv2d_11, %p_res_blocks_5_conv_1_weight, %p_res_blocks_5_conv_1_bias, %b_res_blocks_5_conv_1_running_mean, %b_res_blocks_5_conv_1_running_var, 0.1, 1e-05), kwargs = {})Jó
+pkg.torch.onnx.name_scopesy['', 'res_blocks', 'res_blocks.5', 'res_blocks.5.conv', 'res_blocks.5.conv.1', '_native_batch_norm_legit_no_training_10']J‰
+pkg.torch.onnx.stack_trace≈File "/tmp/ipython-input-1227226292.py", line 43, in forward
+    x = self.res_blocks(x1)
+  File "/usr/local/lib/python3.12/dist-packages/torch/nn/modules/container.py", line 250, in forward
+    input = module(input)
+  File "/tmp/ipython-input-1227226292.py", line 21, in forward
+    def forward(self, x): return x + self.conv(x)
+  File "/usr/local/lib/python3.12/dist-packages/torch/nn/modules/container.py", line 250, in forward
+    input = module(input)
+  File "/usr/local/lib/python3.12/dist-packages/torch/nn/modules/batchnorm.py", line 193, in forward
+    return F.batch_norm(
+∫
+
+getitem_30
+val_53prelu_6node_prelu_6"PReluJÖ
+	namespace˜: __main__.Generator/res_blocks: torch.nn.modules.container.Sequential/res_blocks.5: __main__.ResidualBlock/res_blocks.5.conv: torch.nn.modules.container.Sequential/res_blocks.5.conv.2: torch.nn.modules.activation.PReLU/prelu_6: aten.prelu.defaultJ‡
+pkg.torch.onnx.class_hierarchyΩ['__main__.Generator', 'torch.nn.modules.container.Sequential', '__main__.ResidualBlock', 'torch.nn.modules.container.Sequential', 'torch.nn.modules.activation.PReLU', 'aten.prelu.default']J™
+pkg.torch.onnx.fx_nodeè%prelu_6 : [num_users=1] = call_function[target=torch.ops.aten.prelu.default](args = (%getitem_30, %p_res_blocks_5_conv_2_weight), kwargs = {})Jw
+pkg.torch.onnx.name_scopesY['', 'res_blocks', 'res_blocks.5', 'res_blocks.5.conv', 'res_blocks.5.conv.2', 'prelu_6']JÙ
+pkg.torch.onnx.stack_trace’File "/tmp/ipython-input-1227226292.py", line 43, in forward
+    x = self.res_blocks(x1)
+  File "/usr/local/lib/python3.12/dist-packages/torch/nn/modules/container.py", line 250, in forward
+    input = module(input)
+  File "/tmp/ipython-input-1227226292.py", line 21, in forward
+    def forward(self, x): return x + self.conv(x)
+  File "/usr/local/lib/python3.12/dist-packages/torch/nn/modules/container.py", line 250, in forward
+    input = module(input)
+  File "/usr/local/lib/python3.12/dist-packages/torch/nn/modules/activation.py", line 1638, in forward
+    return F.prelu(input, self.weight)
+´
+prelu_6
+res_blocks.5.conv.3.weight
+res_blocks.5.conv.3.bias
+getitem_33node_Conv_165"Conv*
+group†*
+pads@@@@†*
+auto_pad"NOTSET†*
+strides@@†*
+	dilations@@†J…
+	namespaceª: __main__.Generator/res_blocks: torch.nn.modules.container.Sequential/res_blocks.5: __main__.ResidualBlock/res_blocks.5.conv: torch.nn.modules.container.Sequential/res_blocks.5.conv.4: torch.nn.modules.batchnorm.BatchNorm2d/_native_batch_norm_legit_no_training_11: aten._native_batch_norm_legit_no_training.defaultJ:
+!pkg.onnxscript.rewriter.rule_nameFuseBatchNormIntoConvJÑ
+pkg.torch.onnx.class_hierarchy·['__main__.Generator', 'torch.nn.modules.container.Sequential', '__main__.ResidualBlock', 'torch.nn.modules.container.Sequential', 'torch.nn.modules.batchnorm.BatchNorm2d', 'aten._native_batch_norm_legit_no_training.default']J⁄
+pkg.torch.onnx.fx_nodeø%_native_batch_norm_legit_no_training_11 : [num_users=1] = call_function[target=torch.ops.aten._native_batch_norm_legit_no_training.default](args = (%conv2d_12, %p_res_blocks_5_conv_4_weight, %p_res_blocks_5_conv_4_bias, %b_res_blocks_5_conv_4_running_mean, %b_res_blocks_5_conv_4_running_var, 0.1, 1e-05), kwargs = {})Jó
+pkg.torch.onnx.name_scopesy['', 'res_blocks', 'res_blocks.5', 'res_blocks.5.conv', 'res_blocks.5.conv.4', '_native_batch_norm_legit_no_training_11']J‰
+pkg.torch.onnx.stack_trace≈File "/tmp/ipython-input-1227226292.py", line 43, in forward
+    x = self.res_blocks(x1)
+  File "/usr/local/lib/python3.12/dist-packages/torch/nn/modules/container.py", line 250, in forward
+    input = module(input)
+  File "/tmp/ipython-input-1227226292.py", line 21, in forward
+    def forward(self, x): return x + self.conv(x)
+  File "/usr/local/lib/python3.12/dist-packages/torch/nn/modules/container.py", line 250, in forward
+    input = module(input)
+  File "/usr/local/lib/python3.12/dist-packages/torch/nn/modules/batchnorm.py", line 193, in forward
+    return F.batch_norm(
+õ
+add_19
+
+getitem_33add_20node_add_20"AddJë
+	namespaceÉ: __main__.Generator/res_blocks: torch.nn.modules.container.Sequential/res_blocks.5: __main__.ResidualBlock/add_20: aten.add.TensorJé
+pkg.torch.onnx.class_hierarchyl['__main__.Generator', 'torch.nn.modules.container.Sequential', '__main__.ResidualBlock', 'aten.add.Tensor']Jè
+pkg.torch.onnx.fx_nodeu%add_20 : [num_users=2] = call_function[target=torch.ops.aten.add.Tensor](args = (%add_19, %getitem_33), kwargs = {})JJ
+pkg.torch.onnx.name_scopes,['', 'res_blocks', 'res_blocks.5', 'add_20']JÁ
+pkg.torch.onnx.stack_trace»File "/tmp/ipython-input-1227226292.py", line 43, in forward
+    x = self.res_blocks(x1)
+  File "/usr/local/lib/python3.12/dist-packages/torch/nn/modules/container.py", line 250, in forward
+    input = module(input)
+  File "/tmp/ipython-input-1227226292.py", line 21, in forward
+    def forward(self, x): return x + self.conv(x)
+™
+add_20
+res_blocks.6.conv.0.weight
+res_blocks.6.conv.0.bias
+getitem_36node_Conv_166"Conv*
+group†*
+pads@@@@†*
+auto_pad"NOTSET†*
+strides@@†*
+	dilations@@†J…
+	namespaceª: __main__.Generator/res_blocks: torch.nn.modules.container.Sequential/res_blocks.6: __main__.ResidualBlock/res_blocks.6.conv: torch.nn.modules.container.Sequential/res_blocks.6.conv.1: torch.nn.modules.batchnorm.BatchNorm2d/_native_batch_norm_legit_no_training_12: aten._native_batch_norm_legit_no_training.defaultJ:
+!pkg.onnxscript.rewriter.rule_nameFuseBatchNormIntoConvJÑ
+pkg.torch.onnx.class_hierarchy·['__main__.Generator', 'torch.nn.modules.container.Sequential', '__main__.ResidualBlock', 'torch.nn.modules.container.Sequential', 'torch.nn.modules.batchnorm.BatchNorm2d', 'aten._native_batch_norm_legit_no_training.default']J⁄
+pkg.torch.onnx.fx_nodeø%_native_batch_norm_legit_no_training_12 : [num_users=1] = call_function[target=torch.ops.aten._native_batch_norm_legit_no_training.default](args = (%conv2d_13, %p_res_blocks_6_conv_1_weight, %p_res_blocks_6_conv_1_bias, %b_res_blocks_6_conv_1_running_mean, %b_res_blocks_6_conv_1_running_var, 0.1, 1e-05), kwargs = {})Jó
+pkg.torch.onnx.name_scopesy['', 'res_blocks', 'res_blocks.6', 'res_blocks.6.conv', 'res_blocks.6.conv.1', '_native_batch_norm_legit_no_training_12']J‰
+pkg.torch.onnx.stack_trace≈File "/tmp/ipython-input-1227226292.py", line 43, in forward
+    x = self.res_blocks(x1)
+  File "/usr/local/lib/python3.12/dist-packages/torch/nn/modules/container.py", line 250, in forward
+    input = module(input)
+  File "/tmp/ipython-input-1227226292.py", line 21, in forward
+    def forward(self, x): return x + self.conv(x)
+  File "/usr/local/lib/python3.12/dist-packages/torch/nn/modules/container.py", line 250, in forward
+    input = module(input)
+  File "/usr/local/lib/python3.12/dist-packages/torch/nn/modules/batchnorm.py", line 193, in forward
+    return F.batch_norm(
+∫
+
+getitem_36
+val_62prelu_7node_prelu_7"PReluJÖ
+	namespace˜: __main__.Generator/res_blocks: torch.nn.modules.container.Sequential/res_blocks.6: __main__.ResidualBlock/res_blocks.6.conv: torch.nn.modules.container.Sequential/res_blocks.6.conv.2: torch.nn.modules.activation.PReLU/prelu_7: aten.prelu.defaultJ‡
+pkg.torch.onnx.class_hierarchyΩ['__main__.Generator', 'torch.nn.modules.container.Sequential', '__main__.ResidualBlock', 'torch.nn.modules.container.Sequential', 'torch.nn.modules.activation.PReLU', 'aten.prelu.default']J™
+pkg.torch.onnx.fx_nodeè%prelu_7 : [num_users=1] = call_function[target=torch.ops.aten.prelu.default](args = (%getitem_36, %p_res_blocks_6_conv_2_weight), kwargs = {})Jw
+pkg.torch.onnx.name_scopesY['', 'res_blocks', 'res_blocks.6', 'res_blocks.6.conv', 'res_blocks.6.conv.2', 'prelu_7']JÙ
+pkg.torch.onnx.stack_trace’File "/tmp/ipython-input-1227226292.py", line 43, in forward
+    x = self.res_blocks(x1)
+  File "/usr/local/lib/python3.12/dist-packages/torch/nn/modules/container.py", line 250, in forward
+    input = module(input)
+  File "/tmp/ipython-input-1227226292.py", line 21, in forward
+    def forward(self, x): return x + self.conv(x)
+  File "/usr/local/lib/python3.12/dist-packages/torch/nn/modules/container.py", line 250, in forward
+    input = module(input)
+  File "/usr/local/lib/python3.12/dist-packages/torch/nn/modules/activation.py", line 1638, in forward
+    return F.prelu(input, self.weight)
+´
+prelu_7
+res_blocks.6.conv.3.weight
+res_blocks.6.conv.3.bias
+getitem_39node_Conv_167"Conv*
+group†*
+pads@@@@†*
+auto_pad"NOTSET†*
+strides@@†*
+	dilations@@†J…
+	namespaceª: __main__.Generator/res_blocks: torch.nn.modules.container.Sequential/res_blocks.6: __main__.ResidualBlock/res_blocks.6.conv: torch.nn.modules.container.Sequential/res_blocks.6.conv.4: torch.nn.modules.batchnorm.BatchNorm2d/_native_batch_norm_legit_no_training_13: aten._native_batch_norm_legit_no_training.defaultJ:
+!pkg.onnxscript.rewriter.rule_nameFuseBatchNormIntoConvJÑ
+pkg.torch.onnx.class_hierarchy·['__main__.Generator', 'torch.nn.modules.container.Sequential', '__main__.ResidualBlock', 'torch.nn.modules.container.Sequential', 'torch.nn.modules.batchnorm.BatchNorm2d', 'aten._native_batch_norm_legit_no_training.default']J⁄
+pkg.torch.onnx.fx_nodeø%_native_batch_norm_legit_no_training_13 : [num_users=1] = call_function[target=torch.ops.aten._native_batch_norm_legit_no_training.default](args = (%conv2d_14, %p_res_blocks_6_conv_4_weight, %p_res_blocks_6_conv_4_bias, %b_res_blocks_6_conv_4_running_mean, %b_res_blocks_6_conv_4_running_var, 0.1, 1e-05), kwargs = {})Jó
+pkg.torch.onnx.name_scopesy['', 'res_blocks', 'res_blocks.6', 'res_blocks.6.conv', 'res_blocks.6.conv.4', '_native_batch_norm_legit_no_training_13']J‰
+pkg.torch.onnx.stack_trace≈File "/tmp/ipython-input-1227226292.py", line 43, in forward
+    x = self.res_blocks(x1)
+  File "/usr/local/lib/python3.12/dist-packages/torch/nn/modules/container.py", line 250, in forward
+    input = module(input)
+  File "/tmp/ipython-input-1227226292.py", line 21, in forward
+    def forward(self, x): return x + self.conv(x)
+  File "/usr/local/lib/python3.12/dist-packages/torch/nn/modules/container.py", line 250, in forward
+    input = module(input)
+  File "/usr/local/lib/python3.12/dist-packages/torch/nn/modules/batchnorm.py", line 193, in forward
+    return F.batch_norm(
+õ
+add_20
+
+getitem_39add_21node_add_21"AddJë
+	namespaceÉ: __main__.Generator/res_blocks: torch.nn.modules.container.Sequential/res_blocks.6: __main__.ResidualBlock/add_21: aten.add.TensorJé
+pkg.torch.onnx.class_hierarchyl['__main__.Generator', 'torch.nn.modules.container.Sequential', '__main__.ResidualBlock', 'aten.add.Tensor']Jè
+pkg.torch.onnx.fx_nodeu%add_21 : [num_users=2] = call_function[target=torch.ops.aten.add.Tensor](args = (%add_20, %getitem_39), kwargs = {})JJ
+pkg.torch.onnx.name_scopes,['', 'res_blocks', 'res_blocks.6', 'add_21']JÁ
+pkg.torch.onnx.stack_trace»File "/tmp/ipython-input-1227226292.py", line 43, in forward
+    x = self.res_blocks(x1)
+  File "/usr/local/lib/python3.12/dist-packages/torch/nn/modules/container.py", line 250, in forward
+    input = module(input)
+  File "/tmp/ipython-input-1227226292.py", line 21, in forward
+    def forward(self, x): return x + self.conv(x)
+™
+add_21
+res_blocks.7.conv.0.weight
+res_blocks.7.conv.0.bias
+getitem_42node_Conv_168"Conv*
+group†*
+pads@@@@†*
+auto_pad"NOTSET†*
+strides@@†*
+	dilations@@†J…
+	namespaceª: __main__.Generator/res_blocks: torch.nn.modules.container.Sequential/res_blocks.7: __main__.ResidualBlock/res_blocks.7.conv: torch.nn.modules.container.Sequential/res_blocks.7.conv.1: torch.nn.modules.batchnorm.BatchNorm2d/_native_batch_norm_legit_no_training_14: aten._native_batch_norm_legit_no_training.defaultJ:
+!pkg.onnxscript.rewriter.rule_nameFuseBatchNormIntoConvJÑ
+pkg.torch.onnx.class_hierarchy·['__main__.Generator', 'torch.nn.modules.container.Sequential', '__main__.ResidualBlock', 'torch.nn.modules.container.Sequential', 'torch.nn.modules.batchnorm.BatchNorm2d', 'aten._native_batch_norm_legit_no_training.default']J⁄
+pkg.torch.onnx.fx_nodeø%_native_batch_norm_legit_no_training_14 : [num_users=1] = call_function[target=torch.ops.aten._native_batch_norm_legit_no_training.default](args = (%conv2d_15, %p_res_blocks_7_conv_1_weight, %p_res_blocks_7_conv_1_bias, %b_res_blocks_7_conv_1_running_mean, %b_res_blocks_7_conv_1_running_var, 0.1, 1e-05), kwargs = {})Jó
+pkg.torch.onnx.name_scopesy['', 'res_blocks', 'res_blocks.7', 'res_blocks.7.conv', 'res_blocks.7.conv.1', '_native_batch_norm_legit_no_training_14']J‰
+pkg.torch.onnx.stack_trace≈File "/tmp/ipython-input-1227226292.py", line 43, in forward
+    x = self.res_blocks(x1)
+  File "/usr/local/lib/python3.12/dist-packages/torch/nn/modules/container.py", line 250, in forward
+    input = module(input)
+  File "/tmp/ipython-input-1227226292.py", line 21, in forward
+    def forward(self, x): return x + self.conv(x)
+  File "/usr/local/lib/python3.12/dist-packages/torch/nn/modules/container.py", line 250, in forward
+    input = module(input)
+  File "/usr/local/lib/python3.12/dist-packages/torch/nn/modules/batchnorm.py", line 193, in forward
+    return F.batch_norm(
+∫
+
+getitem_42
+val_71prelu_8node_prelu_8"PReluJÖ
+	namespace˜: __main__.Generator/res_blocks: torch.nn.modules.container.Sequential/res_blocks.7: __main__.ResidualBlock/res_blocks.7.conv: torch.nn.modules.container.Sequential/res_blocks.7.conv.2: torch.nn.modules.activation.PReLU/prelu_8: aten.prelu.defaultJ‡
+pkg.torch.onnx.class_hierarchyΩ['__main__.Generator', 'torch.nn.modules.container.Sequential', '__main__.ResidualBlock', 'torch.nn.modules.container.Sequential', 'torch.nn.modules.activation.PReLU', 'aten.prelu.default']J™
+pkg.torch.onnx.fx_nodeè%prelu_8 : [num_users=1] = call_function[target=torch.ops.aten.prelu.default](args = (%getitem_42, %p_res_blocks_7_conv_2_weight), kwargs = {})Jw
+pkg.torch.onnx.name_scopesY['', 'res_blocks', 'res_blocks.7', 'res_blocks.7.conv', 'res_blocks.7.conv.2', 'prelu_8']JÙ
+pkg.torch.onnx.stack_trace’File "/tmp/ipython-input-1227226292.py", line 43, in forward
+    x = self.res_blocks(x1)
+  File "/usr/local/lib/python3.12/dist-packages/torch/nn/modules/container.py", line 250, in forward
+    input = module(input)
+  File "/tmp/ipython-input-1227226292.py", line 21, in forward
+    def forward(self, x): return x + self.conv(x)
+  File "/usr/local/lib/python3.12/dist-packages/torch/nn/modules/container.py", line 250, in forward
+    input = module(input)
+  File "/usr/local/lib/python3.12/dist-packages/torch/nn/modules/activation.py", line 1638, in forward
+    return F.prelu(input, self.weight)
+´
+prelu_8
+res_blocks.7.conv.3.weight
+res_blocks.7.conv.3.bias
+getitem_45node_Conv_169"Conv*
+group†*
+pads@@@@†*
+auto_pad"NOTSET†*
+strides@@†*
+	dilations@@†J…
+	namespaceª: __main__.Generator/res_blocks: torch.nn.modules.container.Sequential/res_blocks.7: __main__.ResidualBlock/res_blocks.7.conv: torch.nn.modules.container.Sequential/res_blocks.7.conv.4: torch.nn.modules.batchnorm.BatchNorm2d/_native_batch_norm_legit_no_training_15: aten._native_batch_norm_legit_no_training.defaultJ:
+!pkg.onnxscript.rewriter.rule_nameFuseBatchNormIntoConvJÑ
+pkg.torch.onnx.class_hierarchy·['__main__.Generator', 'torch.nn.modules.container.Sequential', '__main__.ResidualBlock', 'torch.nn.modules.container.Sequential', 'torch.nn.modules.batchnorm.BatchNorm2d', 'aten._native_batch_norm_legit_no_training.default']J⁄
+pkg.torch.onnx.fx_nodeø%_native_batch_norm_legit_no_training_15 : [num_users=1] = call_function[target=torch.ops.aten._native_batch_norm_legit_no_training.default](args = (%conv2d_16, %p_res_blocks_7_conv_4_weight, %p_res_blocks_7_conv_4_bias, %b_res_blocks_7_conv_4_running_mean, %b_res_blocks_7_conv_4_running_var, 0.1, 1e-05), kwargs = {})Jó
+pkg.torch.onnx.name_scopesy['', 'res_blocks', 'res_blocks.7', 'res_blocks.7.conv', 'res_blocks.7.conv.4', '_native_batch_norm_legit_no_training_15']J‰
+pkg.torch.onnx.stack_trace≈File "/tmp/ipython-input-1227226292.py", line 43, in forward
+    x = self.res_blocks(x1)
+  File "/usr/local/lib/python3.12/dist-packages/torch/nn/modules/container.py", line 250, in forward
+    input = module(input)
+  File "/tmp/ipython-input-1227226292.py", line 21, in forward
+    def forward(self, x): return x + self.conv(x)
+  File "/usr/local/lib/python3.12/dist-packages/torch/nn/modules/container.py", line 250, in forward
+    input = module(input)
+  File "/usr/local/lib/python3.12/dist-packages/torch/nn/modules/batchnorm.py", line 193, in forward
+    return F.batch_norm(
+õ
+add_21
+
+getitem_45add_22node_add_22"AddJë
+	namespaceÉ: __main__.Generator/res_blocks: torch.nn.modules.container.Sequential/res_blocks.7: __main__.ResidualBlock/add_22: aten.add.TensorJé
+pkg.torch.onnx.class_hierarchyl['__main__.Generator', 'torch.nn.modules.container.Sequential', '__main__.ResidualBlock', 'aten.add.Tensor']Jè
+pkg.torch.onnx.fx_nodeu%add_22 : [num_users=2] = call_function[target=torch.ops.aten.add.Tensor](args = (%add_21, %getitem_45), kwargs = {})JJ
+pkg.torch.onnx.name_scopes,['', 'res_blocks', 'res_blocks.7', 'add_22']JÁ
+pkg.torch.onnx.stack_trace»File "/tmp/ipython-input-1227226292.py", line 43, in forward
+    x = self.res_blocks(x1)
+  File "/usr/local/lib/python3.12/dist-packages/torch/nn/modules/container.py", line 250, in forward
+    input = module(input)
+  File "/tmp/ipython-input-1227226292.py", line 21, in forward
+    def forward(self, x): return x + self.conv(x)
+™
+add_22
+res_blocks.8.conv.0.weight
+res_blocks.8.conv.0.bias
+getitem_48node_Conv_170"Conv*
+group†*
+pads@@@@†*
+auto_pad"NOTSET†*
+strides@@†*
+	dilations@@†J…
+	namespaceª: __main__.Generator/res_blocks: torch.nn.modules.container.Sequential/res_blocks.8: __main__.ResidualBlock/res_blocks.8.conv: torch.nn.modules.container.Sequential/res_blocks.8.conv.1: torch.nn.modules.batchnorm.BatchNorm2d/_native_batch_norm_legit_no_training_16: aten._native_batch_norm_legit_no_training.defaultJ:
+!pkg.onnxscript.rewriter.rule_nameFuseBatchNormIntoConvJÑ
+pkg.torch.onnx.class_hierarchy·['__main__.Generator', 'torch.nn.modules.container.Sequential', '__main__.ResidualBlock', 'torch.nn.modules.container.Sequential', 'torch.nn.modules.batchnorm.BatchNorm2d', 'aten._native_batch_norm_legit_no_training.default']J⁄
+pkg.torch.onnx.fx_nodeø%_native_batch_norm_legit_no_training_16 : [num_users=1] = call_function[target=torch.ops.aten._native_batch_norm_legit_no_training.default](args = (%conv2d_17, %p_res_blocks_8_conv_1_weight, %p_res_blocks_8_conv_1_bias, %b_res_blocks_8_conv_1_running_mean, %b_res_blocks_8_conv_1_running_var, 0.1, 1e-05), kwargs = {})Jó
+pkg.torch.onnx.name_scopesy['', 'res_blocks', 'res_blocks.8', 'res_blocks.8.conv', 'res_blocks.8.conv.1', '_native_batch_norm_legit_no_training_16']J‰
+pkg.torch.onnx.stack_trace≈File "/tmp/ipython-input-1227226292.py", line 43, in forward
+    x = self.res_blocks(x1)
+  File "/usr/local/lib/python3.12/dist-packages/torch/nn/modules/container.py", line 250, in forward
+    input = module(input)
+  File "/tmp/ipython-input-1227226292.py", line 21, in forward
+    def forward(self, x): return x + self.conv(x)
+  File "/usr/local/lib/python3.12/dist-packages/torch/nn/modules/container.py", line 250, in forward
+    input = module(input)
+  File "/usr/local/lib/python3.12/dist-packages/torch/nn/modules/batchnorm.py", line 193, in forward
+    return F.batch_norm(
+∫
+
+getitem_48
+val_80prelu_9node_prelu_9"PReluJÖ
+	namespace˜: __main__.Generator/res_blocks: torch.nn.modules.container.Sequential/res_blocks.8: __main__.ResidualBlock/res_blocks.8.conv: torch.nn.modules.container.Sequential/res_blocks.8.conv.2: torch.nn.modules.activation.PReLU/prelu_9: aten.prelu.defaultJ‡
+pkg.torch.onnx.class_hierarchyΩ['__main__.Generator', 'torch.nn.modules.container.Sequential', '__main__.ResidualBlock', 'torch.nn.modules.container.Sequential', 'torch.nn.modules.activation.PReLU', 'aten.prelu.default']J™
+pkg.torch.onnx.fx_nodeè%prelu_9 : [num_users=1] = call_function[target=torch.ops.aten.prelu.default](args = (%getitem_48, %p_res_blocks_8_conv_2_weight), kwargs = {})Jw
+pkg.torch.onnx.name_scopesY['', 'res_blocks', 'res_blocks.8', 'res_blocks.8.conv', 'res_blocks.8.conv.2', 'prelu_9']JÙ
+pkg.torch.onnx.stack_trace’File "/tmp/ipython-input-1227226292.py", line 43, in forward
+    x = self.res_blocks(x1)
+  File "/usr/local/lib/python3.12/dist-packages/torch/nn/modules/container.py", line 250, in forward
+    input = module(input)
+  File "/tmp/ipython-input-1227226292.py", line 21, in forward
+    def forward(self, x): return x + self.conv(x)
+  File "/usr/local/lib/python3.12/dist-packages/torch/nn/modules/container.py", line 250, in forward
+    input = module(input)
+  File "/usr/local/lib/python3.12/dist-packages/torch/nn/modules/activation.py", line 1638, in forward
+    return F.prelu(input, self.weight)
+´
+prelu_9
+res_blocks.8.conv.3.weight
+res_blocks.8.conv.3.bias
+getitem_51node_Conv_171"Conv*
+group†*
+pads@@@@†*
+auto_pad"NOTSET†*
+strides@@†*
+	dilations@@†J…
+	namespaceª: __main__.Generator/res_blocks: torch.nn.modules.container.Sequential/res_blocks.8: __main__.ResidualBlock/res_blocks.8.conv: torch.nn.modules.container.Sequential/res_blocks.8.conv.4: torch.nn.modules.batchnorm.BatchNorm2d/_native_batch_norm_legit_no_training_17: aten._native_batch_norm_legit_no_training.defaultJ:
+!pkg.onnxscript.rewriter.rule_nameFuseBatchNormIntoConvJÑ
+pkg.torch.onnx.class_hierarchy·['__main__.Generator', 'torch.nn.modules.container.Sequential', '__main__.ResidualBlock', 'torch.nn.modules.container.Sequential', 'torch.nn.modules.batchnorm.BatchNorm2d', 'aten._native_batch_norm_legit_no_training.default']J⁄
+pkg.torch.onnx.fx_nodeø%_native_batch_norm_legit_no_training_17 : [num_users=1] = call_function[target=torch.ops.aten._native_batch_norm_legit_no_training.default](args = (%conv2d_18, %p_res_blocks_8_conv_4_weight, %p_res_blocks_8_conv_4_bias, %b_res_blocks_8_conv_4_running_mean, %b_res_blocks_8_conv_4_running_var, 0.1, 1e-05), kwargs = {})Jó
+pkg.torch.onnx.name_scopesy['', 'res_blocks', 'res_blocks.8', 'res_blocks.8.conv', 'res_blocks.8.conv.4', '_native_batch_norm_legit_no_training_17']J‰
+pkg.torch.onnx.stack_trace≈File "/tmp/ipython-input-1227226292.py", line 43, in forward
+    x = self.res_blocks(x1)
+  File "/usr/local/lib/python3.12/dist-packages/torch/nn/modules/container.py", line 250, in forward
+    input = module(input)
+  File "/tmp/ipython-input-1227226292.py", line 21, in forward
+    def forward(self, x): return x + self.conv(x)
+  File "/usr/local/lib/python3.12/dist-packages/torch/nn/modules/container.py", line 250, in forward
+    input = module(input)
+  File "/usr/local/lib/python3.12/dist-packages/torch/nn/modules/batchnorm.py", line 193, in forward
+    return F.batch_norm(
+õ
+add_22
+
+getitem_51add_23node_add_23"AddJë
+	namespaceÉ: __main__.Generator/res_blocks: torch.nn.modules.container.Sequential/res_blocks.8: __main__.ResidualBlock/add_23: aten.add.TensorJé
+pkg.torch.onnx.class_hierarchyl['__main__.Generator', 'torch.nn.modules.container.Sequential', '__main__.ResidualBlock', 'aten.add.Tensor']Jè
+pkg.torch.onnx.fx_nodeu%add_23 : [num_users=2] = call_function[target=torch.ops.aten.add.Tensor](args = (%add_22, %getitem_51), kwargs = {})JJ
+pkg.torch.onnx.name_scopes,['', 'res_blocks', 'res_blocks.8', 'add_23']JÁ
+pkg.torch.onnx.stack_trace»File "/tmp/ipython-input-1227226292.py", line 43, in forward
+    x = self.res_blocks(x1)
+  File "/usr/local/lib/python3.12/dist-packages/torch/nn/modules/container.py", line 250, in forward
+    input = module(input)
+  File "/tmp/ipython-input-1227226292.py", line 21, in forward
+    def forward(self, x): return x + self.conv(x)
+™
+add_23
+res_blocks.9.conv.0.weight
+res_blocks.9.conv.0.bias
+getitem_54node_Conv_172"Conv*
+group†*
+pads@@@@†*
+auto_pad"NOTSET†*
+strides@@†*
+	dilations@@†J…
+	namespaceª: __main__.Generator/res_blocks: torch.nn.modules.container.Sequential/res_blocks.9: __main__.ResidualBlock/res_blocks.9.conv: torch.nn.modules.container.Sequential/res_blocks.9.conv.1: torch.nn.modules.batchnorm.BatchNorm2d/_native_batch_norm_legit_no_training_18: aten._native_batch_norm_legit_no_training.defaultJ:
+!pkg.onnxscript.rewriter.rule_nameFuseBatchNormIntoConvJÑ
+pkg.torch.onnx.class_hierarchy·['__main__.Generator', 'torch.nn.modules.container.Sequential', '__main__.ResidualBlock', 'torch.nn.modules.container.Sequential', 'torch.nn.modules.batchnorm.BatchNorm2d', 'aten._native_batch_norm_legit_no_training.default']J⁄
+pkg.torch.onnx.fx_nodeø%_native_batch_norm_legit_no_training_18 : [num_users=1] = call_function[target=torch.ops.aten._native_batch_norm_legit_no_training.default](args = (%conv2d_19, %p_res_blocks_9_conv_1_weight, %p_res_blocks_9_conv_1_bias, %b_res_blocks_9_conv_1_running_mean, %b_res_blocks_9_conv_1_running_var, 0.1, 1e-05), kwargs = {})Jó
+pkg.torch.onnx.name_scopesy['', 'res_blocks', 'res_blocks.9', 'res_blocks.9.conv', 'res_blocks.9.conv.1', '_native_batch_norm_legit_no_training_18']J‰
+pkg.torch.onnx.stack_trace≈File "/tmp/ipython-input-1227226292.py", line 43, in forward
+    x = self.res_blocks(x1)
+  File "/usr/local/lib/python3.12/dist-packages/torch/nn/modules/container.py", line 250, in forward
+    input = module(input)
+  File "/tmp/ipython-input-1227226292.py", line 21, in forward
+    def forward(self, x): return x + self.conv(x)
+  File "/usr/local/lib/python3.12/dist-packages/torch/nn/modules/container.py", line 250, in forward
+    input = module(input)
+  File "/usr/local/lib/python3.12/dist-packages/torch/nn/modules/batchnorm.py", line 193, in forward
+    return F.batch_norm(
+ø
+
+getitem_54
+val_89prelu_10node_prelu_10"PReluJÜ
+	namespace¯: __main__.Generator/res_blocks: torch.nn.modules.container.Sequential/res_blocks.9: __main__.ResidualBlock/res_blocks.9.conv: torch.nn.modules.container.Sequential/res_blocks.9.conv.2: torch.nn.modules.activation.PReLU/prelu_10: aten.prelu.defaultJ‡
+pkg.torch.onnx.class_hierarchyΩ['__main__.Generator', 'torch.nn.modules.container.Sequential', '__main__.ResidualBlock', 'torch.nn.modules.container.Sequential', 'torch.nn.modules.activation.PReLU', 'aten.prelu.default']J´
+pkg.torch.onnx.fx_nodeê%prelu_10 : [num_users=1] = call_function[target=torch.ops.aten.prelu.default](args = (%getitem_54, %p_res_blocks_9_conv_2_weight), kwargs = {})Jx
+pkg.torch.onnx.name_scopesZ['', 'res_blocks', 'res_blocks.9', 'res_blocks.9.conv', 'res_blocks.9.conv.2', 'prelu_10']JÙ
+pkg.torch.onnx.stack_trace’File "/tmp/ipython-input-1227226292.py", line 43, in forward
+    x = self.res_blocks(x1)
+  File "/usr/local/lib/python3.12/dist-packages/torch/nn/modules/container.py", line 250, in forward
+    input = module(input)
+  File "/tmp/ipython-input-1227226292.py", line 21, in forward
+    def forward(self, x): return x + self.conv(x)
+  File "/usr/local/lib/python3.12/dist-packages/torch/nn/modules/container.py", line 250, in forward
+    input = module(input)
+  File "/usr/local/lib/python3.12/dist-packages/torch/nn/modules/activation.py", line 1638, in forward
+    return F.prelu(input, self.weight)
+¨
+prelu_10
+res_blocks.9.conv.3.weight
+res_blocks.9.conv.3.bias
+getitem_57node_Conv_173"Conv*
+group†*
+pads@@@@†*
+auto_pad"NOTSET†*
+strides@@†*
+	dilations@@†J…
+	namespaceª: __main__.Generator/res_blocks: torch.nn.modules.container.Sequential/res_blocks.9: __main__.ResidualBlock/res_blocks.9.conv: torch.nn.modules.container.Sequential/res_blocks.9.conv.4: torch.nn.modules.batchnorm.BatchNorm2d/_native_batch_norm_legit_no_training_19: aten._native_batch_norm_legit_no_training.defaultJ:
+!pkg.onnxscript.rewriter.rule_nameFuseBatchNormIntoConvJÑ
+pkg.torch.onnx.class_hierarchy·['__main__.Generator', 'torch.nn.modules.container.Sequential', '__main__.ResidualBlock', 'torch.nn.modules.container.Sequential', 'torch.nn.modules.batchnorm.BatchNorm2d', 'aten._native_batch_norm_legit_no_training.default']J⁄
+pkg.torch.onnx.fx_nodeø%_native_batch_norm_legit_no_training_19 : [num_users=1] = call_function[target=torch.ops.aten._native_batch_norm_legit_no_training.default](args = (%conv2d_20, %p_res_blocks_9_conv_4_weight, %p_res_blocks_9_conv_4_bias, %b_res_blocks_9_conv_4_running_mean, %b_res_blocks_9_conv_4_running_var, 0.1, 1e-05), kwargs = {})Jó
+pkg.torch.onnx.name_scopesy['', 'res_blocks', 'res_blocks.9', 'res_blocks.9.conv', 'res_blocks.9.conv.4', '_native_batch_norm_legit_no_training_19']J‰
+pkg.torch.onnx.stack_trace≈File "/tmp/ipython-input-1227226292.py", line 43, in forward
+    x = self.res_blocks(x1)
+  File "/usr/local/lib/python3.12/dist-packages/torch/nn/modules/container.py", line 250, in forward
+    input = module(input)
+  File "/tmp/ipython-input-1227226292.py", line 21, in forward
+    def forward(self, x): return x + self.conv(x)
+  File "/usr/local/lib/python3.12/dist-packages/torch/nn/modules/container.py", line 250, in forward
+    input = module(input)
+  File "/usr/local/lib/python3.12/dist-packages/torch/nn/modules/batchnorm.py", line 193, in forward
+    return F.batch_norm(
+õ
+add_23
+
+getitem_57add_24node_add_24"AddJë
+	namespaceÉ: __main__.Generator/res_blocks: torch.nn.modules.container.Sequential/res_blocks.9: __main__.ResidualBlock/add_24: aten.add.TensorJé
+pkg.torch.onnx.class_hierarchyl['__main__.Generator', 'torch.nn.modules.container.Sequential', '__main__.ResidualBlock', 'aten.add.Tensor']Jè
+pkg.torch.onnx.fx_nodeu%add_24 : [num_users=2] = call_function[target=torch.ops.aten.add.Tensor](args = (%add_23, %getitem_57), kwargs = {})JJ
+pkg.torch.onnx.name_scopes,['', 'res_blocks', 'res_blocks.9', 'add_24']JÁ
+pkg.torch.onnx.stack_trace»File "/tmp/ipython-input-1227226292.py", line 43, in forward
+    x = self.res_blocks(x1)
+  File "/usr/local/lib/python3.12/dist-packages/torch/nn/modules/container.py", line 250, in forward
+    input = module(input)
+  File "/tmp/ipython-input-1227226292.py", line 21, in forward
+    def forward(self, x): return x + self.conv(x)
+∂
+add_24
+res_blocks.10.conv.0.weight
+res_blocks.10.conv.0.bias
+getitem_60node_Conv_174"Conv*
+group†*
+pads@@@@†*
+auto_pad"NOTSET†*
+strides@@†*
+	dilations@@†JÃ
+	namespaceæ: __main__.Generator/res_blocks: torch.nn.modules.container.Sequential/res_blocks.10: __main__.ResidualBlock/res_blocks.10.conv: torch.nn.modules.container.Sequential/res_blocks.10.conv.1: torch.nn.modules.batchnorm.BatchNorm2d/_native_batch_norm_legit_no_training_20: aten._native_batch_norm_legit_no_training.defaultJ:
+!pkg.onnxscript.rewriter.rule_nameFuseBatchNormIntoConvJÑ
+pkg.torch.onnx.class_hierarchy·['__main__.Generator', 'torch.nn.modules.container.Sequential', '__main__.ResidualBlock', 'torch.nn.modules.container.Sequential', 'torch.nn.modules.batchnorm.BatchNorm2d', 'aten._native_batch_norm_legit_no_training.default']Jﬁ
+pkg.torch.onnx.fx_node√%_native_batch_norm_legit_no_training_20 : [num_users=1] = call_function[target=torch.ops.aten._native_batch_norm_legit_no_training.default](args = (%conv2d_21, %p_res_blocks_10_conv_1_weight, %p_res_blocks_10_conv_1_bias, %b_res_blocks_10_conv_1_running_mean, %b_res_blocks_10_conv_1_running_var, 0.1, 1e-05), kwargs = {})Jö
+pkg.torch.onnx.name_scopes|['', 'res_blocks', 'res_blocks.10', 'res_blocks.10.conv', 'res_blocks.10.conv.1', '_native_batch_norm_legit_no_training_20']J‰
+pkg.torch.onnx.stack_trace≈File "/tmp/ipython-input-1227226292.py", line 43, in forward
+    x = self.res_blocks(x1)
+  File "/usr/local/lib/python3.12/dist-packages/torch/nn/modules/container.py", line 250, in forward
+    input = module(input)
+  File "/tmp/ipython-input-1227226292.py", line 21, in forward
+    def forward(self, x): return x + self.conv(x)
+  File "/usr/local/lib/python3.12/dist-packages/torch/nn/modules/container.py", line 250, in forward
+    input = module(input)
+  File "/usr/local/lib/python3.12/dist-packages/torch/nn/modules/batchnorm.py", line 193, in forward
+    return F.batch_norm(
+∆
+
+getitem_60
+val_98prelu_11node_prelu_11"PReluJâ
+	namespace˚: __main__.Generator/res_blocks: torch.nn.modules.container.Sequential/res_blocks.10: __main__.ResidualBlock/res_blocks.10.conv: torch.nn.modules.container.Sequential/res_blocks.10.conv.2: torch.nn.modules.activation.PReLU/prelu_11: aten.prelu.defaultJ‡
+pkg.torch.onnx.class_hierarchyΩ['__main__.Generator', 'torch.nn.modules.container.Sequential', '__main__.ResidualBlock', 'torch.nn.modules.container.Sequential', 'torch.nn.modules.activation.PReLU', 'aten.prelu.default']J¨
+pkg.torch.onnx.fx_nodeë%prelu_11 : [num_users=1] = call_function[target=torch.ops.aten.prelu.default](args = (%getitem_60, %p_res_blocks_10_conv_2_weight), kwargs = {})J{
+pkg.torch.onnx.name_scopes]['', 'res_blocks', 'res_blocks.10', 'res_blocks.10.conv', 'res_blocks.10.conv.2', 'prelu_11']JÙ
+pkg.torch.onnx.stack_trace’File "/tmp/ipython-input-1227226292.py", line 43, in forward
+    x = self.res_blocks(x1)
+  File "/usr/local/lib/python3.12/dist-packages/torch/nn/modules/container.py", line 250, in forward
+    input = module(input)
+  File "/tmp/ipython-input-1227226292.py", line 21, in forward
+    def forward(self, x): return x + self.conv(x)
+  File "/usr/local/lib/python3.12/dist-packages/torch/nn/modules/container.py", line 250, in forward
+    input = module(input)
+  File "/usr/local/lib/python3.12/dist-packages/torch/nn/modules/activation.py", line 1638, in forward
+    return F.prelu(input, self.weight)
+∏
+prelu_11
+res_blocks.10.conv.3.weight
+res_blocks.10.conv.3.bias
+getitem_63node_Conv_175"Conv*
+group†*
+pads@@@@†*
+auto_pad"NOTSET†*
+strides@@†*
+	dilations@@†JÃ
+	namespaceæ: __main__.Generator/res_blocks: torch.nn.modules.container.Sequential/res_blocks.10: __main__.ResidualBlock/res_blocks.10.conv: torch.nn.modules.container.Sequential/res_blocks.10.conv.4: torch.nn.modules.batchnorm.BatchNorm2d/_native_batch_norm_legit_no_training_21: aten._native_batch_norm_legit_no_training.defaultJ:
+!pkg.onnxscript.rewriter.rule_nameFuseBatchNormIntoConvJÑ
+pkg.torch.onnx.class_hierarchy·['__main__.Generator', 'torch.nn.modules.container.Sequential', '__main__.ResidualBlock', 'torch.nn.modules.container.Sequential', 'torch.nn.modules.batchnorm.BatchNorm2d', 'aten._native_batch_norm_legit_no_training.default']Jﬁ
+pkg.torch.onnx.fx_node√%_native_batch_norm_legit_no_training_21 : [num_users=1] = call_function[target=torch.ops.aten._native_batch_norm_legit_no_training.default](args = (%conv2d_22, %p_res_blocks_10_conv_4_weight, %p_res_blocks_10_conv_4_bias, %b_res_blocks_10_conv_4_running_mean, %b_res_blocks_10_conv_4_running_var, 0.1, 1e-05), kwargs = {})Jö
+pkg.torch.onnx.name_scopes|['', 'res_blocks', 'res_blocks.10', 'res_blocks.10.conv', 'res_blocks.10.conv.4', '_native_batch_norm_legit_no_training_21']J‰
+pkg.torch.onnx.stack_trace≈File "/tmp/ipython-input-1227226292.py", line 43, in forward
+    x = self.res_blocks(x1)
+  File "/usr/local/lib/python3.12/dist-packages/torch/nn/modules/container.py", line 250, in forward
+    input = module(input)
+  File "/tmp/ipython-input-1227226292.py", line 21, in forward
+    def forward(self, x): return x + self.conv(x)
+  File "/usr/local/lib/python3.12/dist-packages/torch/nn/modules/container.py", line 250, in forward
+    input = module(input)
+  File "/usr/local/lib/python3.12/dist-packages/torch/nn/modules/batchnorm.py", line 193, in forward
+    return F.batch_norm(
+ù
+add_24
+
+getitem_63add_25node_add_25"AddJí
+	namespaceÑ: __main__.Generator/res_blocks: torch.nn.modules.container.Sequential/res_blocks.10: __main__.ResidualBlock/add_25: aten.add.TensorJé
+pkg.torch.onnx.class_hierarchyl['__main__.Generator', 'torch.nn.modules.container.Sequential', '__main__.ResidualBlock', 'aten.add.Tensor']Jè
+pkg.torch.onnx.fx_nodeu%add_25 : [num_users=2] = call_function[target=torch.ops.aten.add.Tensor](args = (%add_24, %getitem_63), kwargs = {})JK
+pkg.torch.onnx.name_scopes-['', 'res_blocks', 'res_blocks.10', 'add_25']JÁ
+pkg.torch.onnx.stack_trace»File "/tmp/ipython-input-1227226292.py", line 43, in forward
+    x = self.res_blocks(x1)
+  File "/usr/local/lib/python3.12/dist-packages/torch/nn/modules/container.py", line 250, in forward
+    input = module(input)
+  File "/tmp/ipython-input-1227226292.py", line 21, in forward
+    def forward(self, x): return x + self.conv(x)
+∂
+add_25
+res_blocks.11.conv.0.weight
+res_blocks.11.conv.0.bias
+getitem_66node_Conv_176"Conv*
+group†*
+pads@@@@†*
+auto_pad"NOTSET†*
+strides@@†*
+	dilations@@†JÃ
+	namespaceæ: __main__.Generator/res_blocks: torch.nn.modules.container.Sequential/res_blocks.11: __main__.ResidualBlock/res_blocks.11.conv: torch.nn.modules.container.Sequential/res_blocks.11.conv.1: torch.nn.modules.batchnorm.BatchNorm2d/_native_batch_norm_legit_no_training_22: aten._native_batch_norm_legit_no_training.defaultJ:
+!pkg.onnxscript.rewriter.rule_nameFuseBatchNormIntoConvJÑ
+pkg.torch.onnx.class_hierarchy·['__main__.Generator', 'torch.nn.modules.container.Sequential', '__main__.ResidualBlock', 'torch.nn.modules.container.Sequential', 'torch.nn.modules.batchnorm.BatchNorm2d', 'aten._native_batch_norm_legit_no_training.default']Jﬁ
+pkg.torch.onnx.fx_node√%_native_batch_norm_legit_no_training_22 : [num_users=1] = call_function[target=torch.ops.aten._native_batch_norm_legit_no_training.default](args = (%conv2d_23, %p_res_blocks_11_conv_1_weight, %p_res_blocks_11_conv_1_bias, %b_res_blocks_11_conv_1_running_mean, %b_res_blocks_11_conv_1_running_var, 0.1, 1e-05), kwargs = {})Jö
+pkg.torch.onnx.name_scopes|['', 'res_blocks', 'res_blocks.11', 'res_blocks.11.conv', 'res_blocks.11.conv.1', '_native_batch_norm_legit_no_training_22']J‰
+pkg.torch.onnx.stack_trace≈File "/tmp/ipython-input-1227226292.py", line 43, in forward
+    x = self.res_blocks(x1)
+  File "/usr/local/lib/python3.12/dist-packages/torch/nn/modules/container.py", line 250, in forward
+    input = module(input)
+  File "/tmp/ipython-input-1227226292.py", line 21, in forward
+    def forward(self, x): return x + self.conv(x)
+  File "/usr/local/lib/python3.12/dist-packages/torch/nn/modules/container.py", line 250, in forward
+    input = module(input)
+  File "/usr/local/lib/python3.12/dist-packages/torch/nn/modules/batchnorm.py", line 193, in forward
+    return F.batch_norm(
+«
+
+getitem_66
+val_107prelu_12node_prelu_12"PReluJâ
+	namespace˚: __main__.Generator/res_blocks: torch.nn.modules.container.Sequential/res_blocks.11: __main__.ResidualBlock/res_blocks.11.conv: torch.nn.modules.container.Sequential/res_blocks.11.conv.2: torch.nn.modules.activation.PReLU/prelu_12: aten.prelu.defaultJ‡
+pkg.torch.onnx.class_hierarchyΩ['__main__.Generator', 'torch.nn.modules.container.Sequential', '__main__.ResidualBlock', 'torch.nn.modules.container.Sequential', 'torch.nn.modules.activation.PReLU', 'aten.prelu.default']J¨
+pkg.torch.onnx.fx_nodeë%prelu_12 : [num_users=1] = call_function[target=torch.ops.aten.prelu.default](args = (%getitem_66, %p_res_blocks_11_conv_2_weight), kwargs = {})J{
+pkg.torch.onnx.name_scopes]['', 'res_blocks', 'res_blocks.11', 'res_blocks.11.conv', 'res_blocks.11.conv.2', 'prelu_12']JÙ
+pkg.torch.onnx.stack_trace’File "/tmp/ipython-input-1227226292.py", line 43, in forward
+    x = self.res_blocks(x1)
+  File "/usr/local/lib/python3.12/dist-packages/torch/nn/modules/container.py", line 250, in forward
+    input = module(input)
+  File "/tmp/ipython-input-1227226292.py", line 21, in forward
+    def forward(self, x): return x + self.conv(x)
+  File "/usr/local/lib/python3.12/dist-packages/torch/nn/modules/container.py", line 250, in forward
+    input = module(input)
+  File "/usr/local/lib/python3.12/dist-packages/torch/nn/modules/activation.py", line 1638, in forward
+    return F.prelu(input, self.weight)
+∏
+prelu_12
+res_blocks.11.conv.3.weight
+res_blocks.11.conv.3.bias
+getitem_69node_Conv_177"Conv*
+group†*
+pads@@@@†*
+auto_pad"NOTSET†*
+strides@@†*
+	dilations@@†JÃ
+	namespaceæ: __main__.Generator/res_blocks: torch.nn.modules.container.Sequential/res_blocks.11: __main__.ResidualBlock/res_blocks.11.conv: torch.nn.modules.container.Sequential/res_blocks.11.conv.4: torch.nn.modules.batchnorm.BatchNorm2d/_native_batch_norm_legit_no_training_23: aten._native_batch_norm_legit_no_training.defaultJ:
+!pkg.onnxscript.rewriter.rule_nameFuseBatchNormIntoConvJÑ
+pkg.torch.onnx.class_hierarchy·['__main__.Generator', 'torch.nn.modules.container.Sequential', '__main__.ResidualBlock', 'torch.nn.modules.container.Sequential', 'torch.nn.modules.batchnorm.BatchNorm2d', 'aten._native_batch_norm_legit_no_training.default']Jﬁ
+pkg.torch.onnx.fx_node√%_native_batch_norm_legit_no_training_23 : [num_users=1] = call_function[target=torch.ops.aten._native_batch_norm_legit_no_training.default](args = (%conv2d_24, %p_res_blocks_11_conv_4_weight, %p_res_blocks_11_conv_4_bias, %b_res_blocks_11_conv_4_running_mean, %b_res_blocks_11_conv_4_running_var, 0.1, 1e-05), kwargs = {})Jö
+pkg.torch.onnx.name_scopes|['', 'res_blocks', 'res_blocks.11', 'res_blocks.11.conv', 'res_blocks.11.conv.4', '_native_batch_norm_legit_no_training_23']J‰
+pkg.torch.onnx.stack_trace≈File "/tmp/ipython-input-1227226292.py", line 43, in forward
+    x = self.res_blocks(x1)
+  File "/usr/local/lib/python3.12/dist-packages/torch/nn/modules/container.py", line 250, in forward
+    input = module(input)
+  File "/tmp/ipython-input-1227226292.py", line 21, in forward
+    def forward(self, x): return x + self.conv(x)
+  File "/usr/local/lib/python3.12/dist-packages/torch/nn/modules/container.py", line 250, in forward
+    input = module(input)
+  File "/usr/local/lib/python3.12/dist-packages/torch/nn/modules/batchnorm.py", line 193, in forward
+    return F.batch_norm(
+ù
+add_25
+
+getitem_69add_26node_add_26"AddJí
+	namespaceÑ: __main__.Generator/res_blocks: torch.nn.modules.container.Sequential/res_blocks.11: __main__.ResidualBlock/add_26: aten.add.TensorJé
+pkg.torch.onnx.class_hierarchyl['__main__.Generator', 'torch.nn.modules.container.Sequential', '__main__.ResidualBlock', 'aten.add.Tensor']Jè
+pkg.torch.onnx.fx_nodeu%add_26 : [num_users=2] = call_function[target=torch.ops.aten.add.Tensor](args = (%add_25, %getitem_69), kwargs = {})JK
+pkg.torch.onnx.name_scopes-['', 'res_blocks', 'res_blocks.11', 'add_26']JÁ
+pkg.torch.onnx.stack_trace»File "/tmp/ipython-input-1227226292.py", line 43, in forward
+    x = self.res_blocks(x1)
+  File "/usr/local/lib/python3.12/dist-packages/torch/nn/modules/container.py", line 250, in forward
+    input = module(input)
+  File "/tmp/ipython-input-1227226292.py", line 21, in forward
+    def forward(self, x): return x + self.conv(x)
+∂
+add_26
+res_blocks.12.conv.0.weight
+res_blocks.12.conv.0.bias
+getitem_72node_Conv_178"Conv*
+group†*
+pads@@@@†*
+auto_pad"NOTSET†*
+strides@@†*
+	dilations@@†JÃ
+	namespaceæ: __main__.Generator/res_blocks: torch.nn.modules.container.Sequential/res_blocks.12: __main__.ResidualBlock/res_blocks.12.conv: torch.nn.modules.container.Sequential/res_blocks.12.conv.1: torch.nn.modules.batchnorm.BatchNorm2d/_native_batch_norm_legit_no_training_24: aten._native_batch_norm_legit_no_training.defaultJ:
+!pkg.onnxscript.rewriter.rule_nameFuseBatchNormIntoConvJÑ
+pkg.torch.onnx.class_hierarchy·['__main__.Generator', 'torch.nn.modules.container.Sequential', '__main__.ResidualBlock', 'torch.nn.modules.container.Sequential', 'torch.nn.modules.batchnorm.BatchNorm2d', 'aten._native_batch_norm_legit_no_training.default']Jﬁ
+pkg.torch.onnx.fx_node√%_native_batch_norm_legit_no_training_24 : [num_users=1] = call_function[target=torch.ops.aten._native_batch_norm_legit_no_training.default](args = (%conv2d_25, %p_res_blocks_12_conv_1_weight, %p_res_blocks_12_conv_1_bias, %b_res_blocks_12_conv_1_running_mean, %b_res_blocks_12_conv_1_running_var, 0.1, 1e-05), kwargs = {})Jö
+pkg.torch.onnx.name_scopes|['', 'res_blocks', 'res_blocks.12', 'res_blocks.12.conv', 'res_blocks.12.conv.1', '_native_batch_norm_legit_no_training_24']J‰
+pkg.torch.onnx.stack_trace≈File "/tmp/ipython-input-1227226292.py", line 43, in forward
+    x = self.res_blocks(x1)
+  File "/usr/local/lib/python3.12/dist-packages/torch/nn/modules/container.py", line 250, in forward
+    input = module(input)
+  File "/tmp/ipython-input-1227226292.py", line 21, in forward
+    def forward(self, x): return x + self.conv(x)
+  File "/usr/local/lib/python3.12/dist-packages/torch/nn/modules/container.py", line 250, in forward
+    input = module(input)
+  File "/usr/local/lib/python3.12/dist-packages/torch/nn/modules/batchnorm.py", line 193, in forward
+    return F.batch_norm(
+«
+
+getitem_72
+val_116prelu_13node_prelu_13"PReluJâ
+	namespace˚: __main__.Generator/res_blocks: torch.nn.modules.container.Sequential/res_blocks.12: __main__.ResidualBlock/res_blocks.12.conv: torch.nn.modules.container.Sequential/res_blocks.12.conv.2: torch.nn.modules.activation.PReLU/prelu_13: aten.prelu.defaultJ‡
+pkg.torch.onnx.class_hierarchyΩ['__main__.Generator', 'torch.nn.modules.container.Sequential', '__main__.ResidualBlock', 'torch.nn.modules.container.Sequential', 'torch.nn.modules.activation.PReLU', 'aten.prelu.default']J¨
+pkg.torch.onnx.fx_nodeë%prelu_13 : [num_users=1] = call_function[target=torch.ops.aten.prelu.default](args = (%getitem_72, %p_res_blocks_12_conv_2_weight), kwargs = {})J{
+pkg.torch.onnx.name_scopes]['', 'res_blocks', 'res_blocks.12', 'res_blocks.12.conv', 'res_blocks.12.conv.2', 'prelu_13']JÙ
+pkg.torch.onnx.stack_trace’File "/tmp/ipython-input-1227226292.py", line 43, in forward
+    x = self.res_blocks(x1)
+  File "/usr/local/lib/python3.12/dist-packages/torch/nn/modules/container.py", line 250, in forward
+    input = module(input)
+  File "/tmp/ipython-input-1227226292.py", line 21, in forward
+    def forward(self, x): return x + self.conv(x)
+  File "/usr/local/lib/python3.12/dist-packages/torch/nn/modules/container.py", line 250, in forward
+    input = module(input)
+  File "/usr/local/lib/python3.12/dist-packages/torch/nn/modules/activation.py", line 1638, in forward
+    return F.prelu(input, self.weight)
+∏
+prelu_13
+res_blocks.12.conv.3.weight
+res_blocks.12.conv.3.bias
+getitem_75node_Conv_179"Conv*
+group†*
+pads@@@@†*
+auto_pad"NOTSET†*
+strides@@†*
+	dilations@@†JÃ
+	namespaceæ: __main__.Generator/res_blocks: torch.nn.modules.container.Sequential/res_blocks.12: __main__.ResidualBlock/res_blocks.12.conv: torch.nn.modules.container.Sequential/res_blocks.12.conv.4: torch.nn.modules.batchnorm.BatchNorm2d/_native_batch_norm_legit_no_training_25: aten._native_batch_norm_legit_no_training.defaultJ:
+!pkg.onnxscript.rewriter.rule_nameFuseBatchNormIntoConvJÑ
+pkg.torch.onnx.class_hierarchy·['__main__.Generator', 'torch.nn.modules.container.Sequential', '__main__.ResidualBlock', 'torch.nn.modules.container.Sequential', 'torch.nn.modules.batchnorm.BatchNorm2d', 'aten._native_batch_norm_legit_no_training.default']Jﬁ
+pkg.torch.onnx.fx_node√%_native_batch_norm_legit_no_training_25 : [num_users=1] = call_function[target=torch.ops.aten._native_batch_norm_legit_no_training.default](args = (%conv2d_26, %p_res_blocks_12_conv_4_weight, %p_res_blocks_12_conv_4_bias, %b_res_blocks_12_conv_4_running_mean, %b_res_blocks_12_conv_4_running_var, 0.1, 1e-05), kwargs = {})Jö
+pkg.torch.onnx.name_scopes|['', 'res_blocks', 'res_blocks.12', 'res_blocks.12.conv', 'res_blocks.12.conv.4', '_native_batch_norm_legit_no_training_25']J‰
+pkg.torch.onnx.stack_trace≈File "/tmp/ipython-input-1227226292.py", line 43, in forward
+    x = self.res_blocks(x1)
+  File "/usr/local/lib/python3.12/dist-packages/torch/nn/modules/container.py", line 250, in forward
+    input = module(input)
+  File "/tmp/ipython-input-1227226292.py", line 21, in forward
+    def forward(self, x): return x + self.conv(x)
+  File "/usr/local/lib/python3.12/dist-packages/torch/nn/modules/container.py", line 250, in forward
+    input = module(input)
+  File "/usr/local/lib/python3.12/dist-packages/torch/nn/modules/batchnorm.py", line 193, in forward
+    return F.batch_norm(
+ù
+add_26
+
+getitem_75add_27node_add_27"AddJí
+	namespaceÑ: __main__.Generator/res_blocks: torch.nn.modules.container.Sequential/res_blocks.12: __main__.ResidualBlock/add_27: aten.add.TensorJé
+pkg.torch.onnx.class_hierarchyl['__main__.Generator', 'torch.nn.modules.container.Sequential', '__main__.ResidualBlock', 'aten.add.Tensor']Jè
+pkg.torch.onnx.fx_nodeu%add_27 : [num_users=2] = call_function[target=torch.ops.aten.add.Tensor](args = (%add_26, %getitem_75), kwargs = {})JK
+pkg.torch.onnx.name_scopes-['', 'res_blocks', 'res_blocks.12', 'add_27']JÁ
+pkg.torch.onnx.stack_trace»File "/tmp/ipython-input-1227226292.py", line 43, in forward
+    x = self.res_blocks(x1)
+  File "/usr/local/lib/python3.12/dist-packages/torch/nn/modules/container.py", line 250, in forward
+    input = module(input)
+  File "/tmp/ipython-input-1227226292.py", line 21, in forward
+    def forward(self, x): return x + self.conv(x)
+∂
+add_27
+res_blocks.13.conv.0.weight
+res_blocks.13.conv.0.bias
+getitem_78node_Conv_180"Conv*
+group†*
+pads@@@@†*
+auto_pad"NOTSET†*
+strides@@†*
+	dilations@@†JÃ
+	namespaceæ: __main__.Generator/res_blocks: torch.nn.modules.container.Sequential/res_blocks.13: __main__.ResidualBlock/res_blocks.13.conv: torch.nn.modules.container.Sequential/res_blocks.13.conv.1: torch.nn.modules.batchnorm.BatchNorm2d/_native_batch_norm_legit_no_training_26: aten._native_batch_norm_legit_no_training.defaultJ:
+!pkg.onnxscript.rewriter.rule_nameFuseBatchNormIntoConvJÑ
+pkg.torch.onnx.class_hierarchy·['__main__.Generator', 'torch.nn.modules.container.Sequential', '__main__.ResidualBlock', 'torch.nn.modules.container.Sequential', 'torch.nn.modules.batchnorm.BatchNorm2d', 'aten._native_batch_norm_legit_no_training.default']Jﬁ
+pkg.torch.onnx.fx_node√%_native_batch_norm_legit_no_training_26 : [num_users=1] = call_function[target=torch.ops.aten._native_batch_norm_legit_no_training.default](args = (%conv2d_27, %p_res_blocks_13_conv_1_weight, %p_res_blocks_13_conv_1_bias, %b_res_blocks_13_conv_1_running_mean, %b_res_blocks_13_conv_1_running_var, 0.1, 1e-05), kwargs = {})Jö
+pkg.torch.onnx.name_scopes|['', 'res_blocks', 'res_blocks.13', 'res_blocks.13.conv', 'res_blocks.13.conv.1', '_native_batch_norm_legit_no_training_26']J‰
+pkg.torch.onnx.stack_trace≈File "/tmp/ipython-input-1227226292.py", line 43, in forward
+    x = self.res_blocks(x1)
+  File "/usr/local/lib/python3.12/dist-packages/torch/nn/modules/container.py", line 250, in forward
+    input = module(input)
+  File "/tmp/ipython-input-1227226292.py", line 21, in forward
+    def forward(self, x): return x + self.conv(x)
+  File "/usr/local/lib/python3.12/dist-packages/torch/nn/modules/container.py", line 250, in forward
+    input = module(input)
+  File "/usr/local/lib/python3.12/dist-packages/torch/nn/modules/batchnorm.py", line 193, in forward
+    return F.batch_norm(
+«
+
+getitem_78
+val_125prelu_14node_prelu_14"PReluJâ
+	namespace˚: __main__.Generator/res_blocks: torch.nn.modules.container.Sequential/res_blocks.13: __main__.ResidualBlock/res_blocks.13.conv: torch.nn.modules.container.Sequential/res_blocks.13.conv.2: torch.nn.modules.activation.PReLU/prelu_14: aten.prelu.defaultJ‡
+pkg.torch.onnx.class_hierarchyΩ['__main__.Generator', 'torch.nn.modules.container.Sequential', '__main__.ResidualBlock', 'torch.nn.modules.container.Sequential', 'torch.nn.modules.activation.PReLU', 'aten.prelu.default']J¨
+pkg.torch.onnx.fx_nodeë%prelu_14 : [num_users=1] = call_function[target=torch.ops.aten.prelu.default](args = (%getitem_78, %p_res_blocks_13_conv_2_weight), kwargs = {})J{
+pkg.torch.onnx.name_scopes]['', 'res_blocks', 'res_blocks.13', 'res_blocks.13.conv', 'res_blocks.13.conv.2', 'prelu_14']JÙ
+pkg.torch.onnx.stack_trace’File "/tmp/ipython-input-1227226292.py", line 43, in forward
+    x = self.res_blocks(x1)
+  File "/usr/local/lib/python3.12/dist-packages/torch/nn/modules/container.py", line 250, in forward
+    input = module(input)
+  File "/tmp/ipython-input-1227226292.py", line 21, in forward
+    def forward(self, x): return x + self.conv(x)
+  File "/usr/local/lib/python3.12/dist-packages/torch/nn/modules/container.py", line 250, in forward
+    input = module(input)
+  File "/usr/local/lib/python3.12/dist-packages/torch/nn/modules/activation.py", line 1638, in forward
+    return F.prelu(input, self.weight)
+∏
+prelu_14
+res_blocks.13.conv.3.weight
+res_blocks.13.conv.3.bias
+getitem_81node_Conv_181"Conv*
+group†*
+pads@@@@†*
+auto_pad"NOTSET†*
+strides@@†*
+	dilations@@†JÃ
+	namespaceæ: __main__.Generator/res_blocks: torch.nn.modules.container.Sequential/res_blocks.13: __main__.ResidualBlock/res_blocks.13.conv: torch.nn.modules.container.Sequential/res_blocks.13.conv.4: torch.nn.modules.batchnorm.BatchNorm2d/_native_batch_norm_legit_no_training_27: aten._native_batch_norm_legit_no_training.defaultJ:
+!pkg.onnxscript.rewriter.rule_nameFuseBatchNormIntoConvJÑ
+pkg.torch.onnx.class_hierarchy·['__main__.Generator', 'torch.nn.modules.container.Sequential', '__main__.ResidualBlock', 'torch.nn.modules.container.Sequential', 'torch.nn.modules.batchnorm.BatchNorm2d', 'aten._native_batch_norm_legit_no_training.default']Jﬁ
+pkg.torch.onnx.fx_node√%_native_batch_norm_legit_no_training_27 : [num_users=1] = call_function[target=torch.ops.aten._native_batch_norm_legit_no_training.default](args = (%conv2d_28, %p_res_blocks_13_conv_4_weight, %p_res_blocks_13_conv_4_bias, %b_res_blocks_13_conv_4_running_mean, %b_res_blocks_13_conv_4_running_var, 0.1, 1e-05), kwargs = {})Jö
+pkg.torch.onnx.name_scopes|['', 'res_blocks', 'res_blocks.13', 'res_blocks.13.conv', 'res_blocks.13.conv.4', '_native_batch_norm_legit_no_training_27']J‰
+pkg.torch.onnx.stack_trace≈File "/tmp/ipython-input-1227226292.py", line 43, in forward
+    x = self.res_blocks(x1)
+  File "/usr/local/lib/python3.12/dist-packages/torch/nn/modules/container.py", line 250, in forward
+    input = module(input)
+  File "/tmp/ipython-input-1227226292.py", line 21, in forward
+    def forward(self, x): return x + self.conv(x)
+  File "/usr/local/lib/python3.12/dist-packages/torch/nn/modules/container.py", line 250, in forward
+    input = module(input)
+  File "/usr/local/lib/python3.12/dist-packages/torch/nn/modules/batchnorm.py", line 193, in forward
+    return F.batch_norm(
+ù
+add_27
+
+getitem_81add_28node_add_28"AddJí
+	namespaceÑ: __main__.Generator/res_blocks: torch.nn.modules.container.Sequential/res_blocks.13: __main__.ResidualBlock/add_28: aten.add.TensorJé
+pkg.torch.onnx.class_hierarchyl['__main__.Generator', 'torch.nn.modules.container.Sequential', '__main__.ResidualBlock', 'aten.add.Tensor']Jè
+pkg.torch.onnx.fx_nodeu%add_28 : [num_users=2] = call_function[target=torch.ops.aten.add.Tensor](args = (%add_27, %getitem_81), kwargs = {})JK
+pkg.torch.onnx.name_scopes-['', 'res_blocks', 'res_blocks.13', 'add_28']JÁ
+pkg.torch.onnx.stack_trace»File "/tmp/ipython-input-1227226292.py", line 43, in forward
+    x = self.res_blocks(x1)
+  File "/usr/local/lib/python3.12/dist-packages/torch/nn/modules/container.py", line 250, in forward
+    input = module(input)
+  File "/tmp/ipython-input-1227226292.py", line 21, in forward
+    def forward(self, x): return x + self.conv(x)
+∂
+add_28
+res_blocks.14.conv.0.weight
+res_blocks.14.conv.0.bias
+getitem_84node_Conv_182"Conv*
+group†*
+pads@@@@†*
+auto_pad"NOTSET†*
+strides@@†*
+	dilations@@†JÃ
+	namespaceæ: __main__.Generator/res_blocks: torch.nn.modules.container.Sequential/res_blocks.14: __main__.ResidualBlock/res_blocks.14.conv: torch.nn.modules.container.Sequential/res_blocks.14.conv.1: torch.nn.modules.batchnorm.BatchNorm2d/_native_batch_norm_legit_no_training_28: aten._native_batch_norm_legit_no_training.defaultJ:
+!pkg.onnxscript.rewriter.rule_nameFuseBatchNormIntoConvJÑ
+pkg.torch.onnx.class_hierarchy·['__main__.Generator', 'torch.nn.modules.container.Sequential', '__main__.ResidualBlock', 'torch.nn.modules.container.Sequential', 'torch.nn.modules.batchnorm.BatchNorm2d', 'aten._native_batch_norm_legit_no_training.default']Jﬁ
+pkg.torch.onnx.fx_node√%_native_batch_norm_legit_no_training_28 : [num_users=1] = call_function[target=torch.ops.aten._native_batch_norm_legit_no_training.default](args = (%conv2d_29, %p_res_blocks_14_conv_1_weight, %p_res_blocks_14_conv_1_bias, %b_res_blocks_14_conv_1_running_mean, %b_res_blocks_14_conv_1_running_var, 0.1, 1e-05), kwargs = {})Jö
+pkg.torch.onnx.name_scopes|['', 'res_blocks', 'res_blocks.14', 'res_blocks.14.conv', 'res_blocks.14.conv.1', '_native_batch_norm_legit_no_training_28']J‰
+pkg.torch.onnx.stack_trace≈File "/tmp/ipython-input-1227226292.py", line 43, in forward
+    x = self.res_blocks(x1)
+  File "/usr/local/lib/python3.12/dist-packages/torch/nn/modules/container.py", line 250, in forward
+    input = module(input)
+  File "/tmp/ipython-input-1227226292.py", line 21, in forward
+    def forward(self, x): return x + self.conv(x)
+  File "/usr/local/lib/python3.12/dist-packages/torch/nn/modules/container.py", line 250, in forward
+    input = module(input)
+  File "/usr/local/lib/python3.12/dist-packages/torch/nn/modules/batchnorm.py", line 193, in forward
+    return F.batch_norm(
+«
+
+getitem_84
+val_134prelu_15node_prelu_15"PReluJâ
+	namespace˚: __main__.Generator/res_blocks: torch.nn.modules.container.Sequential/res_blocks.14: __main__.ResidualBlock/res_blocks.14.conv: torch.nn.modules.container.Sequential/res_blocks.14.conv.2: torch.nn.modules.activation.PReLU/prelu_15: aten.prelu.defaultJ‡
+pkg.torch.onnx.class_hierarchyΩ['__main__.Generator', 'torch.nn.modules.container.Sequential', '__main__.ResidualBlock', 'torch.nn.modules.container.Sequential', 'torch.nn.modules.activation.PReLU', 'aten.prelu.default']J¨
+pkg.torch.onnx.fx_nodeë%prelu_15 : [num_users=1] = call_function[target=torch.ops.aten.prelu.default](args = (%getitem_84, %p_res_blocks_14_conv_2_weight), kwargs = {})J{
+pkg.torch.onnx.name_scopes]['', 'res_blocks', 'res_blocks.14', 'res_blocks.14.conv', 'res_blocks.14.conv.2', 'prelu_15']JÙ
+pkg.torch.onnx.stack_trace’File "/tmp/ipython-input-1227226292.py", line 43, in forward
+    x = self.res_blocks(x1)
+  File "/usr/local/lib/python3.12/dist-packages/torch/nn/modules/container.py", line 250, in forward
+    input = module(input)
+  File "/tmp/ipython-input-1227226292.py", line 21, in forward
+    def forward(self, x): return x + self.conv(x)
+  File "/usr/local/lib/python3.12/dist-packages/torch/nn/modules/container.py", line 250, in forward
+    input = module(input)
+  File "/usr/local/lib/python3.12/dist-packages/torch/nn/modules/activation.py", line 1638, in forward
+    return F.prelu(input, self.weight)
+∏
+prelu_15
+res_blocks.14.conv.3.weight
+res_blocks.14.conv.3.bias
+getitem_87node_Conv_183"Conv*
+group†*
+pads@@@@†*
+auto_pad"NOTSET†*
+strides@@†*
+	dilations@@†JÃ
+	namespaceæ: __main__.Generator/res_blocks: torch.nn.modules.container.Sequential/res_blocks.14: __main__.ResidualBlock/res_blocks.14.conv: torch.nn.modules.container.Sequential/res_blocks.14.conv.4: torch.nn.modules.batchnorm.BatchNorm2d/_native_batch_norm_legit_no_training_29: aten._native_batch_norm_legit_no_training.defaultJ:
+!pkg.onnxscript.rewriter.rule_nameFuseBatchNormIntoConvJÑ
+pkg.torch.onnx.class_hierarchy·['__main__.Generator', 'torch.nn.modules.container.Sequential', '__main__.ResidualBlock', 'torch.nn.modules.container.Sequential', 'torch.nn.modules.batchnorm.BatchNorm2d', 'aten._native_batch_norm_legit_no_training.default']Jﬁ
+pkg.torch.onnx.fx_node√%_native_batch_norm_legit_no_training_29 : [num_users=1] = call_function[target=torch.ops.aten._native_batch_norm_legit_no_training.default](args = (%conv2d_30, %p_res_blocks_14_conv_4_weight, %p_res_blocks_14_conv_4_bias, %b_res_blocks_14_conv_4_running_mean, %b_res_blocks_14_conv_4_running_var, 0.1, 1e-05), kwargs = {})Jö
+pkg.torch.onnx.name_scopes|['', 'res_blocks', 'res_blocks.14', 'res_blocks.14.conv', 'res_blocks.14.conv.4', '_native_batch_norm_legit_no_training_29']J‰
+pkg.torch.onnx.stack_trace≈File "/tmp/ipython-input-1227226292.py", line 43, in forward
+    x = self.res_blocks(x1)
+  File "/usr/local/lib/python3.12/dist-packages/torch/nn/modules/container.py", line 250, in forward
+    input = module(input)
+  File "/tmp/ipython-input-1227226292.py", line 21, in forward
+    def forward(self, x): return x + self.conv(x)
+  File "/usr/local/lib/python3.12/dist-packages/torch/nn/modules/container.py", line 250, in forward
+    input = module(input)
+  File "/usr/local/lib/python3.12/dist-packages/torch/nn/modules/batchnorm.py", line 193, in forward
+    return F.batch_norm(
+ù
+add_28
+
+getitem_87add_29node_add_29"AddJí
+	namespaceÑ: __main__.Generator/res_blocks: torch.nn.modules.container.Sequential/res_blocks.14: __main__.ResidualBlock/add_29: aten.add.TensorJé
+pkg.torch.onnx.class_hierarchyl['__main__.Generator', 'torch.nn.modules.container.Sequential', '__main__.ResidualBlock', 'aten.add.Tensor']Jè
+pkg.torch.onnx.fx_nodeu%add_29 : [num_users=2] = call_function[target=torch.ops.aten.add.Tensor](args = (%add_28, %getitem_87), kwargs = {})JK
+pkg.torch.onnx.name_scopes-['', 'res_blocks', 'res_blocks.14', 'add_29']JÁ
+pkg.torch.onnx.stack_trace»File "/tmp/ipython-input-1227226292.py", line 43, in forward
+    x = self.res_blocks(x1)
+  File "/usr/local/lib/python3.12/dist-packages/torch/nn/modules/container.py", line 250, in forward
+    input = module(input)
+  File "/tmp/ipython-input-1227226292.py", line 21, in forward
+    def forward(self, x): return x + self.conv(x)
+∂
+add_29
+res_blocks.15.conv.0.weight
+res_blocks.15.conv.0.bias
+getitem_90node_Conv_184"Conv*
+group†*
+pads@@@@†*
+auto_pad"NOTSET†*
+strides@@†*
+	dilations@@†JÃ
+	namespaceæ: __main__.Generator/res_blocks: torch.nn.modules.container.Sequential/res_blocks.15: __main__.ResidualBlock/res_blocks.15.conv: torch.nn.modules.container.Sequential/res_blocks.15.conv.1: torch.nn.modules.batchnorm.BatchNorm2d/_native_batch_norm_legit_no_training_30: aten._native_batch_norm_legit_no_training.defaultJ:
+!pkg.onnxscript.rewriter.rule_nameFuseBatchNormIntoConvJÑ
+pkg.torch.onnx.class_hierarchy·['__main__.Generator', 'torch.nn.modules.container.Sequential', '__main__.ResidualBlock', 'torch.nn.modules.container.Sequential', 'torch.nn.modules.batchnorm.BatchNorm2d', 'aten._native_batch_norm_legit_no_training.default']Jﬁ
+pkg.torch.onnx.fx_node√%_native_batch_norm_legit_no_training_30 : [num_users=1] = call_function[target=torch.ops.aten._native_batch_norm_legit_no_training.default](args = (%conv2d_31, %p_res_blocks_15_conv_1_weight, %p_res_blocks_15_conv_1_bias, %b_res_blocks_15_conv_1_running_mean, %b_res_blocks_15_conv_1_running_var, 0.1, 1e-05), kwargs = {})Jö
+pkg.torch.onnx.name_scopes|['', 'res_blocks', 'res_blocks.15', 'res_blocks.15.conv', 'res_blocks.15.conv.1', '_native_batch_norm_legit_no_training_30']J‰
+pkg.torch.onnx.stack_trace≈File "/tmp/ipython-input-1227226292.py", line 43, in forward
+    x = self.res_blocks(x1)
+  File "/usr/local/lib/python3.12/dist-packages/torch/nn/modules/container.py", line 250, in forward
+    input = module(input)
+  File "/tmp/ipython-input-1227226292.py", line 21, in forward
+    def forward(self, x): return x + self.conv(x)
+  File "/usr/local/lib/python3.12/dist-packages/torch/nn/modules/container.py", line 250, in forward
+    input = module(input)
+  File "/usr/local/lib/python3.12/dist-packages/torch/nn/modules/batchnorm.py", line 193, in forward
+    return F.batch_norm(
+«
+
+getitem_90
+val_143prelu_16node_prelu_16"PReluJâ
+	namespace˚: __main__.Generator/res_blocks: torch.nn.modules.container.Sequential/res_blocks.15: __main__.ResidualBlock/res_blocks.15.conv: torch.nn.modules.container.Sequential/res_blocks.15.conv.2: torch.nn.modules.activation.PReLU/prelu_16: aten.prelu.defaultJ‡
+pkg.torch.onnx.class_hierarchyΩ['__main__.Generator', 'torch.nn.modules.container.Sequential', '__main__.ResidualBlock', 'torch.nn.modules.container.Sequential', 'torch.nn.modules.activation.PReLU', 'aten.prelu.default']J¨
+pkg.torch.onnx.fx_nodeë%prelu_16 : [num_users=1] = call_function[target=torch.ops.aten.prelu.default](args = (%getitem_90, %p_res_blocks_15_conv_2_weight), kwargs = {})J{
+pkg.torch.onnx.name_scopes]['', 'res_blocks', 'res_blocks.15', 'res_blocks.15.conv', 'res_blocks.15.conv.2', 'prelu_16']JÙ
+pkg.torch.onnx.stack_trace’File "/tmp/ipython-input-1227226292.py", line 43, in forward
+    x = self.res_blocks(x1)
+  File "/usr/local/lib/python3.12/dist-packages/torch/nn/modules/container.py", line 250, in forward
+    input = module(input)
+  File "/tmp/ipython-input-1227226292.py", line 21, in forward
+    def forward(self, x): return x + self.conv(x)
+  File "/usr/local/lib/python3.12/dist-packages/torch/nn/modules/container.py", line 250, in forward
+    input = module(input)
+  File "/usr/local/lib/python3.12/dist-packages/torch/nn/modules/activation.py", line 1638, in forward
+    return F.prelu(input, self.weight)
+∏
+prelu_16
+res_blocks.15.conv.3.weight
+res_blocks.15.conv.3.bias
+getitem_93node_Conv_185"Conv*
+group†*
+pads@@@@†*
+auto_pad"NOTSET†*
+strides@@†*
+	dilations@@†JÃ
+	namespaceæ: __main__.Generator/res_blocks: torch.nn.modules.container.Sequential/res_blocks.15: __main__.ResidualBlock/res_blocks.15.conv: torch.nn.modules.container.Sequential/res_blocks.15.conv.4: torch.nn.modules.batchnorm.BatchNorm2d/_native_batch_norm_legit_no_training_31: aten._native_batch_norm_legit_no_training.defaultJ:
+!pkg.onnxscript.rewriter.rule_nameFuseBatchNormIntoConvJÑ
+pkg.torch.onnx.class_hierarchy·['__main__.Generator', 'torch.nn.modules.container.Sequential', '__main__.ResidualBlock', 'torch.nn.modules.container.Sequential', 'torch.nn.modules.batchnorm.BatchNorm2d', 'aten._native_batch_norm_legit_no_training.default']Jﬁ
+pkg.torch.onnx.fx_node√%_native_batch_norm_legit_no_training_31 : [num_users=1] = call_function[target=torch.ops.aten._native_batch_norm_legit_no_training.default](args = (%conv2d_32, %p_res_blocks_15_conv_4_weight, %p_res_blocks_15_conv_4_bias, %b_res_blocks_15_conv_4_running_mean, %b_res_blocks_15_conv_4_running_var, 0.1, 1e-05), kwargs = {})Jö
+pkg.torch.onnx.name_scopes|['', 'res_blocks', 'res_blocks.15', 'res_blocks.15.conv', 'res_blocks.15.conv.4', '_native_batch_norm_legit_no_training_31']J‰
+pkg.torch.onnx.stack_trace≈File "/tmp/ipython-input-1227226292.py", line 43, in forward
+    x = self.res_blocks(x1)
+  File "/usr/local/lib/python3.12/dist-packages/torch/nn/modules/container.py", line 250, in forward
+    input = module(input)
+  File "/tmp/ipython-input-1227226292.py", line 21, in forward
+    def forward(self, x): return x + self.conv(x)
+  File "/usr/local/lib/python3.12/dist-packages/torch/nn/modules/container.py", line 250, in forward
+    input = module(input)
+  File "/usr/local/lib/python3.12/dist-packages/torch/nn/modules/batchnorm.py", line 193, in forward
+    return F.batch_norm(
+ù
+add_29
+
+getitem_93add_30node_add_30"AddJí
+	namespaceÑ: __main__.Generator/res_blocks: torch.nn.modules.container.Sequential/res_blocks.15: __main__.ResidualBlock/add_30: aten.add.TensorJé
+pkg.torch.onnx.class_hierarchyl['__main__.Generator', 'torch.nn.modules.container.Sequential', '__main__.ResidualBlock', 'aten.add.Tensor']Jè
+pkg.torch.onnx.fx_nodeu%add_30 : [num_users=1] = call_function[target=torch.ops.aten.add.Tensor](args = (%add_29, %getitem_93), kwargs = {})JK
+pkg.torch.onnx.name_scopes-['', 'res_blocks', 'res_blocks.15', 'add_30']JÁ
+pkg.torch.onnx.stack_trace»File "/tmp/ipython-input-1227226292.py", line 43, in forward
+    x = self.res_blocks(x1)
+  File "/usr/local/lib/python3.12/dist-packages/torch/nn/modules/container.py", line 250, in forward
+    input = module(input)
+  File "/tmp/ipython-input-1227226292.py", line 21, in forward
+    def forward(self, x): return x + self.conv(x)
+à
+add_30
+conv2.0.weight
+conv2.0.bias
+getitem_96node_Conv_186"Conv*
+group†*
+pads@@@@†*
+auto_pad"NOTSET†*
+strides@@†*
+	dilations@@†J⁄
+	namespaceÃ: __main__.Generator/conv2: torch.nn.modules.container.Sequential/conv2.1: torch.nn.modules.batchnorm.BatchNorm2d/_native_batch_norm_legit_no_training_32: aten._native_batch_norm_legit_no_training.defaultJ:
+!pkg.onnxscript.rewriter.rule_nameFuseBatchNormIntoConvJ¡
+pkg.torch.onnx.class_hierarchyû['__main__.Generator', 'torch.nn.modules.container.Sequential', 'torch.nn.modules.batchnorm.BatchNorm2d', 'aten._native_batch_norm_legit_no_training.default']J™
+pkg.torch.onnx.fx_nodeè%_native_batch_norm_legit_no_training_32 : [num_users=1] = call_function[target=torch.ops.aten._native_batch_norm_legit_no_training.default](args = (%conv2d_33, %p_conv2_1_weight, %p_conv2_1_bias, %b_conv2_1_running_mean, %b_conv2_1_running_var, 0.1, 1e-05), kwargs = {})Ja
+pkg.torch.onnx.name_scopesC['', 'conv2', 'conv2.1', '_native_batch_norm_legit_no_training_32']JÛ
+pkg.torch.onnx.stack_trace‘File "/tmp/ipython-input-1227226292.py", line 44, in forward
+    x = self.conv2(x) + x1
+  File "/usr/local/lib/python3.12/dist-packages/torch/nn/modules/container.py", line 250, in forward
+    input = module(input)
+  File "/usr/local/lib/python3.12/dist-packages/torch/nn/modules/batchnorm.py", line 193, in forward
+    return F.batch_norm(
+Î
+
+getitem_96
+preluadd_31node_add_31"AddJ9
+	namespace,: __main__.Generator/add_31: aten.add.TensorJK
+pkg.torch.onnx.class_hierarchy)['__main__.Generator', 'aten.add.Tensor']Jé
+pkg.torch.onnx.fx_nodet%add_31 : [num_users=1] = call_function[target=torch.ops.aten.add.Tensor](args = (%getitem_96, %prelu), kwargs = {})J,
+pkg.torch.onnx.name_scopes['', 'add_31']Ju
+pkg.torch.onnx.stack_traceWFile "/tmp/ipython-input-1227226292.py", line 44, in forward
+    x = self.conv2(x) + x1
+à	
+add_31
+upsample.0.weight
+upsample.0.bias	conv2d_34node_conv2d_34"Conv*
+group†*
+pads@@@@†*
+auto_pad"NOTSET†*
+strides@@†*
+	dilations@@†Jö
+	namespaceå: __main__.Generator/upsample: torch.nn.modules.container.Sequential/upsample.0: torch.nn.modules.conv.Conv2d/conv2d_34: aten.conv2d.defaultJò
+pkg.torch.onnx.class_hierarchyv['__main__.Generator', 'torch.nn.modules.container.Sequential', 'torch.nn.modules.conv.Conv2d', 'aten.conv2d.default']Jƒ
+pkg.torch.onnx.fx_node©%conv2d_34 : [num_users=1] = call_function[target=torch.ops.aten.conv2d.default](args = (%add_31, %p_upsample_0_weight, %p_upsample_0_bias, [1, 1], [1, 1]), kwargs = {})JI
+pkg.torch.onnx.name_scopes+['', 'upsample', 'upsample.0', 'conv2d_34']Jê
+pkg.torch.onnx.stack_traceÒFile "/tmp/ipython-input-1227226292.py", line 45, in forward
+    x = self.upsample(x)
+  File "/usr/local/lib/python3.12/dist-packages/torch/nn/modules/container.py", line 250, in forward
+    input = module(input)
+  File "/usr/local/lib/python3.12/dist-packages/torch/nn/modules/conv.py", line 548, in forward
+    return self._conv_forward(input, self.weight, self.bias)
+∆
+	conv2d_34pixel_shufflenode_pixel_shuffle"DepthToSpace*
+mode"CRD†*
+	blocksize†J≥
+	namespace•: __main__.Generator/upsample: torch.nn.modules.container.Sequential/upsample.1: torch.nn.modules.pixelshuffle.PixelShuffle/pixel_shuffle: aten.pixel_shuffle.defaultJÆ
+pkg.torch.onnx.class_hierarchyã['__main__.Generator', 'torch.nn.modules.container.Sequential', 'torch.nn.modules.pixelshuffle.PixelShuffle', 'aten.pixel_shuffle.default']Jõ
+pkg.torch.onnx.fx_nodeÄ%pixel_shuffle : [num_users=1] = call_function[target=torch.ops.aten.pixel_shuffle.default](args = (%conv2d_34, 2), kwargs = {})JM
+pkg.torch.onnx.name_scopes/['', 'upsample', 'upsample.1', 'pixel_shuffle']Jë
+pkg.torch.onnx.stack_traceÚFile "/tmp/ipython-input-1227226292.py", line 45, in forward
+    x = self.upsample(x)
+  File "/usr/local/lib/python3.12/dist-packages/torch/nn/modules/container.py", line 250, in forward
+    input = module(input)
+  File "/usr/local/lib/python3.12/dist-packages/torch/nn/modules/pixelshuffle.py", line 62, in forward
+    return F.pixel_shuffle(input, self.upscale_factor)
+Ì
+pixel_shuffle
+val_152prelu_17node_prelu_17"PReluJù
+	namespaceè: __main__.Generator/upsample: torch.nn.modules.container.Sequential/upsample.2: torch.nn.modules.activation.PReLU/prelu_17: aten.prelu.defaultJú
+pkg.torch.onnx.class_hierarchyz['__main__.Generator', 'torch.nn.modules.container.Sequential', 'torch.nn.modules.activation.PReLU', 'aten.prelu.default']J•
+pkg.torch.onnx.fx_nodeä%prelu_17 : [num_users=1] = call_function[target=torch.ops.aten.prelu.default](args = (%pixel_shuffle, %p_upsample_2_weight), kwargs = {})JH
+pkg.torch.onnx.name_scopes*['', 'upsample', 'upsample.2', 'prelu_17']JÅ
+pkg.torch.onnx.stack_trace‚File "/tmp/ipython-input-1227226292.py", line 45, in forward
+    x = self.upsample(x)
+  File "/usr/local/lib/python3.12/dist-packages/torch/nn/modules/container.py", line 250, in forward
+    input = module(input)
+  File "/usr/local/lib/python3.12/dist-packages/torch/nn/modules/activation.py", line 1638, in forward
+    return F.prelu(input, self.weight)
+å	
+prelu_17
+upsample.3.weight
+upsample.3.bias	conv2d_35node_conv2d_35"Conv*
+group†*
+pads@@@@†*
+auto_pad"NOTSET†*
+strides@@†*
+	dilations@@†Jö
+	namespaceå: __main__.Generator/upsample: torch.nn.modules.container.Sequential/upsample.3: torch.nn.modules.conv.Conv2d/conv2d_35: aten.conv2d.defaultJò
+pkg.torch.onnx.class_hierarchyv['__main__.Generator', 'torch.nn.modules.container.Sequential', 'torch.nn.modules.conv.Conv2d', 'aten.conv2d.default']J∆
+pkg.torch.onnx.fx_node´%conv2d_35 : [num_users=1] = call_function[target=torch.ops.aten.conv2d.default](args = (%prelu_17, %p_upsample_3_weight, %p_upsample_3_bias, [1, 1], [1, 1]), kwargs = {})JI
+pkg.torch.onnx.name_scopes+['', 'upsample', 'upsample.3', 'conv2d_35']Jê
+pkg.torch.onnx.stack_traceÒFile "/tmp/ipython-input-1227226292.py", line 45, in forward
+    x = self.upsample(x)
+  File "/usr/local/lib/python3.12/dist-packages/torch/nn/modules/container.py", line 250, in forward
+    input = module(input)
+  File "/usr/local/lib/python3.12/dist-packages/torch/nn/modules/conv.py", line 548, in forward
+    return self._conv_forward(input, self.weight, self.bias)
+–
+	conv2d_35pixel_shuffle_1node_pixel_shuffle_1"DepthToSpace*
+mode"CRD†*
+	blocksize†Jµ
+	namespaceß: __main__.Generator/upsample: torch.nn.modules.container.Sequential/upsample.4: torch.nn.modules.pixelshuffle.PixelShuffle/pixel_shuffle_1: aten.pixel_shuffle.defaultJÆ
+pkg.torch.onnx.class_hierarchyã['__main__.Generator', 'torch.nn.modules.container.Sequential', 'torch.nn.modules.pixelshuffle.PixelShuffle', 'aten.pixel_shuffle.default']Jù
+pkg.torch.onnx.fx_nodeÇ%pixel_shuffle_1 : [num_users=1] = call_function[target=torch.ops.aten.pixel_shuffle.default](args = (%conv2d_35, 2), kwargs = {})JO
+pkg.torch.onnx.name_scopes1['', 'upsample', 'upsample.4', 'pixel_shuffle_1']Jë
+pkg.torch.onnx.stack_traceÚFile "/tmp/ipython-input-1227226292.py", line 45, in forward
+    x = self.upsample(x)
+  File "/usr/local/lib/python3.12/dist-packages/torch/nn/modules/container.py", line 250, in forward
+    input = module(input)
+  File "/usr/local/lib/python3.12/dist-packages/torch/nn/modules/pixelshuffle.py", line 62, in forward
+    return F.pixel_shuffle(input, self.upscale_factor)
+Ò
+pixel_shuffle_1
+val_153prelu_18node_prelu_18"PReluJù
+	namespaceè: __main__.Generator/upsample: torch.nn.modules.container.Sequential/upsample.5: torch.nn.modules.activation.PReLU/prelu_18: aten.prelu.defaultJú
+pkg.torch.onnx.class_hierarchyz['__main__.Generator', 'torch.nn.modules.container.Sequential', 'torch.nn.modules.activation.PReLU', 'aten.prelu.default']Jß
+pkg.torch.onnx.fx_nodeå%prelu_18 : [num_users=1] = call_function[target=torch.ops.aten.prelu.default](args = (%pixel_shuffle_1, %p_upsample_5_weight), kwargs = {})JH
+pkg.torch.onnx.name_scopes*['', 'upsample', 'upsample.5', 'prelu_18']JÅ
+pkg.torch.onnx.stack_trace‚File "/tmp/ipython-input-1227226292.py", line 45, in forward
+    x = self.upsample(x)
+  File "/usr/local/lib/python3.12/dist-packages/torch/nn/modules/container.py", line 250, in forward
+    input = module(input)
+  File "/usr/local/lib/python3.12/dist-packages/torch/nn/modules/activation.py", line 1638, in forward
+    return F.prelu(input, self.weight)
+ì
+prelu_18
+conv3.weight
+
+conv3.bias	conv2d_36node_conv2d_36"Conv*
+group†*
+pads@@@@†*
+auto_pad"NOTSET†*
+strides@@†*
+	dilations@@†Jd
+	namespaceW: __main__.Generator/conv3: torch.nn.modules.conv.Conv2d/conv2d_36: aten.conv2d.defaultJo
+pkg.torch.onnx.class_hierarchyM['__main__.Generator', 'torch.nn.modules.conv.Conv2d', 'aten.conv2d.default']Jº
+pkg.torch.onnx.fx_node°%conv2d_36 : [num_users=1] = call_function[target=torch.ops.aten.conv2d.default](args = (%prelu_18, %p_conv3_weight, %p_conv3_bias, [1, 1], [4, 4]), kwargs = {})J8
+pkg.torch.onnx.name_scopes['', 'conv3', 'conv2d_36']Jù
+pkg.torch.onnx.stack_trace˛File "/tmp/ipython-input-1227226292.py", line 46, in forward
+    return torch.tanh(self.conv3(x))
+  File "/usr/local/lib/python3.12/dist-packages/torch/nn/modules/conv.py", line 548, in forward
+    return self._conv_forward(input, self.weight, self.bias)
+‰
+	conv2d_36output	node_tanh"TanhJ9
+	namespace,: __main__.Generator/tanh: aten.tanh.defaultJM
+pkg.torch.onnx.class_hierarchy+['__main__.Generator', 'aten.tanh.default']JÜ
+pkg.torch.onnx.fx_nodel%tanh : [num_users=1] = call_function[target=torch.ops.aten.tanh.default](args = (%conv2d_36,), kwargs = {})J*
+pkg.torch.onnx.name_scopes['', 'tanh']J
+pkg.torch.onnx.stack_traceaFile "/tmp/ipython-input-1227226292.py", line 46, in forward
+    return torch.tanh(self.conv3(x))
+main_graph*ï@Bconv1.0.biasJÄŒîv=L‚º≈ÙÌ<∂Ÿ =Q√üºB¯-Ω⁄?=˙$CΩ@?_=YEÏ<ë!2º‡h∞=˘¨!ΩEë>°‘=c˙¶=÷4Ω`HKΩêŒ;=8≥Ø<DÉ=-ç=dÅ]=õŸ#=w•DΩçSéº]ÈçΩ∫Qÿ<s‚[Ω7…Æªlv!ª/˚/<ãΩ›!º.?/=%Òƒ=
+3)Ω#g=»Ö ΩiQNΩûZ´ªπ˛<Byò=ùQêΩG=÷Ú=.Ω£º∞ I=≈„ÚΩœ√=A–üºÆ⁄c=¡Fíº◊¨=∞ÕúºûëªºAŸ˙=¥Ωπû∫AK<o˘∫“§º=êH¨º=oª<*°@Bres_blocks.0.conv.0.biasJÄ≥É@At∫>¸™î?R¶?˙ä≠?wæ6îŒ>)x?(ı‘==…ræ='øh(ÄøÌñ*?¸ˆ0øGFá>Òf∫æ=:Ó?ÕY∞?rVJø})ø¸oøøGÆ5> . ¿.ÚæFÿé>nk¯Ω‹!T?ÒÑ?àM©?OÍÛ>≤ò‡>¿'?à»åæü©∂øÿa)?î=@1âÃæäã±øÚ¥-ºP:Ú?4¿?M‹?øo&@åâù?Ü∂ˆ>ä>àø’qﬁ>8{@
+Ö?wÕÏæ˜∏ûæ+®=˝ÄM?cΩå]J<¬ºOê=ÙXs=âáV@Øåo?Ω≈Ωs+Ó?á8æG”œ?*°@Bres_blocks.0.conv.3.biasJÄÛD=æ5'?{?ß“æ¬≥«æCH>U7H>j	øro±?òwïæQe¬>#£√>Lîu?
+=å=‰è.ø&æ æ+¯»Ωó7®æÜòèæíêΩFÍ?å÷7?Àü®æGÀ>Ω$q?~*?]4ê><ˇ!?¡
+>NıÊºƒ∞ô>oË®>˛M√=Àö?{U>‹l+>P?3wƒºC®?ÓsÊ>˜≤<æ˚	‹Ω{C‚æYXW=f Îæäıø]´ò>ô>ø6ì>X©Îæ™ÍWΩrøyK>æÑ;ø}ö>TÈÇ=3b>Ö->Uë=Å´@æç◊*>0ÙÅø«o!ø*°@Bres_blocks.1.conv.0.biasJÄ€èIºmΩ–˚>j!Á=+"Ωrw:=t	Ó=BÜ[æàÃ<ë>>0ΩÈ ∏<$	æ.@êΩ†è2=ı»=0+∞=9à•º*¶cΩdø€=Ã·∆Ωê∏∂∫Ô‡-=Ç^≤ΩZ‹UΩTëΩøø=$†Ÿ=H†÷Ωªë)ΩÖâŸ;¿ΩïªYÄΩòÍºËÏÎΩ≤îæ÷4Ω$ïæΩé›Ωº‹ÏΩZÙø<ô®dΩ¨9íæ8ä?Ω»îπΩwôΩqr<ü¿Ê=≥æ(w¯=∫÷M>Ä$086‡Ô;y1«<©£=6âº≈Kzºxªá<íP€<8É<º˝¥ZΩ{ÃºOLæ%0<*°@Bres_blocks.1.conv.3.biasJÄü=*Ωr]îæ®•…>§¢æxW?:_±æK°¯Ωâ∞øPDΩ]PìæF¯?ì‡Ω;Ùe? d¥Ω\Søwƒùæ
+Á
+>HÁæËú Ω"∫ø! ±>ŸOøæ¬V"øÜé∂=D(!?">∑∫Ú>°∞==±ó]?˙x?É^ï>fô=m90?À/&æHﬁæ3ˇøeÊ:æU}<?˝? øÍrHºP?_∆>ócg?P"Rø\È?tâªæŸ?RÔùæÅ»Èæóø&÷«æÓª?ÿ{ æú´Ã>0VæúY÷=‚±ä>X3{>Këø‡¥)?XrΩ>œ–æ‰æ–4ø*°@Bres_blocks.2.conv.0.biasJÄdΩΩº< VΩà≥=Ä¸°Ω/y∏Ω:sΩ®m≥Ω'æ‘Ωx7ΩFÆ º⁄áÖΩ 8k:Ò’<QâÅ=¬öº\£‘Ω}é‚ºÔiΩÜ·=Åûë=â«=¿ãêΩG∫ΩÏ&>-2=Ω∂ºìîüª|®÷=ƒæ6¨g=»™ÑΩ–`ÌΩô˜º\ú€∫ñ„gº∫f—Ωc=>˛æΩ¢SŒΩ≤Ÿ=ΩË˚⁄ªl©ΩÀ∞9æ ≈ =rã÷Ω	∆Îº‚eGæ≠≈É<*-;æ$	ŸΩòçq<náº&ˇ=|5Ω~YÜ<280<Ô¬Â=”’â=Çˆ/=2ëæöÕ@æö=åΩ*°@Bres_blocks.2.conv.3.biasJÄV`>≤‰æ¸]£ºpv?[møì≥"ø˚û;ΩÇF¸>ìDø€Å^?‡qô?¥ØÎ>ñ‡Ç>S†Uæ(HøsìæØáEæ¨O>¨tãæY˜?u‡Ωn7ó?BÓæÕ.µ>7T?óø∆ÑΩ Aø†m“;fŒó>ò˛J?ßæ¿ô≤>˝*ø¬[%?C>F¡Jø˛Ë]> œBævÜ˙æ‰*§æz 8æûÿø*o>n†ù>»Ïè?¥x∞æv?‘bÉ>±ƒÿ=†o®;ˇºæ<e,øìÂáº”û>0R÷<˛p ø^ÙÂæ(L*?N.∏Ω7‡=ΩÙÂº0ø$áòº*°@Bres_blocks.3.conv.0.biasJÄzpä<~ÉÜΩ òH= ì©Ω[ÛÜ< æó<∑Ç>\œ=[)Õ<%ÿ¢ºûëM<∞V#>}ΩáºˆÙΩÆòÄΩ˙
+æ¶˘º"ÄG=+î Ω¸[-ΩË(æC>é{é<zŸx<~,ÕΩoÀ<⁄Û∏=_,æ¥€÷Ω–õ=æûû<_Ú=ﬂÆ⁄º0h£=oÊS=ytçΩ«í∫=scºô‘nº¥‰ºy6'=sªº4ÄªDÑæˆﬂƒ=¿ÑH=™¬ﬂºÚFwΩœ’PΩé.Œ;EØÜ=öç”ΩjáΩÂä=4Ü∂=4^=®ú{ªåk%=,Zì; ≤¬Ω´æˇv/>⁄≠fº£à<>*°@Bres_blocks.3.conv.3.biasJÄ1›;ø=|1æø<;
+æèKqø∂;·>'?{†?ô≥øã:w>qfŸæ»¿Ë=–•l?e#ÏæñB˝=ldı>S<MæïÍÉ> &æ¯˜Ÿ>õ¯Ä>üSR?{pÇøò‚LæC«-?u_øÃÉÅ;ªõˇ=ﬂ•Áæ‹´J?∞ÕC:ªï$øÚûÇ>Ÿ(h?ºè≥ø≠|ú>zÎæ¥qj?ôîå=“W4?ëèkæÊÊ=ÍÃ;Í>ù>å~ó?ÒyPøã§ÿ>YIø”ÛÌæ«pæ–ò'æ0≠}<4}øjwöææ£•>¥\ øäë?N8‘æ_Ø<øÂ?õ|®>˚sΩ˘ÄËæe÷I?*°@Bres_blocks.4.conv.0.biasJÄ.69=U∫ΩP0˚∫„¡æ¸€¬ΩËDŸΩl=#Ä ;`·˘ªFD2>Rá=àpÉº‘J¢Ωy¡äºú—ºPÖB=Dﬁ'>$ΩÄ¶π™>°Ωï√º=PÖrΩósóΩTÕQΩı!±Ω‚´5>Ør∏ªfˆ√=ëä=ÇÍ⁄<¯UzΩA»‹=ÿ8ÙΩ›’≠ºˆÈº$Ù´<óxò=≠XΩÿ4ê=åΩæ˘°Ω‹B“:¥¢“º^é<
+;ºÜ§Ω‡„ªF¨Ω~C!æû≈=¬à∑=EéΩü˘1Ω2æ\ÓΩ¿óÔºBƒOΩ1#º{p>@‚XΩèå =`˛<@-“<“Y¸=*°@Bres_blocks.4.conv.3.biasJÄ^˘ΩÜ¸Mø’pæ+âç?À≠!?éÄøæËæó˜·æ∏àr>fÕæñC˘>b1|ø	áæsl§>–Ÿ∞øÂπæÇΩÁΩÍö˙>ÊÚ^ø6∞%ø`‡´>0Ω>7.c?…ü?0øLø\sπæh C?¥iùøËï?ûOÔ=“·æ0‚LøF1vøÊGe?$Ÿ¡øZm¶ΩrÌÖæØ•„æ¡sUøVÊ
+?* {ø¨=ıΩ^?Åßæ,Oü>°ºøªrï= âÅø#ã?›4˚>øö>ºÉøXf?èì”= ™s?oø˛$?,iÉø@†#ø≥Kz>ﬂæçæ…üh>>ø õæ*°@Bres_blocks.5.conv.0.biasJÄjEªΩŸ‚Ω[t≠=5÷Ω#pá=„ªºÍªíT™Ω»¯;a⁄—ºFjdº<Ö»<R@Ÿº®É ªœn≈Ω¥QE=d[{Ω1¡=±⁄\ΩE1Z=†⁄æ
+IºÑ,#<$<Í3Û<ßÃîΩ¢ZÇΩ@∑;‡ç“9]^SΩ§‘$=\B0<û!°Ωä˝/<P…>∞»x=®∞ﬁ=»À∂ºp?íΩ 2(ºŒ∏oº\¨æÌ=ùéi=â€›=F>Ω–@(=;Ù=®Ø<‹®œºê;Ñ=√OQΩæ$ñ=¯=ÊA]ΩŸ>S= ˜&æ®√`<|dΩßxåºmœ#Ωø*≠=)2 =*°@Bres_blocks.5.conv.3.biasJÄõÌWø€ 0øqƒãº∫S§ø©öø@ﬁÙæ˚ç?π∏~?9Lø%˛?π‰ª?† >1 ≤>Ó„ÂºÁ—à?(È5ΩLÍøK*>ü0øM8h>öGˇ>û¬Ω≤Aø’ßç>¬ûøñF>ƒù4ø◊qD?(¢˛æBIøñårø>Òd>`å8?„W.øYÁa?d¿⁄>†¢ï>œö¶<æãWø_ÆèΩ∞ÖÂø≠h >j¬º‡@/;≥/∫>…´B>Åu¡>Ì˘>√4"øãπ?,I4æ·l¸æ∂['?%v6æ‰VÑæ>∑Ωøb…ïø√±ø˘Vë?	æ–·æ`$2ø Â>*°@Bres_blocks.6.conv.0.biasJÄ>Û=ﬁüJΩŒœí=ÑZ¶ºã1ΩÛ√;=(%Î:ˇö=rT=¥µºE≠¶ΩÙ±L<TæΩn}Ω‡≤úºP$Ω>∫œ‹<¨ÜP=ï∂¶Ωöñ/ΩÁbΩûµÇ<ÃÕÎΩUﬁâ=OπΩ<¬%º¿\∂ΩJµ?æª6æ<ãÅªFÕ≈Ω	â‡Ω‡nk:«d#æû∏Ì<HWΩ‹eùº\º£ºΩóΩ˚¿=/π=+ûúΩ¶°¸=XΩºJˇzº⁄ÀΩCaê=p‡°º¶‹ÅΩ¶ëΩ–çΩr≠EΩ◊5ïº>ß?ºy&=po=ª>Ω¯=¸Â5;[dé=r≠Àº^¥-Ω-Aæ˘ﬁÉº*°@Bres_blocks.6.conv.3.biasJÄÄf2øûì<?aäìæ8>ƒtGº‘ò≈>£úÈæ^‚S?æ>W?»≠±= °>òYπºÄ,≥æÊú{øñ!xæ6·æmºÕæqçø“Â‚>©HJ?µ◊y?°˘√ª⁄ﬁÔ>iG?HhRæYk∞øp◊?5!èøkÇÀæﬁÛ=øõV^?wM>?Ó	æıh2?FUød5á?Â¥?Lo-?âØ Ω<?H7[øãgôøÈÂ
+æ≥¸4ø◊Ësø.öø1¥Iø“Ω)«πæ)°Éø/Tøoo{ø5‡ø>ãŸ„æΩñt?«$æ∏ÿ–ø}¥>ìj€ºí0Pø
+d∆?ÄYaøïoÒ>Õ.º*°@Bres_blocks.7.conv.0.biasJÄä%>ﬂ≈Ωp§b>œÍ\Ω˚CØ=U9Ü=Á$=*4æ–1];Ãk‡ºã\`=àˆÆΩÇÊ=%}‡ΩPÓ?æ:ü˛ºí⁄J=©j+Ωôr#>?¨.=¢tΩΩy/?Ω<w»<⁄t%=¿Úü<¿∑ªÑ\˝Ω7é⁄=C`I=b%ç<vtfΩ¸ ΩÙ.⁄<π¯ºd”´º∏Ò∫ñ'æ¿ñ_=tıº=Yû˙Ω6EÄº'ˆ≈Ω∫
+<W-4Ω6º!ˇΩ—	œ;Íe2=¢•«=Ñ°ﬁ;‰ÌA<Vû=¥SaΩ*ñ÷=
+SÊΩ7û>=∏ƒ€Ω ¢1=ﬁXæûcÿ=r¬=¸k<.Z=*°@Bres_blocks.7.conv.3.biasJÄEû;?ã4Å>∆¬æâlÄ>«løÇR[æø$®Éøôôøö-Ì>x>œ›8øˆ´™>”4]ø·sø4[ø◊;‘Ω38ø~&≥>?|±ø≈Ihø)Mø;I£æìù6?‡Ëí?’0<>›…^?™yñ?2k? jßøbdC=Î'$ø¢*æ˛G<gkø8iæ°UP?8 ?èƒÀ>OoZ?˛ƒ“æÛaøä`"?œôãæ9*ä?“≠≥ø- !æV}k=˝rF?w?ÔKÔæÛ Gø∆KÜøÈ◊…ª
+ŸFø«„
+æ‡29?Ëòê>lÉøÚ€?Ÿ%3øõææ*^?Eø*°@Bres_blocks.8.conv.0.biasJÄΩúM<JÆõ=YŒyΩƒSæîXM=8>¨’<!≠®=8})=õßæ<éê<∆◊xΩ4…^=MU*Ω@©€<‰∆’ºÆß=]ü=fŸê=ZQü<Âö=Õ≥=eï†Ω"Dàº]ÅΩYΩ4’I=|dºÈXoΩ9¸=8ﬂˆ<«Ó>Ø’Q=Z—BæH˜ªΩ2xΩûà„º…ÀE=ëX=Ú_∫;‘Ü =TUΩ:˜=¶lõΩ27ºΩÊß=†µ;=ö(ΩyõΩı=ÇÛ¢Ω∆—âΩœÂ6>t2Ü=%úCΩJ
+ƒ<Õæ¥kΩ0
+é;ÑqpºöS=Ë›ßªN◊D>„¿æ*°@Bres_blocks.8.conv.3.biasJÄ˘£Gøëböøâ´fø˙Õ;ø™u ø5Õ<=à@ øRø? æ0’˝æé›¬?é…Qøî≠íø"rî? ‘9ø;’Ω"\"ΩàhÑæ_ê\Ω+•7ø"òqø„ºˆø∑n´øUæ}4Ï?≥v?ÎnÇ?∏€>æ?Cˆ§?	w<?k√wøàVh=’Õæ€=‹&&ø]zæiÂì?ÅsHøî/s>>5 >˘ìø°§}>2Æ‘>Vœ4?º'gøàwøå∂©>·:2ø9ç®æLoπøsY‰æ©.B?p?Ì?.6JæÖ%høbb
+æ:1øpƒæ)ä⁄ø∫Zñæ‘§ΩyÄÊ>*°@Bres_blocks.9.conv.0.biasJÄ•;∞‹v;wù=x«<<èÕR=<á©;Ëf&=¢Éˆ∫ˆ:¿=±“∑ΩHw=fh´Ω‘=Òm=wƒ}<j <Ù˛ä;  âºæú¬=W∞¬ΩâP=úÏw=oΩæ¸ﬁLΩdw>[ÊºHïÌ=Üæ…ºKÎ=Ωyπ9<‰.ºàxΩöÑ~Ω{•≥ºí∫»<=!√=–É;Ωo∏…Ωw$õΩ∂é=tYΩÒ≥"Ω: &>™…<‚©Ω<ÀòºrM±º#◊<rzé=JT=÷Ö‰ΩéŸ7=®¿⁄<ªr›=ñ≥Ωó4ñ=Óæ∞Ω\∑~ºb8=Ë»ªª∏mß<@'©Ω/&æ*°@Bres_blocks.9.conv.3.biasJÄÙf?› ‘=ãlæü?Iô≈æì¨üø˚é/øô≤⁄ø∑˝¿@?Ø>ÔJ¯æ˛4 øÀx!?*üæ’‚æ®R®øãH∞æ¿ÊÌ?ò)øÇ)+?=’ø5V?
+ﬂ◊>«c;?´√û=‚≈ù?~ÍN?Ôw?ru?∂_øTéh?åµÏæ™7 ?˛*'øÍöèø·˛mø´˚Ææ2?DVæ√õÌ?–mTæƒÀ?…R›?8€î>SjÜæÖôY?”eP?Tú≠æ °ÛæTˆæ∂Æ∂æù
+ø{8ø=Vtøâ%Wøn0?›Œ1æ4{ø~D:ø§„kæi]=&p{øX∂Ê>D˚Ω*¢@Bres_blocks.10.conv.0.biasJÄo´õ=¿∂·ªåÎπº"ÂN;§ßäΩ|Í>ò¡ê=Ñ˘=∏8]ΩT≈ª<»C=dî°ΩmëΩ¶
+àΩé°Ω˙óÙ=Üö,ΩËüÁ=àç’ºÆ÷–º\‚›=ÀK∂ΩO'ºr=ÑΩ*Òëº.åìºàÇÜΩ|ıÉ=˘'BΩføæ^óΩ&îΩ∏ÇùΩ6∞Á<çÕ<ì	Ω-O æí¬<pd¿=Ä–º~Å>≤6í<±ö?Ω8˝<n÷¶<-]‰ΩlíÌ=ù°ûΩZ+>Û⁄ñΩr!é=<Ç æ_¨ùº‡çÓ∫†Lº€ÄW=Nô=´≠º÷ æÅ¡ΩGyUΩ«XæÛVãΩ™ÇΩ*¢@Bres_blocks.10.conv.3.biasJÄªÈO?‚¨2øL‘>Ä^?ı	Ä?k3⁄ø
+Ü¡>hòüø¥uáø,⁄àø µ? &¸>¯g>ƒÌŸ?ÁG)ø:^ÄøÜ\U?‘ê‚æãÇræı∏Oø4íXørâ∑=∫,ˇæÀÄ?Hö?ÍR>È>í‘#?RŸF>ÎO?ˆùä>Âœj?"x¸>≠â ø¡Ï¡ΩNæïø¡Ÿ;æ˜∫X?AAÈøÇt?˛ 2?ˇOë=m>ƒæNâ7øÓ'+æZNÌ>b¸Uø◊6õ>ßø.>Ìõƒ=(ƒ*?∆√øBø0˜=ø£z"?ç ?±W1ø„ øıt:øVÏΩ†Ä?”¬>∫tæœÛ=*¢@Bres_blocks.11.conv.0.biasJÄÑÔ<áıÜΩÿ‡ŒΩ$√&Ω—kØΩnÃ-Ωø[7ΩDñª<·IÑΩL¡<6∞NΩG8æ‹-<n™∂ΩºåÊºà0Fº8ˆ;p∫)ºÿÄ<Å&ÆºøΩÖ∫=¢
+æ“ñ>˘5=⁄ÚäΩnû<Ç\B=‰Ú#=÷Uº4⁄{<§îΩ™Wá<8˜&<1n,=P∏r=CSæ“Ï=CòΩ≠ª<TÉ> õ]=–«ΩÁ≤óΩ<^¯=ÛA◊Ωó*Ω9“—=†Ü_º‡≥m<¿>=v‘°<û42=ãî9º.°Êº.ä=‡–:p9¨=Äkç=z˘≈Ω˜X=ÏpΩ˝3À=≠<*¢@Bres_blocks.11.conv.3.biasJÄˇëÌ=îy÷>Ö2=?d≈DæÅ¯>Zj·ø∫ú?&ÖÖæ˘¨–øú2´>T>%@¥KøgÃ?Ü≥Ωa˝©øf
+ùæéCüø˜,`?±8ø¿:p=*0Ø>ΩkøáÛ>c¸|?
+:√?4øD◊€>"Èø<¯;?ò*møŸ)ãøD_ø‡Û/=ææı3∫øã6Tø˚"Fø.˚#>yæÉæ‘Cæ?Pmiæ5•øøL ø˘Ú+øëÍ?µ ˚æ_X>¶g÷>~<L>2[Ú?&Œ>¬$¨æ∏®æ>:˙•øÆ 'æT4?∏¢®?qæ§UÇøbKk?gS‚Ωz™æ}/ªø†?*¢@Bres_blocks.12.conv.0.biasJÄªΩ\ì·<M= ˜ı9ÜVïΩ;ûõ=`=xΩ(ÎΩ À=∂2æ´ÌΩE¿ºﬁE>$Û =:Lâ=¿  <Pæ ï≈∫ﬂ˘Öº’á<€†bΩ7íõΩÕÁàΩ´™xº√ZÅΩ›õΩîπoΩÉ∂˛<ƒ—›=·SΩZ;íΩ™πbΩK (ºü9=hTººËÉΩ<¯
+æáa=X4<†ut∫1î%Ωn=,»üΩ5°ΩÍ–K=.GU<,‚†Ω>+ˇªÊÒΩ0S<x1Ú<Å=ÏÅ=:aØΩäT«Ω¿∫ë:ÀæfÔ(<åvΩ†BGæn≥Óº˚/⁄< Òº"Hgº*¢@Bres_blocks.12.conv.3.biasJÄOpø∆“æ)†æu0,>@îwø{Pø‚ü|=«—1æÙÅøòBéæ)pB@á‡uΩìÆ?±ØN>H¿πø	~Ìø„È4?euøÅ#Ÿ>J-@øÖ2?0^¿>Î®c?ü ≈>M&µ?Œ£?o?Òÿ@ø¿`ÿ>ù /øWµæ®39>⁄F?¬/§<ÑÚµ=Ì
+XΩÛ…O?3).?Ô¶ø∑nΩ?[ßÓ>»]Íæ¸‡û>¡–%>ä £?«T=8Û÷∫Îq>—πû?N˝AøŒæ]óáøy¶øöøTÂßæ ,R?U©ú?ΩΩÀ>±Iæ®∞?ÜSùΩ`*?’Òèæ¢|?*¢@Bres_blocks.13.conv.0.biasJÄ»ÿŒ<Ç]=]6ΩòÚúΩHßºß ΩïxwΩfúº∫⁄∏<º=ûæá≥=+› =æAB<U≠O=ûÑ˚Ω"î=ê†ªö∏ÎºS7¯Ω8‰(º,ìQΩîMdΩRˇ‡=~œ=F¥*>Ä‰–<¢:æÙV/=‹IÛªΩdºÑÿ’Ωá”.=Í4Ω2)vΩFÈ\=úmsº$ º∆ƒ›Ω?∞º&/°º¯—JΩ¢›=´K!<%”ºº®‡ÄºXX;ìH=@*Ú;˚≠üΩÆ51Ω
+y‹=à—»Ωrªº‡⁄=çœΩêÄäªÓ¥F<–uΩ‡&=OnY=íÚÔ;
+˘(æeìèΩ*¢@Bres_blocks.13.conv.3.biasJÄ‚5¿>ë˛Ü>~∂ë?¥i	@r∞æ?X|¶ø˚îæ^ ø⁄X˚øg›>?÷~®?ó‹ÓΩ€I?Ç—cæ0Äøg¸ÒæXiÕæ°ˆÖ>B>w/ÊæÛÖU?æn¡ø)K?BZÔ>Ç√?q9?Í&??QI>ö†®æ#R æ‰?N9øBﬂ•æcÉYøŸZøÃ$˘æÏÓïæ—l(?Rµ=ø"( ?0käø«\§ºé–ô?˝5øù	æÁ:@?)©ø‡$øÉ‰?∫[îø◊Å©æséøy¶x>U≤íøM(?ÿÄø  æZ.?Å?kùöæ~Ìà?ô≥??iE?dˇ∞>*¢@Bres_blocks.14.conv.0.biasJÄ8?=î˘IΩU∑‹º`Ù2æEØ<Ñ+º∞\≈;a∆JΩGÃ=s=Ä~I=±a«º$ÅõªËhMΩ‡:çº\]º–öÅª ’\Ωü÷ΩÓKΩÚf∞ΩÏü#ªFjíº¯Œ < /«ºÊúΩÏÉ =¨Æ<Ïç”<Zcb=$öº#iºt	Ω®¯Ω=r5ZΩUΩîz	æ¶“Ωıæ0=»çxΩS;ºfzÄ=J€äºã˘∆º¯ëåΩrœ3Ω∫'Ω}n;˝œ=2IÀº€æ%ÙNºà∆úΩrK ºêŒ%ªQ¶µΩ4
+0Ω<X
+=µÕΩ©ä–º∫0=´’º8zìΩA∞¬º*¢@Bres_blocks.14.conv.3.biasJÄkâø<-∏ΩÒò>Kv@Ó¢≥?ÿﬂãΩÃ˛Éøòø»9î=}?k<≤?’å¶>‡ZΩ+%gøg‰Bø2äwøÜN®ΩtéÖ? qKæEYø√Eá?†öë=%âç?“}?3º?MÜ?˛}õ?˜Jõ?/Ùû?œ^Ωø°}?&}3ø+8?aF≤ø∂;øòÈ´>Ñì≤<3ı”>›(√øﬁ2$>`=¢æ˚J®>UÚü>nüHæÀ8M?Ecı?o|?%fâæOÇø<áˇÅøx&øØ«cø¸>p<„ø·Ë?©Ouøì!ö?I≤-?™‹æb—‰>ÁõΩ?Cù”ºØÁ¨æøóø*¢@Bres_blocks.15.conv.0.biasJÄÆ™†Ω8ûcªgwyΩ2π´;ŸfΩ∏¥ŒªÈ•æNz_<ØΩ=éOΩ±sì=êØª<•˜`Ω xô=∏EMΩp_<~,Ωº ¯—8,5«ºr«ßΩ&WÆº⁄i¬Ω≠L¨Ωíß*Ω≈o =‰ªıΩZlÚΩƒè===˝<2hΩ¯l÷Ω4ºœ»ºˇß<∫H‹<ÚÆΩ W{ºåP∆Ω`J=˛ ¿ΩS0˘ΩÄ<Y;±æ1=H›Õ;ÅΩbªN=<jΩÑcìΩáY=Ω§ñäº⁄ëÑ;GËΩs7iΩ– –;®Ç^Ω0’ñº»X<÷VRΩé~Ωx¬Ω2¯.<Ú-æﬁ•Ωxº*¢@Bres_blocks.15.conv.3.biasJÄcxGøõÑø˜K#æ≈ê?◊ä=[<ã?∑¬?b¨ø ìøèÑë>±rΩ?ﬂÉævqZæ´€ÅøµdÜøeMëøÅt^?Àª7?»F"ø∏üø—ûø<(œ=>∂í?Í«+>#µ]?∏K=‰'ß>Ã–Ò>dØÈ?Ì˙´øÖ$Z?£ô=?e™æπ±ø—5¢ø;àò>Ôd?¿'?Åîyøÿä?G	ø»ú•?®ßúæ‰ïæ∂€.? 	ì?∫Ÿg?∆døàIÄ>`∫êø¬Ωeø˜wèøp5?d_èæ◊¶Ω˚Ãøù—åæ~üÉ?Ês?∆Õ>a´†>è„h>íEæ)¶•>*ï@Bconv2.0.biasJÄpen=ﬁ˚ü=UÇ=å√⁄;ÑâwΩH¸g=Ùquº^bE= CΩOÃ
+=ÕW=§ÿdΩ ˙/=5Ìª…Ãﬁ=åÿ;#%EΩÿÁEº”‹==ÜlX=x}…=∑·d= ûË<∞/yªÊ	Ω¿åªè:<`a£Ω*1∆=dL†=·Ô;=†$è<à≠=Ê÷8=N~üº[øç;@ëΩº('˘ª7-à<{ë¸º#s¨<íÑíº‰ÎEΩd0üΩ&¢^Ω@r#=Ö<£´ñ<•ß,ºë·ª¥Œ<N;=KË =4ı=téÖ<CÙÕºæ=u±>=Ú–î<∆O.ΩÚôZªí}*Ωé∂º]#Ω*YÄBupsample.0.biasj"
+locationsrgan_lpblur.onnx.dataj
+offset0j
+length1024p*\ÄBupsample.3.biasj"
+locationsrgan_lpblur.onnx.dataj
+offset1024j
+length1024p*B
+conv3.biasJ{VÂº(Oıºòª*a@		Bconv1.0.weightj"
+locationsrgan_lpblur.onnx.dataj
+offset2048j
+length62208p*p@@Bres_blocks.0.conv.0.weightj"
+locationsrgan_lpblur.onnx.dataj
+offset126464j
+length147456p*p@@Bres_blocks.0.conv.3.weightj"
+locationsrgan_lpblur.onnx.dataj
+offset273920j
+length147456p*p@@Bres_blocks.1.conv.0.weightj"
+locationsrgan_lpblur.onnx.dataj
+offset421376j
+length147456p*p@@Bres_blocks.1.conv.3.weightj"
+locationsrgan_lpblur.onnx.dataj
+offset568832j
+length147456p*p@@Bres_blocks.2.conv.0.weightj"
+locationsrgan_lpblur.onnx.dataj
+offset716288j
+length147456p*p@@Bres_blocks.2.conv.3.weightj"
+locationsrgan_lpblur.onnx.dataj
+offset863744j
+length147456p*q@@Bres_blocks.3.conv.0.weightj"
+locationsrgan_lpblur.onnx.dataj
+offset1011200j
+length147456p*q@@Bres_blocks.3.conv.3.weightj"
+locationsrgan_lpblur.onnx.dataj
+offset1158656j
+length147456p*q@@Bres_blocks.4.conv.0.weightj"
+locationsrgan_lpblur.onnx.dataj
+offset1306112j
+length147456p*q@@Bres_blocks.4.conv.3.weightj"
+locationsrgan_lpblur.onnx.dataj
+offset1453568j
+length147456p*q@@Bres_blocks.5.conv.0.weightj"
+locationsrgan_lpblur.onnx.dataj
+offset1601024j
+length147456p*q@@Bres_blocks.5.conv.3.weightj"
+locationsrgan_lpblur.onnx.dataj
+offset1748480j
+length147456p*q@@Bres_blocks.6.conv.0.weightj"
+locationsrgan_lpblur.onnx.dataj
+offset1895936j
+length147456p*q@@Bres_blocks.6.conv.3.weightj"
+locationsrgan_lpblur.onnx.dataj
+offset2043392j
+length147456p*q@@Bres_blocks.7.conv.0.weightj"
+locationsrgan_lpblur.onnx.dataj
+offset2190848j
+length147456p*q@@Bres_blocks.7.conv.3.weightj"
+locationsrgan_lpblur.onnx.dataj
+offset2338304j
+length147456p*q@@Bres_blocks.8.conv.0.weightj"
+locationsrgan_lpblur.onnx.dataj
+offset2485760j
+length147456p*q@@Bres_blocks.8.conv.3.weightj"
+locationsrgan_lpblur.onnx.dataj
+offset2633216j
+length147456p*q@@Bres_blocks.9.conv.0.weightj"
+locationsrgan_lpblur.onnx.dataj
+offset2780672j
+length147456p*q@@Bres_blocks.9.conv.3.weightj"
+locationsrgan_lpblur.onnx.dataj
+offset2928128j
+length147456p*r@@Bres_blocks.10.conv.0.weightj"
+locationsrgan_lpblur.onnx.dataj
+offset3075584j
+length147456p*r@@Bres_blocks.10.conv.3.weightj"
+locationsrgan_lpblur.onnx.dataj
+offset3223040j
+length147456p*r@@Bres_blocks.11.conv.0.weightj"
+locationsrgan_lpblur.onnx.dataj
+offset3370496j
+length147456p*r@@Bres_blocks.11.conv.3.weightj"
+locationsrgan_lpblur.onnx.dataj
+offset3517952j
+length147456p*r@@Bres_blocks.12.conv.0.weightj"
+locationsrgan_lpblur.onnx.dataj
+offset3665408j
+length147456p*r@@Bres_blocks.12.conv.3.weightj"
+locationsrgan_lpblur.onnx.dataj
+offset3812864j
+length147456p*r@@Bres_blocks.13.conv.0.weightj"
+locationsrgan_lpblur.onnx.dataj
+offset3960320j
+length147456p*r@@Bres_blocks.13.conv.3.weightj"
+locationsrgan_lpblur.onnx.dataj
+offset4107776j
+length147456p*r@@Bres_blocks.14.conv.0.weightj"
+locationsrgan_lpblur.onnx.dataj
+offset4255232j
+length147456p*r@@Bres_blocks.14.conv.3.weightj"
+locationsrgan_lpblur.onnx.dataj
+offset4402688j
+length147456p*r@@Bres_blocks.15.conv.0.weightj"
+locationsrgan_lpblur.onnx.dataj
+offset4550144j
+length147456p*r@@Bres_blocks.15.conv.3.weightj"
+locationsrgan_lpblur.onnx.dataj
+offset4697600j
+length147456p*e@@Bconv2.0.weightj"
+locationsrgan_lpblur.onnx.dataj
+offset4845056j
+length147456p*iÄ@Bupsample.0.weightj"
+locationsrgan_lpblur.onnx.dataj
+offset4992512j
+length589824p*iÄ@Bupsample.3.weightj"
+locationsrgan_lpblur.onnx.dataj
+offset5582336j
+length589824p*`@		Bconv3.weightj"
+locationsrgan_lpblur.onnx.dataj
+offset64256j
+length62208p*Bval_1JµG>*Bval_8J[◊#>*Bval_17JaO≥=*Bval_26J^ =*Bval_35J!nÒ;*Bval_44J`qÔ;*Bval_53J˘}º*Bval_62JtŒΩ*Bval_71JÂ<Ω*Bval_80J
+}õΩ*Bval_89JYi¬Ω*Bval_98J.ì•Ω*Bval_107JXµΩ*Bval_116Jª/æ*Bval_125J#Yæ*Bval_134JΩ6–Ω*Bval_143JC.<Ω*Bval_152J˝√)>*Bval_153Jb2¥=Z»
+input
+
+s77
+
+@
+@"=
+/pkg.torch.export.graph_signature.InputSpec.kind
+USER_INPUT"=
+5pkg.torch.export.graph_signature.InputSpec.persistentNone"&
+!pkg.torch.onnx.original_node_namexbë
+output
+
+s77
+
+Ä
+Ä"?
+0pkg.torch.export.graph_signature.OutputSpec.kindUSER_OUTPUT")
+!pkg.torch.onnx.original_node_nametanhjÃ
+conv1.0.bias
+
+
+@"<
+/pkg.torch.export.graph_signature.InputSpec.kind	PARAMETER"=
+5pkg.torch.export.graph_signature.InputSpec.persistentNone"3
+!pkg.torch.onnx.original_node_namep_conv1_0_biasj&
+res_blocks.0.conv.0.bias
+
+
+@j&
+res_blocks.0.conv.3.bias
+
+
+@j&
+res_blocks.1.conv.0.bias
+
+
+@j&
+res_blocks.1.conv.3.bias
+
+
+@j&
+res_blocks.2.conv.0.bias
+
+
+@j&
+res_blocks.2.conv.3.bias
+
+
+@j&
+res_blocks.3.conv.0.bias
+
+
+@j&
+res_blocks.3.conv.3.bias
+
+
+@j&
+res_blocks.4.conv.0.bias
+
+
+@j&
+res_blocks.4.conv.3.bias
+
+
+@j&
+res_blocks.5.conv.0.bias
+
+
+@j&
+res_blocks.5.conv.3.bias
+
+
+@j&
+res_blocks.6.conv.0.bias
+
+
+@j&
+res_blocks.6.conv.3.bias
+
+
+@j&
+res_blocks.7.conv.0.bias
+
+
+@j&
+res_blocks.7.conv.3.bias
+
+
+@j&
+res_blocks.8.conv.0.bias
+
+
+@j&
+res_blocks.8.conv.3.bias
+
+
+@j&
+res_blocks.9.conv.0.bias
+
+
+@j&
+res_blocks.9.conv.3.bias
+
+
+@j'
+res_blocks.10.conv.0.bias
+
+
+@j'
+res_blocks.10.conv.3.bias
+
+
+@j'
+res_blocks.11.conv.0.bias
+
+
+@j'
+res_blocks.11.conv.3.bias
+
+
+@j'
+res_blocks.12.conv.0.bias
+
+
+@j'
+res_blocks.12.conv.3.bias
+
+
+@j'
+res_blocks.13.conv.0.bias
+
+
+@j'
+res_blocks.13.conv.3.bias
+
+
+@j'
+res_blocks.14.conv.0.bias
+
+
+@j'
+res_blocks.14.conv.3.bias
+
+
+@j'
+res_blocks.15.conv.0.bias
+
+
+@j'
+res_blocks.15.conv.3.bias
+
+
+@j
+conv2.0.bias
+
+
+@j”
+upsample.0.bias
+	
+Ä"<
+/pkg.torch.export.graph_signature.InputSpec.kind	PARAMETER"=
+5pkg.torch.export.graph_signature.InputSpec.persistentNone"6
+!pkg.torch.onnx.original_node_namep_upsample_0_biasj”
+upsample.3.bias
+	
+Ä"<
+/pkg.torch.export.graph_signature.InputSpec.kind	PARAMETER"=
+5pkg.torch.export.graph_signature.InputSpec.persistentNone"6
+!pkg.torch.onnx.original_node_namep_upsample_3_biasj»
+
+conv3.bias
+
+
+"<
+/pkg.torch.export.graph_signature.InputSpec.kind	PARAMETER"=
+5pkg.torch.export.graph_signature.InputSpec.persistentNone"1
+!pkg.torch.onnx.original_node_namep_conv3_biasj‹
+conv1.0.weight
+
+@
+
+	
+	"<
+/pkg.torch.export.graph_signature.InputSpec.kind	PARAMETER"=
+5pkg.torch.export.graph_signature.InputSpec.persistentNone"5
+!pkg.torch.onnx.original_node_namep_conv1_0_weightj4
+res_blocks.0.conv.0.weight
+
+@
+@
+
+j4
+res_blocks.0.conv.3.weight
+
+@
+@
+
+j4
+res_blocks.1.conv.0.weight
+
+@
+@
+
+j4
+res_blocks.1.conv.3.weight
+
+@
+@
+
+j4
+res_blocks.2.conv.0.weight
+
+@
+@
+
+j4
+res_blocks.2.conv.3.weight
+
+@
+@
+
+j4
+res_blocks.3.conv.0.weight
+
+@
+@
+
+j4
+res_blocks.3.conv.3.weight
+
+@
+@
+
+j4
+res_blocks.4.conv.0.weight
+
+@
+@
+
+j4
+res_blocks.4.conv.3.weight
+
+@
+@
+
+j4
+res_blocks.5.conv.0.weight
+
+@
+@
+
+j4
+res_blocks.5.conv.3.weight
+
+@
+@
+
+j4
+res_blocks.6.conv.0.weight
+
+@
+@
+
+j4
+res_blocks.6.conv.3.weight
+
+@
+@
+
+j4
+res_blocks.7.conv.0.weight
+
+@
+@
+
+j4
+res_blocks.7.conv.3.weight
+
+@
+@
+
+j4
+res_blocks.8.conv.0.weight
+
+@
+@
+
+j4
+res_blocks.8.conv.3.weight
+
+@
+@
+
+j4
+res_blocks.9.conv.0.weight
+
+@
+@
+
+j4
+res_blocks.9.conv.3.weight
+
+@
+@
+
+j5
+res_blocks.10.conv.0.weight
+
+@
+@
+
+j5
+res_blocks.10.conv.3.weight
+
+@
+@
+
+j5
+res_blocks.11.conv.0.weight
+
+@
+@
+
+j5
+res_blocks.11.conv.3.weight
+
+@
+@
+
+j5
+res_blocks.12.conv.0.weight
+
+@
+@
+
+j5
+res_blocks.12.conv.3.weight
+
+@
+@
+
+j5
+res_blocks.13.conv.0.weight
+
+@
+@
+
+j5
+res_blocks.13.conv.3.weight
+
+@
+@
+
+j5
+res_blocks.14.conv.0.weight
+
+@
+@
+
+j5
+res_blocks.14.conv.3.weight
+
+@
+@
+
+j5
+res_blocks.15.conv.0.weight
+
+@
+@
+
+j5
+res_blocks.15.conv.3.weight
+
+@
+@
+
+j(
+conv2.0.weight
+
+@
+@
+
+j„
+upsample.0.weight
+
+Ä
+@
+
+"<
+/pkg.torch.export.graph_signature.InputSpec.kind	PARAMETER"=
+5pkg.torch.export.graph_signature.InputSpec.persistentNone"8
+!pkg.torch.onnx.original_node_namep_upsample_0_weightj„
+upsample.3.weight
+
+Ä
+@
+
+"<
+/pkg.torch.export.graph_signature.InputSpec.kind	PARAMETER"=
+5pkg.torch.export.graph_signature.InputSpec.persistentNone"8
+!pkg.torch.onnx.original_node_namep_upsample_3_weightjÿ
+conv3.weight
+
+
+@
+	
+	"<
+/pkg.torch.export.graph_signature.InputSpec.kind	PARAMETER"=
+5pkg.torch.export.graph_signature.InputSpec.persistentNone"3
+!pkg.torch.onnx.original_node_namep_conv3_weightjd
+val_1
+
+
+
+
+"C
+$pkg.onnxscript.optimizer.folded_from['conv1.1.weight', 'val_0']jp
+val_8
+
+
+
+
+"O
+$pkg.onnxscript.optimizer.folded_from'['res_blocks.0.conv.2.weight', 'val_0']jq
+val_17
+
+
+
+
+"O
+$pkg.onnxscript.optimizer.folded_from'['res_blocks.1.conv.2.weight', 'val_0']jq
+val_26
+
+
+
+
+"O
+$pkg.onnxscript.optimizer.folded_from'['res_blocks.2.conv.2.weight', 'val_0']jq
+val_35
+
+
+
+
+"O
+$pkg.onnxscript.optimizer.folded_from'['res_blocks.3.conv.2.weight', 'val_0']jq
+val_44
+
+
+
+
+"O
+$pkg.onnxscript.optimizer.folded_from'['res_blocks.4.conv.2.weight', 'val_0']jq
+val_53
+
+
+
+
+"O
+$pkg.onnxscript.optimizer.folded_from'['res_blocks.5.conv.2.weight', 'val_0']jq
+val_62
+
+
+
+
+"O
+$pkg.onnxscript.optimizer.folded_from'['res_blocks.6.conv.2.weight', 'val_0']jq
+val_71
+
+
+
+
+"O
+$pkg.onnxscript.optimizer.folded_from'['res_blocks.7.conv.2.weight', 'val_0']jq
+val_80
+
+
+
+
+"O
+$pkg.onnxscript.optimizer.folded_from'['res_blocks.8.conv.2.weight', 'val_0']jq
+val_89
+
+
+
+
+"O
+$pkg.onnxscript.optimizer.folded_from'['res_blocks.9.conv.2.weight', 'val_0']jr
+val_98
+
+
+
+
+"P
+$pkg.onnxscript.optimizer.folded_from(['res_blocks.10.conv.2.weight', 'val_0']js
+val_107
+
+
+
+
+"P
+$pkg.onnxscript.optimizer.folded_from(['res_blocks.11.conv.2.weight', 'val_0']js
+val_116
+
+
+
+
+"P
+$pkg.onnxscript.optimizer.folded_from(['res_blocks.12.conv.2.weight', 'val_0']js
+val_125
+
+
+
+
+"P
+$pkg.onnxscript.optimizer.folded_from(['res_blocks.13.conv.2.weight', 'val_0']js
+val_134
+
+
+
+
+"P
+$pkg.onnxscript.optimizer.folded_from(['res_blocks.14.conv.2.weight', 'val_0']js
+val_143
+
+
+
+
+"P
+$pkg.onnxscript.optimizer.folded_from(['res_blocks.15.conv.2.weight', 'val_0']ji
+val_152
+
+
+
+
+"F
+$pkg.onnxscript.optimizer.folded_from['upsample.2.weight', 'val_0']ji
+val_153
+
+
+
+
+"F
+$pkg.onnxscript.optimizer.folded_from['upsample.5.weight', 'val_0']j#
+conv2d
+
+s77
+@
+@
+@j"
+prelu
+
+s77
+@
+@
+@j!
+getitem
+
+
+@
+@
+@j!
+prelu_1
+
+
+@
+@
+@j#
+	getitem_3
+
+
+@
+@
+@j 
+add_15
+
+
+@
+@
+@j#
+	getitem_6
+
+
+@
+@
+@j!
+prelu_2
+
+
+@
+@
+@j#
+	getitem_9
+
+
+@
+@
+@j 
+add_16
+
+
+@
+@
+@j$
+
+getitem_12
+
+
+@
+@
+@j!
+prelu_3
+
+
+@
+@
+@j$
+
+getitem_15
+
+
+@
+@
+@j 
+add_17
+
+
+@
+@
+@j$
+
+getitem_18
+
+
+@
+@
+@j!
+prelu_4
+
+
+@
+@
+@j$
+
+getitem_21
+
+
+@
+@
+@j 
+add_18
+
+
+@
+@
+@j$
+
+getitem_24
+
+
+@
+@
+@j!
+prelu_5
+
+
+@
+@
+@j$
+
+getitem_27
+
+
+@
+@
+@j 
+add_19
+
+
+@
+@
+@j$
+
+getitem_30
+
+
+@
+@
+@j!
+prelu_6
+
+
+@
+@
+@j$
+
+getitem_33
+
+
+@
+@
+@j 
+add_20
+
+
+@
+@
+@j$
+
+getitem_36
+
+
+@
+@
+@j!
+prelu_7
+
+
+@
+@
+@j$
+
+getitem_39
+
+
+@
+@
+@j 
+add_21
+
+
+@
+@
+@j$
+
+getitem_42
+
+
+@
+@
+@j!
+prelu_8
+
+
+@
+@
+@j$
+
+getitem_45
+
+
+@
+@
+@j 
+add_22
+
+
+@
+@
+@j$
+
+getitem_48
+
+
+@
+@
+@j!
+prelu_9
+
+
+@
+@
+@j$
+
+getitem_51
+
+
+@
+@
+@j 
+add_23
+
+
+@
+@
+@j$
+
+getitem_54
+
+
+@
+@
+@j"
+prelu_10
+
+
+@
+@
+@j$
+
+getitem_57
+
+
+@
+@
+@j 
+add_24
+
+
+@
+@
+@j$
+
+getitem_60
+
+
+@
+@
+@j"
+prelu_11
+
+
+@
+@
+@j$
+
+getitem_63
+
+
+@
+@
+@j 
+add_25
+
+
+@
+@
+@j$
+
+getitem_66
+
+
+@
+@
+@j"
+prelu_12
+
+
+@
+@
+@j$
+
+getitem_69
+
+
+@
+@
+@j 
+add_26
+
+
+@
+@
+@j$
+
+getitem_72
+
+
+@
+@
+@j"
+prelu_13
+
+
+@
+@
+@j$
+
+getitem_75
+
+
+@
+@
+@j 
+add_27
+
+
+@
+@
+@j$
+
+getitem_78
+
+
+@
+@
+@j"
+prelu_14
+
+
+@
+@
+@j$
+
+getitem_81
+
+
+@
+@
+@j 
+add_28
+
+
+@
+@
+@j$
+
+getitem_84
+
+
+@
+@
+@j"
+prelu_15
+
+
+@
+@
+@j$
+
+getitem_87
+
+
+@
+@
+@j 
+add_29
+
+
+@
+@
+@j$
+
+getitem_90
+
+
+@
+@
+@j"
+prelu_16
+
+
+@
+@
+@j$
+
+getitem_93
+
+
+@
+@
+@j 
+add_30
+
+
+@
+@
+@j$
+
+getitem_96
+
+
+@
+@
+@j#
+add_31
+
+s77
+@
+@
+@j'
+	conv2d_34
+
+s77
+Ä
+@
+@j,
+pixel_shuffle
+
+s77
+@
+Ä
+Äj'
+prelu_17
+
+s77
+@
+Ä
+Äj)
+	conv2d_35
+
+s77
+Ä
+Ä
+Äj.
+pixel_shuffle_1
+
+s77
+@
+Ä
+Äj'
+prelu_18
+
+s77
+@
+Ä
+Äj(
+	conv2d_36
+
+s77
+
+Ä
+ÄÇ¬¨
+0pkg.torch.export.ExportedProgram.graph_signatureå¨
+# inputs
+p_conv1_0_weight: PARAMETER target='conv1.0.weight'
+p_conv1_0_bias: PARAMETER target='conv1.0.bias'
+p_conv1_1_weight: PARAMETER target='conv1.1.weight'
+p_res_blocks_0_conv_0_weight: PARAMETER target='res_blocks.0.conv.0.weight'
+p_res_blocks_0_conv_0_bias: PARAMETER target='res_blocks.0.conv.0.bias'
+p_res_blocks_0_conv_1_weight: PARAMETER target='res_blocks.0.conv.1.weight'
+p_res_blocks_0_conv_1_bias: PARAMETER target='res_blocks.0.conv.1.bias'
+p_res_blocks_0_conv_2_weight: PARAMETER target='res_blocks.0.conv.2.weight'
+p_res_blocks_0_conv_3_weight: PARAMETER target='res_blocks.0.conv.3.weight'
+p_res_blocks_0_conv_3_bias: PARAMETER target='res_blocks.0.conv.3.bias'
+p_res_blocks_0_conv_4_weight: PARAMETER target='res_blocks.0.conv.4.weight'
+p_res_blocks_0_conv_4_bias: PARAMETER target='res_blocks.0.conv.4.bias'
+p_res_blocks_1_conv_0_weight: PARAMETER target='res_blocks.1.conv.0.weight'
+p_res_blocks_1_conv_0_bias: PARAMETER target='res_blocks.1.conv.0.bias'
+p_res_blocks_1_conv_1_weight: PARAMETER target='res_blocks.1.conv.1.weight'
+p_res_blocks_1_conv_1_bias: PARAMETER target='res_blocks.1.conv.1.bias'
+p_res_blocks_1_conv_2_weight: PARAMETER target='res_blocks.1.conv.2.weight'
+p_res_blocks_1_conv_3_weight: PARAMETER target='res_blocks.1.conv.3.weight'
+p_res_blocks_1_conv_3_bias: PARAMETER target='res_blocks.1.conv.3.bias'
+p_res_blocks_1_conv_4_weight: PARAMETER target='res_blocks.1.conv.4.weight'
+p_res_blocks_1_conv_4_bias: PARAMETER target='res_blocks.1.conv.4.bias'
+p_res_blocks_2_conv_0_weight: PARAMETER target='res_blocks.2.conv.0.weight'
+p_res_blocks_2_conv_0_bias: PARAMETER target='res_blocks.2.conv.0.bias'
+p_res_blocks_2_conv_1_weight: PARAMETER target='res_blocks.2.conv.1.weight'
+p_res_blocks_2_conv_1_bias: PARAMETER target='res_blocks.2.conv.1.bias'
+p_res_blocks_2_conv_2_weight: PARAMETER target='res_blocks.2.conv.2.weight'
+p_res_blocks_2_conv_3_weight: PARAMETER target='res_blocks.2.conv.3.weight'
+p_res_blocks_2_conv_3_bias: PARAMETER target='res_blocks.2.conv.3.bias'
+p_res_blocks_2_conv_4_weight: PARAMETER target='res_blocks.2.conv.4.weight'
+p_res_blocks_2_conv_4_bias: PARAMETER target='res_blocks.2.conv.4.bias'
+p_res_blocks_3_conv_0_weight: PARAMETER target='res_blocks.3.conv.0.weight'
+p_res_blocks_3_conv_0_bias: PARAMETER target='res_blocks.3.conv.0.bias'
+p_res_blocks_3_conv_1_weight: PARAMETER target='res_blocks.3.conv.1.weight'
+p_res_blocks_3_conv_1_bias: PARAMETER target='res_blocks.3.conv.1.bias'
+p_res_blocks_3_conv_2_weight: PARAMETER target='res_blocks.3.conv.2.weight'
+p_res_blocks_3_conv_3_weight: PARAMETER target='res_blocks.3.conv.3.weight'
+p_res_blocks_3_conv_3_bias: PARAMETER target='res_blocks.3.conv.3.bias'
+p_res_blocks_3_conv_4_weight: PARAMETER target='res_blocks.3.conv.4.weight'
+p_res_blocks_3_conv_4_bias: PARAMETER target='res_blocks.3.conv.4.bias'
+p_res_blocks_4_conv_0_weight: PARAMETER target='res_blocks.4.conv.0.weight'
+p_res_blocks_4_conv_0_bias: PARAMETER target='res_blocks.4.conv.0.bias'
+p_res_blocks_4_conv_1_weight: PARAMETER target='res_blocks.4.conv.1.weight'
+p_res_blocks_4_conv_1_bias: PARAMETER target='res_blocks.4.conv.1.bias'
+p_res_blocks_4_conv_2_weight: PARAMETER target='res_blocks.4.conv.2.weight'
+p_res_blocks_4_conv_3_weight: PARAMETER target='res_blocks.4.conv.3.weight'
+p_res_blocks_4_conv_3_bias: PARAMETER target='res_blocks.4.conv.3.bias'
+p_res_blocks_4_conv_4_weight: PARAMETER target='res_blocks.4.conv.4.weight'
+p_res_blocks_4_conv_4_bias: PARAMETER target='res_blocks.4.conv.4.bias'
+p_res_blocks_5_conv_0_weight: PARAMETER target='res_blocks.5.conv.0.weight'
+p_res_blocks_5_conv_0_bias: PARAMETER target='res_blocks.5.conv.0.bias'
+p_res_blocks_5_conv_1_weight: PARAMETER target='res_blocks.5.conv.1.weight'
+p_res_blocks_5_conv_1_bias: PARAMETER target='res_blocks.5.conv.1.bias'
+p_res_blocks_5_conv_2_weight: PARAMETER target='res_blocks.5.conv.2.weight'
+p_res_blocks_5_conv_3_weight: PARAMETER target='res_blocks.5.conv.3.weight'
+p_res_blocks_5_conv_3_bias: PARAMETER target='res_blocks.5.conv.3.bias'
+p_res_blocks_5_conv_4_weight: PARAMETER target='res_blocks.5.conv.4.weight'
+p_res_blocks_5_conv_4_bias: PARAMETER target='res_blocks.5.conv.4.bias'
+p_res_blocks_6_conv_0_weight: PARAMETER target='res_blocks.6.conv.0.weight'
+p_res_blocks_6_conv_0_bias: PARAMETER target='res_blocks.6.conv.0.bias'
+p_res_blocks_6_conv_1_weight: PARAMETER target='res_blocks.6.conv.1.weight'
+p_res_blocks_6_conv_1_bias: PARAMETER target='res_blocks.6.conv.1.bias'
+p_res_blocks_6_conv_2_weight: PARAMETER target='res_blocks.6.conv.2.weight'
+p_res_blocks_6_conv_3_weight: PARAMETER target='res_blocks.6.conv.3.weight'
+p_res_blocks_6_conv_3_bias: PARAMETER target='res_blocks.6.conv.3.bias'
+p_res_blocks_6_conv_4_weight: PARAMETER target='res_blocks.6.conv.4.weight'
+p_res_blocks_6_conv_4_bias: PARAMETER target='res_blocks.6.conv.4.bias'
+p_res_blocks_7_conv_0_weight: PARAMETER target='res_blocks.7.conv.0.weight'
+p_res_blocks_7_conv_0_bias: PARAMETER target='res_blocks.7.conv.0.bias'
+p_res_blocks_7_conv_1_weight: PARAMETER target='res_blocks.7.conv.1.weight'
+p_res_blocks_7_conv_1_bias: PARAMETER target='res_blocks.7.conv.1.bias'
+p_res_blocks_7_conv_2_weight: PARAMETER target='res_blocks.7.conv.2.weight'
+p_res_blocks_7_conv_3_weight: PARAMETER target='res_blocks.7.conv.3.weight'
+p_res_blocks_7_conv_3_bias: PARAMETER target='res_blocks.7.conv.3.bias'
+p_res_blocks_7_conv_4_weight: PARAMETER target='res_blocks.7.conv.4.weight'
+p_res_blocks_7_conv_4_bias: PARAMETER target='res_blocks.7.conv.4.bias'
+p_res_blocks_8_conv_0_weight: PARAMETER target='res_blocks.8.conv.0.weight'
+p_res_blocks_8_conv_0_bias: PARAMETER target='res_blocks.8.conv.0.bias'
+p_res_blocks_8_conv_1_weight: PARAMETER target='res_blocks.8.conv.1.weight'
+p_res_blocks_8_conv_1_bias: PARAMETER target='res_blocks.8.conv.1.bias'
+p_res_blocks_8_conv_2_weight: PARAMETER target='res_blocks.8.conv.2.weight'
+p_res_blocks_8_conv_3_weight: PARAMETER target='res_blocks.8.conv.3.weight'
+p_res_blocks_8_conv_3_bias: PARAMETER target='res_blocks.8.conv.3.bias'
+p_res_blocks_8_conv_4_weight: PARAMETER target='res_blocks.8.conv.4.weight'
+p_res_blocks_8_conv_4_bias: PARAMETER target='res_blocks.8.conv.4.bias'
+p_res_blocks_9_conv_0_weight: PARAMETER target='res_blocks.9.conv.0.weight'
+p_res_blocks_9_conv_0_bias: PARAMETER target='res_blocks.9.conv.0.bias'
+p_res_blocks_9_conv_1_weight: PARAMETER target='res_blocks.9.conv.1.weight'
+p_res_blocks_9_conv_1_bias: PARAMETER target='res_blocks.9.conv.1.bias'
+p_res_blocks_9_conv_2_weight: PARAMETER target='res_blocks.9.conv.2.weight'
+p_res_blocks_9_conv_3_weight: PARAMETER target='res_blocks.9.conv.3.weight'
+p_res_blocks_9_conv_3_bias: PARAMETER target='res_blocks.9.conv.3.bias'
+p_res_blocks_9_conv_4_weight: PARAMETER target='res_blocks.9.conv.4.weight'
+p_res_blocks_9_conv_4_bias: PARAMETER target='res_blocks.9.conv.4.bias'
+p_res_blocks_10_conv_0_weight: PARAMETER target='res_blocks.10.conv.0.weight'
+p_res_blocks_10_conv_0_bias: PARAMETER target='res_blocks.10.conv.0.bias'
+p_res_blocks_10_conv_1_weight: PARAMETER target='res_blocks.10.conv.1.weight'
+p_res_blocks_10_conv_1_bias: PARAMETER target='res_blocks.10.conv.1.bias'
+p_res_blocks_10_conv_2_weight: PARAMETER target='res_blocks.10.conv.2.weight'
+p_res_blocks_10_conv_3_weight: PARAMETER target='res_blocks.10.conv.3.weight'
+p_res_blocks_10_conv_3_bias: PARAMETER target='res_blocks.10.conv.3.bias'
+p_res_blocks_10_conv_4_weight: PARAMETER target='res_blocks.10.conv.4.weight'
+p_res_blocks_10_conv_4_bias: PARAMETER target='res_blocks.10.conv.4.bias'
+p_res_blocks_11_conv_0_weight: PARAMETER target='res_blocks.11.conv.0.weight'
+p_res_blocks_11_conv_0_bias: PARAMETER target='res_blocks.11.conv.0.bias'
+p_res_blocks_11_conv_1_weight: PARAMETER target='res_blocks.11.conv.1.weight'
+p_res_blocks_11_conv_1_bias: PARAMETER target='res_blocks.11.conv.1.bias'
+p_res_blocks_11_conv_2_weight: PARAMETER target='res_blocks.11.conv.2.weight'
+p_res_blocks_11_conv_3_weight: PARAMETER target='res_blocks.11.conv.3.weight'
+p_res_blocks_11_conv_3_bias: PARAMETER target='res_blocks.11.conv.3.bias'
+p_res_blocks_11_conv_4_weight: PARAMETER target='res_blocks.11.conv.4.weight'
+p_res_blocks_11_conv_4_bias: PARAMETER target='res_blocks.11.conv.4.bias'
+p_res_blocks_12_conv_0_weight: PARAMETER target='res_blocks.12.conv.0.weight'
+p_res_blocks_12_conv_0_bias: PARAMETER target='res_blocks.12.conv.0.bias'
+p_res_blocks_12_conv_1_weight: PARAMETER target='res_blocks.12.conv.1.weight'
+p_res_blocks_12_conv_1_bias: PARAMETER target='res_blocks.12.conv.1.bias'
+p_res_blocks_12_conv_2_weight: PARAMETER target='res_blocks.12.conv.2.weight'
+p_res_blocks_12_conv_3_weight: PARAMETER target='res_blocks.12.conv.3.weight'
+p_res_blocks_12_conv_3_bias: PARAMETER target='res_blocks.12.conv.3.bias'
+p_res_blocks_12_conv_4_weight: PARAMETER target='res_blocks.12.conv.4.weight'
+p_res_blocks_12_conv_4_bias: PARAMETER target='res_blocks.12.conv.4.bias'
+p_res_blocks_13_conv_0_weight: PARAMETER target='res_blocks.13.conv.0.weight'
+p_res_blocks_13_conv_0_bias: PARAMETER target='res_blocks.13.conv.0.bias'
+p_res_blocks_13_conv_1_weight: PARAMETER target='res_blocks.13.conv.1.weight'
+p_res_blocks_13_conv_1_bias: PARAMETER target='res_blocks.13.conv.1.bias'
+p_res_blocks_13_conv_2_weight: PARAMETER target='res_blocks.13.conv.2.weight'
+p_res_blocks_13_conv_3_weight: PARAMETER target='res_blocks.13.conv.3.weight'
+p_res_blocks_13_conv_3_bias: PARAMETER target='res_blocks.13.conv.3.bias'
+p_res_blocks_13_conv_4_weight: PARAMETER target='res_blocks.13.conv.4.weight'
+p_res_blocks_13_conv_4_bias: PARAMETER target='res_blocks.13.conv.4.bias'
+p_res_blocks_14_conv_0_weight: PARAMETER target='res_blocks.14.conv.0.weight'
+p_res_blocks_14_conv_0_bias: PARAMETER target='res_blocks.14.conv.0.bias'
+p_res_blocks_14_conv_1_weight: PARAMETER target='res_blocks.14.conv.1.weight'
+p_res_blocks_14_conv_1_bias: PARAMETER target='res_blocks.14.conv.1.bias'
+p_res_blocks_14_conv_2_weight: PARAMETER target='res_blocks.14.conv.2.weight'
+p_res_blocks_14_conv_3_weight: PARAMETER target='res_blocks.14.conv.3.weight'
+p_res_blocks_14_conv_3_bias: PARAMETER target='res_blocks.14.conv.3.bias'
+p_res_blocks_14_conv_4_weight: PARAMETER target='res_blocks.14.conv.4.weight'
+p_res_blocks_14_conv_4_bias: PARAMETER target='res_blocks.14.conv.4.bias'
+p_res_blocks_15_conv_0_weight: PARAMETER target='res_blocks.15.conv.0.weight'
+p_res_blocks_15_conv_0_bias: PARAMETER target='res_blocks.15.conv.0.bias'
+p_res_blocks_15_conv_1_weight: PARAMETER target='res_blocks.15.conv.1.weight'
+p_res_blocks_15_conv_1_bias: PARAMETER target='res_blocks.15.conv.1.bias'
+p_res_blocks_15_conv_2_weight: PARAMETER target='res_blocks.15.conv.2.weight'
+p_res_blocks_15_conv_3_weight: PARAMETER target='res_blocks.15.conv.3.weight'
+p_res_blocks_15_conv_3_bias: PARAMETER target='res_blocks.15.conv.3.bias'
+p_res_blocks_15_conv_4_weight: PARAMETER target='res_blocks.15.conv.4.weight'
+p_res_blocks_15_conv_4_bias: PARAMETER target='res_blocks.15.conv.4.bias'
+p_conv2_0_weight: PARAMETER target='conv2.0.weight'
+p_conv2_0_bias: PARAMETER target='conv2.0.bias'
+p_conv2_1_weight: PARAMETER target='conv2.1.weight'
+p_conv2_1_bias: PARAMETER target='conv2.1.bias'
+p_upsample_0_weight: PARAMETER target='upsample.0.weight'
+p_upsample_0_bias: PARAMETER target='upsample.0.bias'
+p_upsample_2_weight: PARAMETER target='upsample.2.weight'
+p_upsample_3_weight: PARAMETER target='upsample.3.weight'
+p_upsample_3_bias: PARAMETER target='upsample.3.bias'
+p_upsample_5_weight: PARAMETER target='upsample.5.weight'
+p_conv3_weight: PARAMETER target='conv3.weight'
+p_conv3_bias: PARAMETER target='conv3.bias'
+b_res_blocks_0_conv_1_running_mean: BUFFER target='res_blocks.0.conv.1.running_mean' persistent=True
+b_res_blocks_0_conv_1_running_var: BUFFER target='res_blocks.0.conv.1.running_var' persistent=True
+b_res_blocks_0_conv_1_num_batches_tracked: BUFFER target='res_blocks.0.conv.1.num_batches_tracked' persistent=True
+b_res_blocks_0_conv_4_running_mean: BUFFER target='res_blocks.0.conv.4.running_mean' persistent=True
+b_res_blocks_0_conv_4_running_var: BUFFER target='res_blocks.0.conv.4.running_var' persistent=True
+b_res_blocks_0_conv_4_num_batches_tracked: BUFFER target='res_blocks.0.conv.4.num_batches_tracked' persistent=True
+b_res_blocks_1_conv_1_running_mean: BUFFER target='res_blocks.1.conv.1.running_mean' persistent=True
+b_res_blocks_1_conv_1_running_var: BUFFER target='res_blocks.1.conv.1.running_var' persistent=True
+b_res_blocks_1_conv_1_num_batches_tracked: BUFFER target='res_blocks.1.conv.1.num_batches_tracked' persistent=True
+b_res_blocks_1_conv_4_running_mean: BUFFER target='res_blocks.1.conv.4.running_mean' persistent=True
+b_res_blocks_1_conv_4_running_var: BUFFER target='res_blocks.1.conv.4.running_var' persistent=True
+b_res_blocks_1_conv_4_num_batches_tracked: BUFFER target='res_blocks.1.conv.4.num_batches_tracked' persistent=True
+b_res_blocks_2_conv_1_running_mean: BUFFER target='res_blocks.2.conv.1.running_mean' persistent=True
+b_res_blocks_2_conv_1_running_var: BUFFER target='res_blocks.2.conv.1.running_var' persistent=True
+b_res_blocks_2_conv_1_num_batches_tracked: BUFFER target='res_blocks.2.conv.1.num_batches_tracked' persistent=True
+b_res_blocks_2_conv_4_running_mean: BUFFER target='res_blocks.2.conv.4.running_mean' persistent=True
+b_res_blocks_2_conv_4_running_var: BUFFER target='res_blocks.2.conv.4.running_var' persistent=True
+b_res_blocks_2_conv_4_num_batches_tracked: BUFFER target='res_blocks.2.conv.4.num_batches_tracked' persistent=True
+b_res_blocks_3_conv_1_running_mean: BUFFER target='res_blocks.3.conv.1.running_mean' persistent=True
+b_res_blocks_3_conv_1_running_var: BUFFER target='res_blocks.3.conv.1.running_var' persistent=True
+b_res_blocks_3_conv_1_num_batches_tracked: BUFFER target='res_blocks.3.conv.1.num_batches_tracked' persistent=True
+b_res_blocks_3_conv_4_running_mean: BUFFER target='res_blocks.3.conv.4.running_mean' persistent=True
+b_res_blocks_3_conv_4_running_var: BUFFER target='res_blocks.3.conv.4.running_var' persistent=True
+b_res_blocks_3_conv_4_num_batches_tracked: BUFFER target='res_blocks.3.conv.4.num_batches_tracked' persistent=True
+b_res_blocks_4_conv_1_running_mean: BUFFER target='res_blocks.4.conv.1.running_mean' persistent=True
+b_res_blocks_4_conv_1_running_var: BUFFER target='res_blocks.4.conv.1.running_var' persistent=True
+b_res_blocks_4_conv_1_num_batches_tracked: BUFFER target='res_blocks.4.conv.1.num_batches_tracked' persistent=True
+b_res_blocks_4_conv_4_running_mean: BUFFER target='res_blocks.4.conv.4.running_mean' persistent=True
+b_res_blocks_4_conv_4_running_var: BUFFER target='res_blocks.4.conv.4.running_var' persistent=True
+b_res_blocks_4_conv_4_num_batches_tracked: BUFFER target='res_blocks.4.conv.4.num_batches_tracked' persistent=True
+b_res_blocks_5_conv_1_running_mean: BUFFER target='res_blocks.5.conv.1.running_mean' persistent=True
+b_res_blocks_5_conv_1_running_var: BUFFER target='res_blocks.5.conv.1.running_var' persistent=True
+b_res_blocks_5_conv_1_num_batches_tracked: BUFFER target='res_blocks.5.conv.1.num_batches_tracked' persistent=True
+b_res_blocks_5_conv_4_running_mean: BUFFER target='res_blocks.5.conv.4.running_mean' persistent=True
+b_res_blocks_5_conv_4_running_var: BUFFER target='res_blocks.5.conv.4.running_var' persistent=True
+b_res_blocks_5_conv_4_num_batches_tracked: BUFFER target='res_blocks.5.conv.4.num_batches_tracked' persistent=True
+b_res_blocks_6_conv_1_running_mean: BUFFER target='res_blocks.6.conv.1.running_mean' persistent=True
+b_res_blocks_6_conv_1_running_var: BUFFER target='res_blocks.6.conv.1.running_var' persistent=True
+b_res_blocks_6_conv_1_num_batches_tracked: BUFFER target='res_blocks.6.conv.1.num_batches_tracked' persistent=True
+b_res_blocks_6_conv_4_running_mean: BUFFER target='res_blocks.6.conv.4.running_mean' persistent=True
+b_res_blocks_6_conv_4_running_var: BUFFER target='res_blocks.6.conv.4.running_var' persistent=True
+b_res_blocks_6_conv_4_num_batches_tracked: BUFFER target='res_blocks.6.conv.4.num_batches_tracked' persistent=True
+b_res_blocks_7_conv_1_running_mean: BUFFER target='res_blocks.7.conv.1.running_mean' persistent=True
+b_res_blocks_7_conv_1_running_var: BUFFER target='res_blocks.7.conv.1.running_var' persistent=True
+b_res_blocks_7_conv_1_num_batches_tracked: BUFFER target='res_blocks.7.conv.1.num_batches_tracked' persistent=True
+b_res_blocks_7_conv_4_running_mean: BUFFER target='res_blocks.7.conv.4.running_mean' persistent=True
+b_res_blocks_7_conv_4_running_var: BUFFER target='res_blocks.7.conv.4.running_var' persistent=True
+b_res_blocks_7_conv_4_num_batches_tracked: BUFFER target='res_blocks.7.conv.4.num_batches_tracked' persistent=True
+b_res_blocks_8_conv_1_running_mean: BUFFER target='res_blocks.8.conv.1.running_mean' persistent=True
+b_res_blocks_8_conv_1_running_var: BUFFER target='res_blocks.8.conv.1.running_var' persistent=True
+b_res_blocks_8_conv_1_num_batches_tracked: BUFFER target='res_blocks.8.conv.1.num_batches_tracked' persistent=True
+b_res_blocks_8_conv_4_running_mean: BUFFER target='res_blocks.8.conv.4.running_mean' persistent=True
+b_res_blocks_8_conv_4_running_var: BUFFER target='res_blocks.8.conv.4.running_var' persistent=True
+b_res_blocks_8_conv_4_num_batches_tracked: BUFFER target='res_blocks.8.conv.4.num_batches_tracked' persistent=True
+b_res_blocks_9_conv_1_running_mean: BUFFER target='res_blocks.9.conv.1.running_mean' persistent=True
+b_res_blocks_9_conv_1_running_var: BUFFER target='res_blocks.9.conv.1.running_var' persistent=True
+b_res_blocks_9_conv_1_num_batches_tracked: BUFFER target='res_blocks.9.conv.1.num_batches_tracked' persistent=True
+b_res_blocks_9_conv_4_running_mean: BUFFER target='res_blocks.9.conv.4.running_mean' persistent=True
+b_res_blocks_9_conv_4_running_var: BUFFER target='res_blocks.9.conv.4.running_var' persistent=True
+b_res_blocks_9_conv_4_num_batches_tracked: BUFFER target='res_blocks.9.conv.4.num_batches_tracked' persistent=True
+b_res_blocks_10_conv_1_running_mean: BUFFER target='res_blocks.10.conv.1.running_mean' persistent=True
+b_res_blocks_10_conv_1_running_var: BUFFER target='res_blocks.10.conv.1.running_var' persistent=True
+b_res_blocks_10_conv_1_num_batches_tracked: BUFFER target='res_blocks.10.conv.1.num_batches_tracked' persistent=True
+b_res_blocks_10_conv_4_running_mean: BUFFER target='res_blocks.10.conv.4.running_mean' persistent=True
+b_res_blocks_10_conv_4_running_var: BUFFER target='res_blocks.10.conv.4.running_var' persistent=True
+b_res_blocks_10_conv_4_num_batches_tracked: BUFFER target='res_blocks.10.conv.4.num_batches_tracked' persistent=True
+b_res_blocks_11_conv_1_running_mean: BUFFER target='res_blocks.11.conv.1.running_mean' persistent=True
+b_res_blocks_11_conv_1_running_var: BUFFER target='res_blocks.11.conv.1.running_var' persistent=True
+b_res_blocks_11_conv_1_num_batches_tracked: BUFFER target='res_blocks.11.conv.1.num_batches_tracked' persistent=True
+b_res_blocks_11_conv_4_running_mean: BUFFER target='res_blocks.11.conv.4.running_mean' persistent=True
+b_res_blocks_11_conv_4_running_var: BUFFER target='res_blocks.11.conv.4.running_var' persistent=True
+b_res_blocks_11_conv_4_num_batches_tracked: BUFFER target='res_blocks.11.conv.4.num_batches_tracked' persistent=True
+b_res_blocks_12_conv_1_running_mean: BUFFER target='res_blocks.12.conv.1.running_mean' persistent=True
+b_res_blocks_12_conv_1_running_var: BUFFER target='res_blocks.12.conv.1.running_var' persistent=True
+b_res_blocks_12_conv_1_num_batches_tracked: BUFFER target='res_blocks.12.conv.1.num_batches_tracked' persistent=True
+b_res_blocks_12_conv_4_running_mean: BUFFER target='res_blocks.12.conv.4.running_mean' persistent=True
+b_res_blocks_12_conv_4_running_var: BUFFER target='res_blocks.12.conv.4.running_var' persistent=True
+b_res_blocks_12_conv_4_num_batches_tracked: BUFFER target='res_blocks.12.conv.4.num_batches_tracked' persistent=True
+b_res_blocks_13_conv_1_running_mean: BUFFER target='res_blocks.13.conv.1.running_mean' persistent=True
+b_res_blocks_13_conv_1_running_var: BUFFER target='res_blocks.13.conv.1.running_var' persistent=True
+b_res_blocks_13_conv_1_num_batches_tracked: BUFFER target='res_blocks.13.conv.1.num_batches_tracked' persistent=True
+b_res_blocks_13_conv_4_running_mean: BUFFER target='res_blocks.13.conv.4.running_mean' persistent=True
+b_res_blocks_13_conv_4_running_var: BUFFER target='res_blocks.13.conv.4.running_var' persistent=True
+b_res_blocks_13_conv_4_num_batches_tracked: BUFFER target='res_blocks.13.conv.4.num_batches_tracked' persistent=True
+b_res_blocks_14_conv_1_running_mean: BUFFER target='res_blocks.14.conv.1.running_mean' persistent=True
+b_res_blocks_14_conv_1_running_var: BUFFER target='res_blocks.14.conv.1.running_var' persistent=True
+b_res_blocks_14_conv_1_num_batches_tracked: BUFFER target='res_blocks.14.conv.1.num_batches_tracked' persistent=True
+b_res_blocks_14_conv_4_running_mean: BUFFER target='res_blocks.14.conv.4.running_mean' persistent=True
+b_res_blocks_14_conv_4_running_var: BUFFER target='res_blocks.14.conv.4.running_var' persistent=True
+b_res_blocks_14_conv_4_num_batches_tracked: BUFFER target='res_blocks.14.conv.4.num_batches_tracked' persistent=True
+b_res_blocks_15_conv_1_running_mean: BUFFER target='res_blocks.15.conv.1.running_mean' persistent=True
+b_res_blocks_15_conv_1_running_var: BUFFER target='res_blocks.15.conv.1.running_var' persistent=True
+b_res_blocks_15_conv_1_num_batches_tracked: BUFFER target='res_blocks.15.conv.1.num_batches_tracked' persistent=True
+b_res_blocks_15_conv_4_running_mean: BUFFER target='res_blocks.15.conv.4.running_mean' persistent=True
+b_res_blocks_15_conv_4_running_var: BUFFER target='res_blocks.15.conv.4.running_var' persistent=True
+b_res_blocks_15_conv_4_num_batches_tracked: BUFFER target='res_blocks.15.conv.4.num_batches_tracked' persistent=True
+b_conv2_1_running_mean: BUFFER target='conv2.1.running_mean' persistent=True
+b_conv2_1_running_var: BUFFER target='conv2.1.running_var' persistent=True
+b_conv2_1_num_batches_tracked: BUFFER target='conv2.1.num_batches_tracked' persistent=True
+x: USER_INPUT
+
+# outputs
+tanh: USER_OUTPUT
+ÇJ
+2pkg.torch.export.ExportedProgram.range_constraints{s77: VR[0, int_oo]}B
+ 
