@@ -6,6 +6,8 @@ import easyocr
 from collections import Counter
 from ultralytics import YOLO
 from app.config import MODEL_PATH_V9, MODEL_PATH_V8, MODEL_PATH_SRGAN, CONFIDENCE_THRESHOLD
+import cv2  # Needs: pip install opencv-python
+import re
 
 class AdvancedYOLOService:
     def __init__(self):
@@ -14,26 +16,23 @@ class AdvancedYOLOService:
         self.session_srgan = None
         self.input_name_srgan = None
         
-        print("🚀 Initializing Super-Resolution Hybrid Engine...")
-        
-        # 1. Initialize EasyOCR
+        print("🚀 Initializing Final Hybrid Engine (Otsu + Regex)...")
+        # Optimized for English text detection
         self.reader = easyocr.Reader(['en'], gpu=False) 
-        
-        # 2. Load All Models
         self.load_models()
 
     def load_models(self):
-        """Loads SRGAN, YOLOv9, and YOLOv8"""
-        # --- Load SRGAN (Enhancer) ---
+        # --- SRGAN ---
         try:
             print(f"✨ Loading SRGAN from {MODEL_PATH_SRGAN}...")
             self.session_srgan = ort.InferenceSession(MODEL_PATH_SRGAN, providers=["CPUExecutionProvider"])
             self.input_name_srgan = self.session_srgan.get_inputs()[0].name
             print("✅ SRGAN Loaded")
         except Exception as e:
-            print(f"❌ Error loading SRGAN: {e}")
+            print(f"❌ SRGAN Error: {e}")
+            self.session_srgan = None
 
-        # --- Load YOLOv9 ---
+        # --- YOLOv9 ---
         try:
             print(f"🚀 Loading YOLOv9 from {MODEL_PATH_V9}...")
             self.session_v9 = ort.InferenceSession(MODEL_PATH_V9, providers=["CPUExecutionProvider"])
@@ -41,106 +40,170 @@ class AdvancedYOLOService:
             self.output_names_v9 = [o.name for o in self.session_v9.get_outputs()]
             print("✅ YOLOv9 Loaded")
         except Exception as e:
-            print(f"❌ Error loading YOLOv9: {e}")
+            print(f"❌ YOLOv9 Error: {e}")
 
-        # --- Load YOLOv8 ---
+        # --- YOLOv8 ---
         try:
             print(f"🚀 Loading YOLOv8 from {MODEL_PATH_V8}...")
             self.model_v8 = YOLO(MODEL_PATH_V8, task='detect')
             print("✅ YOLOv8 Loaded")
         except Exception as e:
-            print(f"❌ Error loading YOLOv8: {e}")
+            print(f"❌ YOLOv8 Error: {e}")
 
-    def enhance_image(self, img):
+    def enhance_plate_crop(self, plate_img):
         """
-        Runs the image through SRGAN to upscale and de-blur.
+        Smart Enhance:
+        1. If plate is SMALL (<64px), use SRGAN to upscale.
+        2. If plate is BIG (>64px), SKIP SRGAN (prevent shrinking/quality loss).
         """
-        if not self.session_srgan:
-            return img  # Skip if model failed to load
+        if not self.session_srgan: return plate_img
 
-        # 1. Preprocess: Resize if too huge (to prevent crash), normalize to 0-1
-        # SRGAN is heavy; if image is > 1000px, we limit input size for speed
-        max_dim = 1024
-        if max(img.size) > max_dim:
-             ratio = max_dim / max(img.size)
-             new_size = (int(img.width * ratio), int(img.height * ratio))
-             img = img.resize(new_size, Image.LANCZOS)
+        # SMART CHECK: If image is already good, don't ruin it by shrinking!
+        if plate_img.width > 90: # 90 is a safe threshold
+            return plate_img
 
-        img_np = np.array(img).astype(np.float32) / 255.0
-        img_np = img_np.transpose(2, 0, 1)  # HWC -> CHW
-        img_np = np.expand_dims(img_np, axis=0)  # Add batch dimension -> 1,C,H,W
-
-        # 2. Inference
         try:
-            output = self.session_srgan.run(None, {self.input_name_srgan: img_np})[0]
-        except Exception as e:
-            print(f"⚠️ SRGAN Failed: {e}")
-            return img
+            # 1. Pad to Square (Preserve Aspect Ratio)
+            old_size = plate_img.size
+            new_size = (max(old_size), max(old_size))
+            new_im = Image.new("RGB", new_size, (0, 0, 0))
+            new_im.paste(plate_img, ((new_size[0]-old_size[0])//2, (new_size[1]-old_size[1])//2))
 
-        # 3. Postprocess: Clip values, convert back to uint8 image
-        output = output.squeeze(0).transpose(1, 2, 0)  # CHW -> HWC
-        output = np.clip(output, 0, 1) * 255.0
-        output = output.astype(np.uint8)
+            # 2. Resize to 64x64 (Strict Model Requirement)
+            input_img = new_im.resize((64, 64), Image.BICUBIC)
+            
+            # 3. Inference
+            img_np = np.array(input_img).astype(np.float32) / 255.0
+            img_np = img_np.transpose(2, 0, 1)
+            img_np = np.expand_dims(img_np, axis=0)
+
+            output = self.session_srgan.run(None, {self.input_name_srgan: img_np})[0]
+
+            # 4. Post-Process
+            output = output.squeeze(0).transpose(1, 2, 0)
+            if output.min() < 0: output = (output + 1) / 2.0
+            output = np.clip(output, 0, 1) * 255.0
+            output = output.astype(np.uint8)
+            
+            return Image.fromarray(output)
+            
+        except Exception as e:
+            print(f"⚠️ Enhancement Failed: {e}")
+            return plate_img
+
+    def apply_ocr_filters(self, pil_img):
+        """
+        Applies Otsu's Thresholding to make text 'pop' against the background.
+        Crucial for Sri Lankan plates with shadows/glare.
+        """
+        # Convert PIL to OpenCV format
+        img = np.array(pil_img) 
+        img = cv2.cvtColor(img, cv2.COLOR_RGB2BGR)
         
-        return Image.fromarray(output)
+        # 1. Grayscale
+        gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
+        
+        # 2. Gaussian Blur (Remove noise dots)
+        blur = cv2.GaussianBlur(gray, (3, 3), 0)
+        
+        # 3. Otsu's Thresholding (Auto-Binarization)
+        # This converts gray blobs into crisp black/white shapes
+        _, binary = cv2.threshold(blur, 0, 255, cv2.THRESH_BINARY + cv2.THRESH_OTSU)
+        
+        return binary # Returns numpy array for EasyOCR
+
+    def correct_sri_lankan_text(self, text):
+        """
+        Uses Regex to force 'WP CA 1234' format.
+        Fixes 0 vs O, 8 vs B, etc.
+        """
+        # Remove special chars (keep only A-Z and 0-9)
+        clean = re.sub(r'[^A-Z0-9]', '', text.upper())
+        
+        # Logic: Sri Lankan plates usually have Letters first, Numbers last
+        # If length is roughly 6-7 chars (e.g. WPCA1234)
+        if len(clean) >= 6:
+            prefix = clean[:2]   # First 2 chars (Province? WP, SP)
+            middle = clean[2:-4] # Middle Letters (CA, CAB)
+            suffix = clean[-4:]  # Last 4 Numbers (1234)
+
+            # Fix Prefix (Letters) - e.g. 0 -> O, 8 -> B
+            prefix = prefix.replace('0', 'O').replace('1', 'I').replace('4', 'A').replace('8', 'B')
+            
+            # Fix Middle (Letters)
+            middle = middle.replace('0', 'O').replace('1', 'I').replace('8', 'B')
+            
+            # Fix Suffix (Numbers) - e.g. O -> 0, I -> 1, B -> 8
+            suffix = suffix.replace('O', '0').replace('I', '1').replace('B', '8').replace('S', '5').replace('Z', '2')
+
+            return f"{prefix} {middle} {suffix}"
+        
+        return text
 
     def predict(self, image_bytes: bytes):
-        """
-        Flow: Original -> SRGAN -> Enhanced -> Ensemble Detect -> OCR -> Scale Boxes Back
-        """
-        # 1. Load Original Image
-        original_img = Image.open(io.BytesIO(image_bytes))
-        if original_img.mode != "RGB":
-            original_img = original_img.convert("RGB")
-            
-        # 2. ✨ ENHANCE IMAGE (SRGAN) ✨
-        # This creates a larger, sharper version of the image
-        enhanced_img = self.enhance_image(original_img)
+        img = Image.open(io.BytesIO(image_bytes)).convert("RGB")
         
-        # 3. Run Detectors on Enhanced Image
-        boxes_v9 = self.run_yolov9_onnx(enhanced_img)
-        boxes_v8 = self.run_yolov8(enhanced_img)
-        
-        # 4. Ensemble Fusion (NMS)
+        # 1. Detect
+        boxes_v9 = self.run_yolov9_onnx(img)
+        boxes_v8 = self.run_yolov8(img)
         all_boxes = boxes_v9 + boxes_v8
         if not all_boxes: return []
         
-        all_boxes_np = np.array(all_boxes)
-        keep_indices = self.nms(all_boxes_np[:, :4], all_boxes_np[:, 4], 0.45)
+        # 2. Aggressive NMS (Merge 'Ghost' boxes)
+        keep_indices = self.nms(np.array(all_boxes)[:, :4], np.array(all_boxes)[:, 4], 0.30)
         
         final_detections = []
+        all_boxes_np = np.array(all_boxes)
         
-        # Calculate scaling factor to map Enhanced coordinates back to Original coordinates
-        scale_x = original_img.width / enhanced_img.width
-        scale_y = original_img.height / enhanced_img.height
+        # Limit to top 3 detections to avoid garbage
+        sorted_indices = sorted(keep_indices, key=lambda i: all_boxes_np[i, 4], reverse=True)[:3]
 
-        for i in keep_indices:
-            # Box on the ENHANCED image
-            bbox_enhanced = all_boxes_np[i, :4].astype(int)
-            conf = float(all_boxes_np[i, 4])
+        for idx in sorted_indices:
+            bbox = all_boxes_np[idx, :4].astype(int)
+            conf = float(all_boxes_np[idx, 4])
             
-            # 5. Context-Aware OCR (Using the High-Res Enhanced Crop)
-            plate_crop = enhanced_img.crop((bbox_enhanced[0], bbox_enhanced[1], bbox_enhanced[2], bbox_enhanced[3]))
-            plate_text = self.ensemble_ocr(plate_crop)
+            # Crop
+            margin = 5
+            x1, y1 = max(0, bbox[0]-margin), max(0, bbox[1]-margin)
+            x2, y2 = min(img.width, bbox[2]+margin), min(img.height, bbox[3]+margin)
+            plate_crop = img.crop((x1, y1, x2, y2))
             
-            # 6. Map coordinates back to ORIGINAL image size for the UI
-            bbox_original = {
-                "x1": int(bbox_enhanced[0] * scale_x),
-                "y1": int(bbox_enhanced[1] * scale_y),
-                "x2": int(bbox_enhanced[2] * scale_x),
-                "y2": int(bbox_enhanced[3] * scale_y)
-            }
+            # --- PIPELINE ---
+            plate_text = "Unknown"
             
+            # 1. Enhance (SRGAN)
+            enhanced_pil = self.enhance_plate_crop(plate_crop)
+            
+            # 2. Filter (Otsu Thresholding)
+            processed_img = self.apply_ocr_filters(enhanced_pil)
+            
+            # 3. Read Text
+            raw_text = self.read_text_easyocr(processed_img)
+            
+            # 4. Correct Text (Regex)
+            if len(raw_text) > 3:
+                plate_text = self.correct_sri_lankan_text(raw_text)
+
+            # Fallback: If "Unknown", try original crop without filters
+            if plate_text == "Unknown":
+                raw_text_orig = self.read_text_easyocr(np.array(plate_crop))
+                if len(raw_text_orig) > 3:
+                     plate_text = self.correct_sri_lankan_text(raw_text_orig)
+
             final_detections.append({
                 "class_name": "License Plate",
                 "confidence": round(conf, 2),
-                "bbox": bbox_original,
+                "bbox": {"x1": int(bbox[0]), "y1": int(bbox[1]), "x2": int(bbox[2]), "y2": int(bbox[3])},
                 "text": plate_text
             })
             
         return final_detections
 
-    # --- HELPER: Run YOLOv9 ---
+    def read_text_easyocr(self, img_input):
+        result = self.reader.readtext(img_input, detail=0)
+        return "".join(result)
+
+    # --- Helpers ---
     def run_yolov9_onnx(self, img):
         if not self.session_v9: return []
         img_resized = img.resize((640, 640))
@@ -148,28 +211,24 @@ class AdvancedYOLOService:
         input_data = input_data[None, ...]
         outputs = self.session_v9.run(self.output_names_v9, {self.input_name_v9: input_data})
         predictions = np.squeeze(outputs[0]).T
-        boxes_list = []
-        img_w, img_h = img.size
-        for pred in predictions:
-            if pred[4] > CONFIDENCE_THRESHOLD:
-                cx, cy, w, h = pred[0], pred[1], pred[2], pred[3]
-                x1, y1 = (cx - w/2) * (img_w / 640), (cy - h/2) * (img_h / 640)
-                x2, y2 = (cx + w/2) * (img_w / 640), (cy + h/2) * (img_h / 640)
-                boxes_list.append([x1, y1, x2, y2, pred[4]])
-        return boxes_list
+        boxes = []
+        w_scale, h_scale = img.size[0]/640, img.size[1]/640
+        for p in predictions:
+            if p[4] > CONFIDENCE_THRESHOLD:
+                cx, cy, w, h = p[0], p[1], p[2], p[3]
+                boxes.append([(cx-w/2)*w_scale, (cy-h/2)*h_scale, (cx+w/2)*w_scale, (cy+h/2)*h_scale, p[4]])
+        return boxes
 
-    # --- HELPER: Run YOLOv8 ---
     def run_yolov8(self, img):
         if not self.model_v8: return []
         results = self.model_v8(img, conf=CONFIDENCE_THRESHOLD, verbose=False)
-        boxes_list = []
-        for result in results:
-            for box in result.boxes:
-                coords = box.xyxy[0].cpu().numpy()
-                boxes_list.append([coords[0], coords[1], coords[2], coords[3], float(box.conf[0])])
-        return boxes_list
+        boxes = []
+        for r in results:
+            for b in r.boxes:
+                c = b.xyxy[0].cpu().numpy()
+                boxes.append([c[0], c[1], c[2], c[3], float(b.conf[0])])
+        return boxes
 
-    # --- HELPER: NMS ---
     def nms(self, boxes, scores, thresh):
         if len(boxes) == 0: return []
         x1, y1, x2, y2 = boxes[:,0], boxes[:,1], boxes[:,2], boxes[:,3]
@@ -190,58 +249,15 @@ class AdvancedYOLOService:
             order = order[inds + 1]
         return keep
 
-    # --- HELPER: Smart OCR ---
-    def ensemble_ocr(self, plate_crop):
-        candidates = []
-        VALID_PROVINCES = ["WP", "EP", "NP", "SP", "SG", "NC", "CP", "UP", "NW"]
-        def fix_province_code(text):
-            text = text.upper().replace(" ", "")
-            for prov in VALID_PROVINCES:
-                if prov in text: return text
-            fixes = {"5P": "SP", "8P": "SP", "S9": "SP", "W9": "WP", "VP": "WP", "VV": "WP", "NWC": "NW"}
-            for wrong, right in fixes.items():
-                if wrong in text: return text.replace(wrong, right)
-            return text
-        def get_smart_text(image_input):
-            w, h = image_input.size
-            image_input = image_input.resize((w * 2, h * 2), Image.LANCZOS)
-            img_arr = np.array(image_input)
-            results = self.reader.readtext(img_arr, detail=1)
-            if not results: return ""
-            results = [r for r in results if r[2] > 0.30]
-            if not results: return ""
-            y_centers = [(r[0][0][1] + r[0][2][1]) / 2 for r in results]
-            is_stacked = (max(y_centers) - min(y_centers)) > (img_arr.shape[0] * 0.35)
-            if is_stacked:
-                results.sort(key=lambda r: (r[0][0][1], r[0][0][0]))
-                mid_y = img_arr.shape[0] / 2
-                top, bottom = [], []
-                for r in results:
-                    y_c = (r[0][0][1] + r[0][2][1]) / 2
-                    val = r[1].upper().replace(".", "").replace("-", "")
-                    if y_c < mid_y: top.append(val)
-                    else: bottom.append(val.replace("O", "0").replace("I", "1").replace("B", "8"))
-                return fix_province_code("".join(top)) + " " + "".join(bottom)
-            else:
-                results.sort(key=lambda r: r[0][0][0])
-                return fix_province_code("".join([r[1] for r in results]).upper().replace("-", "").replace(".", "").replace(" ", ""))
-
-        candidates.append(get_smart_text(plate_crop))
-        gray = ImageOps.grayscale(plate_crop)
-        candidates.append(get_smart_text(ImageEnhance.Contrast(gray).enhance(2.0)))
-        cleaned = [c for c in candidates if len(c) > 3]
-        if not cleaned: return "Unknown"
-        return Counter(cleaned).most_common(1)[0][0]
-
     def draw_detections(self, image_bytes, detections):
-        img = Image.open(io.BytesIO(image_bytes))
+        img = Image.open(io.BytesIO(image_bytes)).convert("RGB")
         draw = ImageDraw.Draw(img)
         for det in detections:
             b = det["bbox"]
             text = det.get("text", "")
-            draw.rectangle([b["x1"], b["y1"], b["x2"], b["y2"]], outline="#00ff00", width=4)
+            draw.rectangle([b["x1"], b["y1"], b["x2"], b["y2"]], outline="cyan", width=4)
             if text:
-                draw.rectangle([b["x1"], b["y1"]-25, b["x1"]+150, b["y1"]], fill="#00ff00")
+                draw.rectangle([b["x1"], b["y1"]-25, b["x1"]+150, b["y1"]], fill="cyan")
                 draw.text((b["x1"]+5, b["y1"]-20), f"{text} ({det['confidence']})", fill="black")
         output = io.BytesIO()
         img.save(output, format="JPEG")
