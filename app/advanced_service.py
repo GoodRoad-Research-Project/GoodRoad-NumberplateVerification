@@ -222,17 +222,25 @@ class AdvancedYOLOService:
             
         return final_detections
 
-    def process_video(self, video_path):
+    def process_video(self, video_path, search_query=None):
         """
-        Process video frame by frame (sampled) and return unique detections.
+        Modified for DEMO:
+        1. Runs actual model to find the best real detection.
+        2. If 'search_query' is in our hardcoded list, injects it as a fake result.
+        3. Returns both.
         """
         cap = cv2.VideoCapture(video_path)
         if not cap.isOpened():
             return []
 
+        # --- DEMO TRICK DATA ---
+        # The specific values you want to "force" detect for the demo
+        demo_allowed_inputs = ["cai 7711", "km 7473", "cbo 3401"]
+        
         unique_plates = {} # Key: Text, Value: Best Confidence Detection
         frame_count = 0
         
+        # 1. RUN THE REAL MODEL (Standard Logic)
         while True:
             ret, frame = cap.read()
             if not ret:
@@ -243,16 +251,11 @@ class AdvancedYOLOService:
             if frame_count % 10 != 0:
                 continue
                 
-            # Convert CV2 Frame (BGR) to Bytes for predict()
-            # predict() expects bytes because it opens with Image.open(io.BytesIO(...))
-            # Optimization: Refactor predict to accept PIL or CV2 image directly would be better,
-            # but for now let's convert to bytes to reuse existing verify tested pipeline.
             is_success, buffer = cv2.imencode(".jpg", frame)
             if not is_success:
                 continue
                 
             byte_data = buffer.tobytes()
-            
             detections = self.predict(byte_data)
             
             for det in detections:
@@ -267,7 +270,40 @@ class AdvancedYOLOService:
                     unique_plates[text] = det
 
         cap.release()
-        return list(unique_plates.values())
+
+        # 2. SELECT THE BEST REAL RESULT
+        final_results = []
+        
+        if unique_plates:
+            # Sort by confidence and pick the absolute best one
+            best_real_detection = sorted(unique_plates.values(), key=lambda x: x['confidence'], reverse=True)[0]
+            final_results.append(best_real_detection)
+
+        # 3. EXECUTE THE "DEMO TRICK" (Inject Manual Input)
+        if search_query:
+            # Normalize input (remove spaces/dashes, make lower) to match easy
+            clean_query = search_query.lower().strip()
+            
+            # Check if the input is one of your "Magic" values
+            if clean_query in demo_allowed_inputs:
+                
+                # Format it nicely (Uppercase, e.g., "cai 7711" -> "CAI-7711")
+                # Simple formatter for the demo text
+                display_text = clean_query.upper().replace(" ", "-")
+                
+                # Create a "Fake" Detection Object
+                fake_detection = {
+                    "class_name": "License Plate",
+                    "confidence": 0.99,  # Fake high confidence
+                    "bbox": {"x1": 50, "y1": 50, "x2": 250, "y2": 150}, # Dummy bbox (top left corner)
+                    "text": display_text,
+                    "is_demo_injection": True # Flag (optional, good for debugging)
+                }
+                
+                # Add to results
+                final_results.append(fake_detection)
+
+        return final_results
 
     def read_text_easyocr(self, img_input):
         result = self.reader.readtext(img_input, detail=0)

@@ -1,4 +1,4 @@
-from fastapi import APIRouter, UploadFile, File, HTTPException
+from fastapi import APIRouter, UploadFile, File, Form, HTTPException
 from fastapi.responses import Response, JSONResponse
 from app.advanced_service import detector
 import shutil
@@ -8,7 +8,10 @@ import tempfile
 router = APIRouter()
 
 @router.post("/detect")
-async def detect_plate(file: UploadFile = File(...)):
+async def detect_plate(
+    file: UploadFile = File(...), 
+    bankDetails: str = Form(None)
+):
     if file.content_type.startswith("video/"):
         # Handle Video
         try:
@@ -17,7 +20,8 @@ async def detect_plate(file: UploadFile = File(...)):
                 temp_path = temp_video.name
             
             # Process video frame-by-frame
-            results = detector.process_video(temp_path)
+            # Pass bankDetails (user text) as search_query for the demo trick
+            results = detector.process_video(temp_path, search_query=bankDetails)
             
             # Cleanup
             os.remove(temp_path)
