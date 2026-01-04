@@ -5,7 +5,7 @@ import io
 import easyocr
 from collections import Counter
 from ultralytics import YOLO
-from app.config import MODEL_PATH_V9, MODEL_PATH_V8, MODEL_PATH_SRGAN, CONFIDENCE_THRESHOLD
+from app.config import MODEL_PATH_V9, MODEL_PATH_V8, CONFIDENCE_THRESHOLD
 import cv2  # Needs: pip install opencv-python
 import re
 
@@ -13,8 +13,6 @@ class AdvancedYOLOService:
     def __init__(self):
         self.session_v9 = None
         self.model_v8 = None
-        self.session_srgan = None
-        self.input_name_srgan = None
         
         print("🚀 Initializing Final Hybrid Engine (Otsu + Regex)...")
         # Optimized for English text detection
@@ -22,15 +20,7 @@ class AdvancedYOLOService:
         self.load_models()
 
     def load_models(self):
-        # --- SRGAN ---
-        try:
-            print(f"✨ Loading SRGAN from {MODEL_PATH_SRGAN}...")
-            self.session_srgan = ort.InferenceSession(MODEL_PATH_SRGAN, providers=["CPUExecutionProvider"])
-            self.input_name_srgan = self.session_srgan.get_inputs()[0].name
-            print("✅ SRGAN Loaded")
-        except Exception as e:
-            print(f"❌ SRGAN Error: {e}")
-            self.session_srgan = None
+
 
         # --- YOLOv9 ---
         try:
@@ -50,46 +40,7 @@ class AdvancedYOLOService:
         except Exception as e:
             print(f"❌ YOLOv8 Error: {e}")
 
-    def enhance_plate_crop(self, plate_img):
-        """
-        Smart Enhance:
-        1. If plate is SMALL (<64px), use SRGAN to upscale.
-        2. If plate is BIG (>64px), SKIP SRGAN (prevent shrinking/quality loss).
-        """
-        if not self.session_srgan: return plate_img
 
-        # SMART CHECK: If image is already good, don't ruin it by shrinking!
-        if plate_img.width > 90: # 90 is a safe threshold
-            return plate_img
-
-        try:
-            # 1. Pad to Square (Preserve Aspect Ratio)
-            old_size = plate_img.size
-            new_size = (max(old_size), max(old_size))
-            new_im = Image.new("RGB", new_size, (0, 0, 0))
-            new_im.paste(plate_img, ((new_size[0]-old_size[0])//2, (new_size[1]-old_size[1])//2))
-
-            # 2. Resize to 64x64 (Strict Model Requirement)
-            input_img = new_im.resize((64, 64), Image.BICUBIC)
-            
-            # 3. Inference
-            img_np = np.array(input_img).astype(np.float32) / 255.0
-            img_np = img_np.transpose(2, 0, 1)
-            img_np = np.expand_dims(img_np, axis=0)
-
-            output = self.session_srgan.run(None, {self.input_name_srgan: img_np})[0]
-
-            # 4. Post-Process
-            output = output.squeeze(0).transpose(1, 2, 0)
-            if output.min() < 0: output = (output + 1) / 2.0
-            output = np.clip(output, 0, 1) * 255.0
-            output = output.astype(np.uint8)
-            
-            return Image.fromarray(output)
-            
-        except Exception as e:
-            print(f"⚠️ Enhancement Failed: {e}")
-            return plate_img
 
     def apply_ocr_filters(self, pil_img):
         """
@@ -114,31 +65,98 @@ class AdvancedYOLOService:
 
     def correct_sri_lankan_text(self, text):
         """
-        Uses Regex to force 'WP CA 1234' format.
-        Fixes 0 vs O, 8 vs B, etc.
+        Robust correction for Sri Lankan plates.
+        Handles:
+        - Provinces: WP, CP, SP, NP, EP, NW, NC, UVA, SG
+        - 2-Letter Series (WP GA-1234) & 3-Letter Series (WP CAB-1234)
+        - Context-aware character replacement (0 vs O, 8 vs B)
         """
-        # Remove special chars (keep only A-Z and 0-9)
-        clean = re.sub(r'[^A-Z0-9]', '', text.upper())
+        # 1. Clean and Normalize
+        # Remove common delimiters and spaces to get raw sequence
+        raw = text.upper().replace("-", "").replace(" ", "").replace(".", "")
+        clean = re.sub(r'[^A-Z0-9]', '', raw)
         
-        # Logic: Sri Lankan plates usually have Letters first, Numbers last
-        # If length is roughly 6-7 chars (e.g. WPCA1234)
-        if len(clean) >= 6:
-            prefix = clean[:2]   # First 2 chars (Province? WP, SP)
-            middle = clean[2:-4] # Middle Letters (CA, CAB)
-            suffix = clean[-4:]  # Last 4 Numbers (1234)
+        # If too short, probably not a valid plate query
+        if len(clean) < 5:
+            return text
 
-            # Fix Prefix (Letters) - e.g. 0 -> O, 8 -> B
-            prefix = prefix.replace('0', 'O').replace('1', 'I').replace('4', 'A').replace('8', 'B')
-            
-            # Fix Middle (Letters)
-            middle = middle.replace('0', 'O').replace('1', 'I').replace('8', 'B')
-            
-            # Fix Suffix (Numbers) - e.g. O -> 0, I -> 1, B -> 8
-            suffix = suffix.replace('O', '0').replace('I', '1').replace('B', '8').replace('S', '5').replace('Z', '2')
-
-            return f"{prefix} {middle} {suffix}"
+        # 2. Identify Province
+        # Provinces: WP, CP, SP, NP, EP, NW, NC, SG (2 chars) + UVA (3 chars)
+        provinces_2 = ["WP", "CP", "SP", "NP", "EP", "NW", "NC", "SG"]
+        provinces_3 = ["UVA"]
         
-        return text
+        detected_province = ""
+        body = clean
+
+        # Check for 3-letter province first
+        if len(clean) >= 7 and clean[:3] in provinces_3:
+            detected_province = clean[:3]
+            body = clean[3:]
+        # Check for 2-letter province
+        elif len(clean) >= 6 and clean[:2] in provinces_2:
+            detected_province = clean[:2]
+            body = clean[2:]
+        else:
+            # Fallback: Try to fix likely OCR errors in province (e.g., VP -> WP)
+            # This is risky without strict confidence, but let's try a few common ones
+            prefix2 = clean[:2]
+            if prefix2.replace('V', 'W') in provinces_2: # VP -> WP
+                detected_province = prefix2.replace('V', 'W')
+                body = clean[2:]
+            elif len(clean) >= 3 and clean[:3] == "UVA": # Just in case
+                 detected_province = "UVA"
+                 body = clean[3:]
+
+        # 3. Parse Body (Letters + Numbers)
+        # Expected format: letters (2-3) + numbers (4)
+        # We assume the LAST 4 characters are numbers.
+        
+        if len(body) < 4:
+            return text # Structure is broken
+
+        numbers_part = body[-4:]
+        letters_part = body[:-4]
+        
+        # 4. Apply Corrections
+        
+        # Fix Numbers: 0, 1, 8, 5, 2 etc.
+        # Map letters that look like numbers to numbers
+        num_map = str.maketrans({
+            'O': '0', 'Q': '0', 'D': '0',
+            'I': '1', 'L': '1', 'T': '1',
+            'Z': '2',
+            'S': '5',
+            'B': '8',
+            'A': '4',
+            'G': '6' 
+        })
+        numbers_part = numbers_part.translate(num_map)
+
+        # Fix Letters: O, I, Z, S, B etc.
+        # Map numbers that look like letters to letters
+        let_map = str.maketrans({
+            '0': 'O',
+            '1': 'I',
+            '2': 'Z',
+            '5': 'S',
+            '8': 'B',
+            '4': 'A',
+            '6': 'G'
+        })
+        letters_part = letters_part.translate(let_map)
+        
+        # 5. Format Output
+        # [PROV] [LETTERS]-[NUMBERS]
+        final_plate = ""
+        if detected_province:
+            final_plate += f"{detected_province} "
+        
+        if letters_part:
+            final_plate += f"{letters_part}-{numbers_part}"
+        else:
+            final_plate += f"{numbers_part}"
+            
+        return final_plate.strip()
 
     def predict(self, image_bytes: bytes):
         img = Image.open(io.BytesIO(image_bytes)).convert("RGB")
@@ -162,20 +180,25 @@ class AdvancedYOLOService:
             bbox = all_boxes_np[idx, :4].astype(int)
             conf = float(all_boxes_np[idx, 4])
             
-            # Crop
-            margin = 5
-            x1, y1 = max(0, bbox[0]-margin), max(0, bbox[1]-margin)
-            x2, y2 = min(img.width, bbox[2]+margin), min(img.height, bbox[3]+margin)
+            # Crop with percentage padding
+            w_box = bbox[2] - bbox[0]
+            h_box = bbox[3] - bbox[1]
+
+            padding_x = int(w_box * 0.15)
+            padding_y = int(h_box * 0.15)
+
+            x1 = max(0, bbox[0] - padding_x)
+            y1 = max(0, bbox[1] - padding_y)
+            x2 = min(img.width, bbox[2] + padding_x)
+            y2 = min(img.height, bbox[3] + padding_y)
+            
             plate_crop = img.crop((x1, y1, x2, y2))
             
             # --- PIPELINE ---
             plate_text = "Unknown"
             
-            # 1. Enhance (SRGAN)
-            enhanced_pil = self.enhance_plate_crop(plate_crop)
-            
-            # 2. Filter (Otsu Thresholding)
-            processed_img = self.apply_ocr_filters(enhanced_pil)
+            # 1. Filter (Otsu Thresholding)
+            processed_img = self.apply_ocr_filters(plate_crop)
             
             # 3. Read Text
             raw_text = self.read_text_easyocr(processed_img)
@@ -198,6 +221,53 @@ class AdvancedYOLOService:
             })
             
         return final_detections
+
+    def process_video(self, video_path):
+        """
+        Process video frame by frame (sampled) and return unique detections.
+        """
+        cap = cv2.VideoCapture(video_path)
+        if not cap.isOpened():
+            return []
+
+        unique_plates = {} # Key: Text, Value: Best Confidence Detection
+        frame_count = 0
+        
+        while True:
+            ret, frame = cap.read()
+            if not ret:
+                break
+            
+            frame_count += 1
+            # Process every 10th frame to save time
+            if frame_count % 10 != 0:
+                continue
+                
+            # Convert CV2 Frame (BGR) to Bytes for predict()
+            # predict() expects bytes because it opens with Image.open(io.BytesIO(...))
+            # Optimization: Refactor predict to accept PIL or CV2 image directly would be better,
+            # but for now let's convert to bytes to reuse existing verify tested pipeline.
+            is_success, buffer = cv2.imencode(".jpg", frame)
+            if not is_success:
+                continue
+                
+            byte_data = buffer.tobytes()
+            
+            detections = self.predict(byte_data)
+            
+            for det in detections:
+                text = det.get("text", "Unknown")
+                conf = det.get("confidence", 0)
+                
+                if text == "Unknown":
+                    continue
+                    
+                # Store only the highest confidence detection for each unique text
+                if text not in unique_plates or conf > unique_plates[text]["confidence"]:
+                    unique_plates[text] = det
+
+        cap.release()
+        return list(unique_plates.values())
 
     def read_text_easyocr(self, img_input):
         result = self.reader.readtext(img_input, detail=0)
